@@ -287,6 +287,7 @@ function FluidField(canvas) {
     // Move forward in density
     function dens_step( x0, u0, v0, x, u, v, dt) {
 
+        // Stop filling stability
         fade( x, u, v );
 
         // Combine old and new fields into the new field
