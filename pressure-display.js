@@ -140,11 +140,15 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
 //				console.log( bufferData.data.length );
 
                 for ( var x = 0; x < width; x++ ) {
-					data[4*(y * height + x) + 2] = 255;
+					//data[4*(y * height + x) + 2] = 255;
                     for ( var y = 0; y < height; y++ )
 
-                        data[4*(y * height + x) + 0] =  field.getDensity(x, y) * 255 / 5;                    
-                        data[4*(y * height + x) + 1] =  field.getDensity(x, y) * 255 / 5;
+                        // data[4*(y * height + x) + 0] =  field.getDensity(x, y) * 255 / 5;                    
+                        // data[4*(y * height + x) + 1] =  field.getDensity(x, y) * 255 / 5; - FLAMES
+
+                        data[ 4 * (y * height +  x ) + 0] = field.getDensity(x, y) * 255 / 5;
+
+
 						//data[4*(y * height + x) + 0] = Math.random() * 255;
 						//data[4*(y * height + x) + 1] = Math.random() * 255;
 						//data[4*(y * height + x) + 2] = Math.random() * 255;
@@ -221,7 +225,7 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
     var showVectors = false;
     
     toggleDisplayFunction = function( canvas ) {
-		
+		//showVectors = true;
         if (showVectors) {
 			
             showVectors = false;

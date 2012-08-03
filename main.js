@@ -8,20 +8,22 @@ var mouseIsDown = false;
 var res;
 var displaySize = 512;
 var fieldRes;
+var clear_id;
+var running = false;
 var canvas = document.getElementById("canvas");
 
 function prepareFrame( field ) {
 	
 	if ( player.push ) {
 		
-		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
-		field.setDensity( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), 50);				
+		field.setVelocityInterp( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
+		field.setDensity( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), 100);				
 		
 	}
 	
 	if ( player.suck ) {
 		
-		field.setVelocity( Math.floor( player.x + player.width / 2 + 30 ), Math.floor( player.y + player.height / 2 ), -50, 0 );	
+		field.setVelocityInterp( Math.floor( player.x + player.width / 2 + 30 ), Math.floor( player.y + player.height / 2 ), -50, 0 );	
 		field.setDensity( Math.floor( player.x + player.width / 2 + 10 ) , Math.floor( player.y + player.height / 2 ), 100);
 		
 		
@@ -31,13 +33,17 @@ function prepareFrame( field ) {
 
 function stopAnimation() {
 	
-	clearInterval(updateFrame);
+	clearInterval( clear_id );
+	running = false;
+	return;
 	
 }
 
 function startAnimation() {
 	
-	setInterval( updateFrame, 1000/60 );
+	clear_id = setInterval( updateFrame, 1000/60 );
+	running = true;
+	return;
 	
 }
 

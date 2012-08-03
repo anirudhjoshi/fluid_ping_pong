@@ -1,6 +1,8 @@
 // Based on http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/GDC03.pdf
 /**
+ * Copyright (c) 2008, 2009, Memo Akten, www.memo.tv
  * Copyright (c) 2009 Oliver Hunt <http://nerget.com>
+ * Copyright (c) 2012 Anirudh Joshi <http://anirudhjoshi.com>
  * 
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -25,23 +27,36 @@
  */
 
 function FluidField(canvas) {
-    function addFields(x, s, dt)
-    {
-        for (var i=0; i<size ; i++ ) x[i] += dt*s[i];
-    }
 
-    function set_bnd(b, x)
-    {
-        if (b===1) {
-            for (var i = 1; i <= width; i++) {
-                x[i] =  x[i + rowSize];
-                x[i + (height+1) *rowSize] = x[i + height * rowSize];
+    // Add fields x and s together over dt
+    function addFields(x, s, dt) {
+
+        for ( var i = 0; i < size; i++ )
+
+            x[ i ] += dt * s[ i ];
+
+    } 
+
+    // Fluid bounding function over a field for stability
+    function set_bnd(b, x) {
+
+
+        if ( b === 1 ) {
+
+            for ( var i = 1; i <= width; i++ ) {
+
+                x[ i ] =  x[ i + rowSize ];
+                x[ i + ( height + 1 ) * rowSize] = x[ i + height * rowSize ];
+
             }
 
             for (var j = 1; i <= height; i++) {
+
                 x[j * rowSize] = -x[1 + j * rowSize];
                 x[(width + 1) + j * rowSize] = -x[width + j * rowSize];
+
             }
+
         } else if (b === 2) {
             for (var i = 1; i <= width; i++) {
                 x[i] = -x[i + rowSize];
@@ -63,46 +78,73 @@ function FluidField(canvas) {
                 x[(width + 1) + j * rowSize] =  x[width + j * rowSize];
             }
         }
+
         var maxEdge = (height + 1) * rowSize;
-        x[0]                 = 0.5 * (x[1] + x[rowSize]);
-        x[maxEdge]           = 0.5 * (x[1 + maxEdge] + x[height * rowSize]);
-        x[(width+1)]         = 0.5 * (x[width] + x[(width + 1) + rowSize]);
-        x[(width+1)+maxEdge] = 0.5 * (x[width + maxEdge] + x[(width + 1) + height * rowSize]);
+
+        x[ 0 ]                 = 0.5 * ( x[ 1 ] + x[ rowSize ] );
+        x[ maxEdge ]           = 0.5 * (x[1 + maxEdge] + x[height * rowSize]);
+        x[ ( width + 1 ) ]         = 0.5 * (x[width] + x[(width + 1) + rowSize]);
+        x[ ( width + 1) + maxEdge ] = 0.5 * (x[width + maxEdge] + x[(width + 1) + height * rowSize]);
+
     }
 
-    function lin_solve(b, x, x0, a, c)
-    {
+    // This combines neighbour velocities onto selected cell
+    function lin_solve(b, x, x0, a, c) {
+
         if (a === 0 && c === 1) {
+
             for (var j=1 ; j<=height; j++) {
+
                 var currentRow = j * rowSize;
+
                 ++currentRow;
-                for (var i = 0; i < width; i++) {
+
+                for ( var i = 0; i < width; i++ ) {
+
                     x[currentRow] = x0[currentRow];
                     ++currentRow;
+
                 }
+
             }
+
             set_bnd(b, x);
+
         } else {
+
             var invC = 1 / c;
+
             for (var k=0 ; k<iterations; k++) {
+
                 for (var j=1 ; j<=height; j++) {
+
                     var lastRow = (j - 1) * rowSize;
                     var currentRow = j * rowSize;
                     var nextRow = (j + 1) * rowSize;
                     var lastX = x[currentRow];
+
                     ++currentRow;
+
                     for (var i=1; i<=width; i++)
+
                         lastX = x[currentRow] = (x0[currentRow] + a*(lastX+x[++currentRow]+x[++lastRow]+x[++nextRow])) * invC;
+
                 }
+
                 set_bnd(b, x);
+
             }
+
         }
+
     }
     
-    function diffuse(b, x, x0, dt)
-    {
+    // Iterates over the entire array - diffusing dye density
+    function diffuse(b, x, x0, dt) {
+
         var a = 0;
         lin_solve(b, x, x0, a, 1 + 4*a);
+
     }
     
     function lin_solve2(x, x0, y, y0, a, c)
@@ -219,118 +261,239 @@ function FluidField(canvas) {
         set_bnd(2, v);
     }
     
-    function dens_step(x, x0, u, v, dt)
-    {
+    // Move forward in density
+    function dens_step(x, x0, u, v, dt) {
+
+        // Combine old and new fields into the new field
         addFields(x, x0, dt);
+
+        // Diffuse over old and new new field
         diffuse(0, x0, x, dt );
+
+        // Combine vectors into a forward vector model
         advect(0, x, x0, u, v, dt );
+
     }
     
-    function vel_step(u, v, u0, v0, dt)
-    {
+    // Move vector fields (u,v) forward over dt
+    function vel_step(u, v, u0, v0, dt) {
+
         addFields(u, u0, dt );
         addFields(v, v0, dt );
+        
         var temp = u0; u0 = u; u = temp;
         var temp = v0; v0 = v; v = temp;
+        
         diffuse2(u,u0,v,v0, dt);
         project(u, v, u0, v0);
+        
         var temp = u0; u0 = u; u = temp; 
         var temp = v0; v0 = v; v = temp;
+        
         advect(1, u, u0, u0, v0, dt);
         advect(2, v, v0, u0, v0, dt);
+        
         project(u, v, u0, v0 );
+
     }
-    var uiCallback = function(d,u,v) {};
+
+    var uiCallback = function( d, u, v ) {};
 
     function Field(dens, u, v) {
+
         // Just exposing the fields here rather than using accessors is a measurable win during display (maybe 5%)
         // but makes the code ugly.
+
         this.setDensity = function(x, y, d) {
+
              dens[(x + 1) + (y + 1) * rowSize] = d;
+
         }
+
         this.getDensity = function(x, y) {
+
              return dens[(x + 1) + (y + 1) * rowSize];
+
         }
+
         this.setVelocity = function(x, y, xv, yv) {
+
              u[(x + 1) + (y + 1) * rowSize] = xv;
              v[(x + 1) + (y + 1) * rowSize] = yv;
-        }
-        this.getXVelocity = function(x, y) {
-             return u[(x + 1) + (y + 1) * rowSize];
-        }
-        this.getYVelocity = function(x, y) {
-             return v[(x + 1) + (y + 1) * rowSize];
-        }
-        this.width = function() { return width; }
-        this.height = function() { return height; }
-    }
-    function queryUI(d, u, v)
-    {
-        for (var i = 0; i < size; i++)
-            u[i] = v[i] = d[i] = 0.0;
-        uiCallback(new Field(d, u, v));
-    }
 
-    this.update = function () {
-        queryUI(dens_prev, u_prev, v_prev);
-        vel_step(u, v, u_prev, v_prev, dt);
-        dens_step(dens, dens_prev, u, v, dt);
-        displayFunc(new Field(dens, u, v));
-    }
-    this.setDisplayFunction = function(func) {
-        displayFunc = func;
-    }
-    
-    this.iterations = function() { return iterations; }
-    this.setIterations = function(iters) {
-        if (iters > 0 && iters <= 100)
-           iterations = iters;
-    }
-    this.setUICallback = function(callback) {
-        uiCallback = callback;
-    }
-    var iterations = 10;
-    var visc = 0.5;
-    var dt = 0.1;
-    var dens;
-    var dens_prev;
-    var u;
-    var u_prev;
-    var v;
-    var v_prev;
-    var width;
-    var height;
-    var rowSize;
-    var size;
-    var displayFunc;
-    function reset()
-    {
-        rowSize = width + 2;
-        size = (width+2)*(height+2);
-        dens = new Array(size);
-        dens_prev = new Array(size);
-        u = new Array(size);
-        u_prev = new Array(size);
-        v = new Array(size);
-        v_prev = new Array(size);
-        for (var i = 0; i < size; i++)
-            dens_prev[i] = u_prev[i] = v_prev[i] = dens[i] = u[i] = v[i] = 0;
-    }
-    this.reset = reset;
-    this.setResolution = function (hRes, wRes)
-    {
-        var res = wRes * hRes;
-        if (res > 0 && res < 1000000 && (wRes != width || hRes != height)) {
-            width = wRes;
-            height = hRes;
-            reset();
-            init();
-            return true;
+        }
+
+        //MSAFluidSolver2d.java by RJ Marsan
+        this.setVelocityInterp = function( x, y, vx, vy ) {
+
+            var colSize = rowSize;
+
+            rI = x + 2;
+            rJ = y + 2;
+
+            i1 = (x + 2);
+            i2 = (rI - i1 < 0) ? (x + 3) : (x + 1);
+
+            j1 = (y + 2);
+            j2 = (rJ - j1 < 0) ? (y  + 3) : (y + 1);
+            
+            diffx = (1-(rI-i1));
+            diffy = (1-(rJ-j1));
+            
+            vx1 = vx * diffx*diffy;
+            vy1 = vy * diffy*diffx;
+            
+            vx2 = vx * (1-diffx)*diffy;
+            vy2 = vy * diffy*(1-diffx);
+            
+            vx3 = vx * diffx*(1-diffy);
+            vy3 = vy * (1-diffy)*diffx;
+            
+            vx4 = vx * (1-diffx)*(1-diffy);
+            vy4 = vy * (1-diffy)*(1-diffx);
+            
+            if(i1<2 || i1>rowSize-1 || j1<2 || j1>colSize-1) return;
+
+            this.setVelocity(i1, j1, vx1, vy1);
+            this.setVelocity(i2, j1, vx2, vy2);
+            this.setVelocity(i1, j2, vx3, vy3);
+            this.setVelocity(i2, j2, vx4, vy4);
+
+        }         
+
+
+        this.getXVelocity = function(x, y) {
+
+             return u[(x + 1) + (y + 1) * rowSize];
+
         }
         
+        this.getYVelocity = function(x, y) {
+
+             return v[(x + 1) + (y + 1) * rowSize];
+
+        }
+
+        this.width = function() { return width; }
+        this.height = function() { return height; }
+
+    }
+
+    function queryUI( d, u, v ) {
+
+        for ( var i = 0; i < size; i++ )
+
+            u[ i ] = v[ i ] = d[ i ] = 0.0;
+
+        uiCallback( new Field( d, u, v ) );
+
+    }
+
+    // Push simulation forward one step
+    this.update = function () {
+
+        queryUI(dens_prev, u_prev, v_prev);
+
+        // Move vector fields forward
+        vel_step(u, v, u_prev, v_prev, dt);
+
+        // Move dye intensity forward
+        dens_step(dens, dens_prev, u, v, dt);
+
+        // Display/Return new density and vector fields
+        displayFunc( new Field(dens, u, v) );
+
+    }
+
+    this.setDisplayFunction = function( func ) {
+
+        displayFunc = func;
+
+    }
+    
+    // More iterations = much slower simulation (10 is good default)
+    this.iterations = function() { return iterations; }
+
+    // Iteration setter and capper
+    this.setIterations = function( iters ) {
+
+        if ( iters > 0 && iters <= 100 )
+
+           iterations = iters;
+
+    }
+
+    this.setUICallback = function( callback ) {
+        
+        uiCallback = callback;
+
+    }
+
+    var iterations = 10;
+
+    var visc = 0.5;
+    var dt = 0.1;
+
+    var dens;
+    var dens_prev;
+
+    var u;
+    var u_prev;
+
+    var v;
+    var v_prev;
+
+    var width;
+    var height;
+
+    var rowSize;
+    var size;
+
+    var displayFunc;
+
+    function reset() {
+
+        rowSize = width + 2;
+        size = (width+2)*(height+2);
+
+        dens = new Array(size);
+        dens_prev = new Array(size);
+
+        u = new Array(size);
+        u_prev = new Array(size);
+
+        v = new Array(size);
+        v_prev = new Array(size);
+
+        for (var i = 0; i < size; i++)
+
+            dens_prev[i] = u_prev[i] = v_prev[i] = dens[i] = u[i] = v[i] = 0;
+
+    }
+
+    this.reset = reset;
+
+    // Resolution bounder and resetter
+    this.setResolution = function ( hRes, wRes ) {
+
+        var res = wRes * hRes;
+
+        if (res > 0 && res < 1000000 && (wRes != width || hRes != height)) {
+
+            width = wRes;
+            height = hRes;
+
+            reset();
+            init(); // make this an injector
+
+            return true;
+
+        }
         
         return false;
     }
-    this.setResolution(64, 64);
+
+    this.setResolution( 64, 64 );
+
 }
 
