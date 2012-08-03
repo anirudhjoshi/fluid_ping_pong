@@ -1,0 +1,19 @@
+body {
+
+	background: black;
+	margin: 0 auto;
+	
+}
+	
+canvas {
+
+	background: black;
+	width: 32em;
+	height: 32em;
+	padding-left: 0;
+	padding-right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+	
+}
