@@ -18,6 +18,7 @@ function prepareFrame( field ) {
 
 		field.setVelocity( Math.floor( ai.x - ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
 		field.setDensity( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), 100);				
+		field.setDensityBl( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), 100);				
 		
 		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
 		field.setDensity( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), 100);				

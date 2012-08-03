@@ -147,11 +147,13 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
                         var index = 4 * (y * height +  x);
                         var r = Math.round( field.getDensity(x, y) * 255 / 5 );
                         var g = Math.round( field.getDensityG(x, y) * 255 / 5 );
+                        var bl = Math.round( field.getDensityBl(x, y) * 255 / 5 );
 
                         // console.log( r );
                         
                         data[ index + 0] = r;
                         data[ index + 1] = g;
+                        data[ index + 2] = bl;
                         // data[ index + 2] = r * Math.cos( r );
 
                     }
