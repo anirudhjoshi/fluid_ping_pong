@@ -146,21 +146,17 @@ function FluidField(canvas) {
 
     // Fades out velocities/densities to stop full stability
     // MSAFluidSolver2d.java
-    function fade( x, u, v ) {
+    function fade( x ) {
 
         for (var i = 0; i < size; i++) {
 
             // fade out
-            u[i] *= holdAmount;
-            v[i] *= holdAmount;
             x[i] *= holdAmount;
 
         }
 
         return;
     }    
-
-
     
     // Iterates over the entire array - diffusing dye density
     function diffuse(b, x, x0, dt) {
@@ -288,7 +284,9 @@ function FluidField(canvas) {
     function dens_step( x0, u0, v0, x, u, v, dt) {
 
         // Stop filling stability
-        fade( x, u, v );
+        fade( x );
+        fade( u );
+        fade( v );
 
         // Combine old and new fields into the new field
         addFields(x, x0, dt);
@@ -512,7 +510,6 @@ function FluidField(canvas) {
             height = hRes;
 
             reset();
-            init(); // make this an injector
 
             return true;
 

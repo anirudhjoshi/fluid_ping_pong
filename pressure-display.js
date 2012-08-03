@@ -111,7 +111,7 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
 			
 			// Decouple from pixels to reduce overhead
             var data = bufferData.data;
-            var A_VAR;
+
             var dlength = data.length;
             var j = -3;
             
@@ -136,44 +136,50 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
                 }
                 
             } else {
-				
-                ///console.log( data[0], data[1], data[2], data[3], height );
+                // console.log( field.getDensity(1, 1) );
 
                 for ( var x = 0; x < width; x++ ) {
+
 
                     for ( var y = 0; y < height; y++ ) {
 
 
                         var index = 4 * (y * height +  x);
                         var r = Math.round( field.getDensity(x, y) * 255 / 5 );
+                        var g = Math.round( field.getDensityG(x, y) * 255 / 5 );
 
-
-
+                        // console.log( r );
+                        
                         data[ index + 0] = r;
-                        data[ index + 1] = r;
-                        data[ index + 2] = r;
-
-                        //data[ 4 * (y * height +  x ) + 1] = data[ 4 * (y * height +  x ) + 0];
-                        //data[ 4 * (y * height +  x ) + 1] = A_VAR;
-                        //data[ 4 * (y * height +  x ) + 2] = A_VAR;
-
-
-						//data[4*(y * height + x) + 0] = Math.random() * 255;
-						//data[4*(y * height + x) + 1] = Math.random() * 255;
-						//data[4*(y * height + x) + 2] = Math.random() * 255;
-						//data[4*(y * height + x) + 3] = 255 / 5;
-						//data[4* (y * height +  x ) + 0] = field.getDensity(x, y) * 255 / 5;
-						//data[4* (y * height +  x ) + 1] = field.getDensity(x, y) * 255 / 5;
-						//data[4* ( y * height +  x ) + 0] = field.getDensity(x, y) * 100;
-						//data[4* ( y * height +  x ) + 1] = field.getDensity(x, y) * 255;;
-						
-						//data[6* (y * height +  x) + 1] = field.getDensity(x, y) * 255;
-						//data[4*(y * height + x + 1) + 0] = field.getDensity(x, y) * 255;
-						//data[4*(y * height + x) + 0] = field.getDensity(x, y) * Math.random( 255 );
+                        data[ index + 1] = g;
+                        // data[ index + 2] = r * Math.cos( r );
 
                     }
                         
                 }
+
+                
+
+
+                ///console.log( data[0], data[1], data[2], data[3], height );                
+
+                                        //data[ 4 * (y * height +  x ) + 1] = data[ 4 * (y * height +  x ) + 0];
+                        //data[ 4 * (y * height +  x ) + 1] = A_VAR;
+                        //data[ 4 * (y * height +  x ) + 2] = A_VAR;
+
+
+                        //data[4*(y * height + x) + 0] = Math.random() * 255;
+                        //data[4*(y * height + x) + 1] = Math.random() * 255;
+                        //data[4*(y * height + x) + 2] = Math.random() * 255;
+                        //data[4*(y * height + x) + 3] = 255 / 5;
+                        //data[4* (y * height +  x ) + 0] = field.getDensity(x, y) * 255 / 5;
+                        //data[4* (y * height +  x ) + 1] = field.getDensity(x, y) * 255 / 5;
+                        //data[4* ( y * height +  x ) + 0] = field.getDensity(x, y) * 100;
+                        //data[4* ( y * height +  x ) + 1] = field.getDensity(x, y) * 255;;
+                        
+                        //data[6* (y * height +  x) + 1] = field.getDensity(x, y) * 255;
+                        //data[4*(y * height + x + 1) + 0] = field.getDensity(x, y) * 255;
+                        //data[4*(y * height + x) + 0] = field.getDensity(x, y) * Math.random( 255 );
 
                         // if ( A_VAR > 0 )
                             // console.log( A_VAR );                

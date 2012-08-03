@@ -15,34 +15,49 @@ var canvas = document.getElementById("canvas");
 function prepareFrame( field ) {
 	
 	if ( player.push ) {
+
+		field.setVelocity( Math.floor( ai.x - ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
+		field.setDensity( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), 100);				
 		
-		field.setVelocityInterp( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
+		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
 		field.setDensity( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), 100);				
+		field.setDensityG( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), 100);				
 		
 	}
 	
 	if ( player.suck ) {
 		
-		field.setVelocityInterp( Math.floor( player.x + player.width / 2 + 30 ), Math.floor( player.y + player.height / 2 ), -50, 0 );	
+		field.setVelocity( Math.floor( ai.x - ai.width / 2 - 30 ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
+		field.setDensity( Math.floor( ai.x - ai.width / 2 - 10 ) , Math.floor( ai.y + ai.height / 2 ), 100);
+
+		field.setVelocity( Math.floor( player.x + player.width / 2 + 30 ), Math.floor( player.y + player.height / 2 ), -50, 0 );	
 		field.setDensity( Math.floor( player.x + player.width / 2 + 10 ) , Math.floor( player.y + player.height / 2 ), 100);
-		
-		
+			
 	}				
 
 }
 
 function stopAnimation() {
 	
-	clearInterval( clear_id );
-	running = false;
+	if ( running ) {
+		
+		clearInterval( clear_id );
+		running = false;
+
+	}
+
 	return;
 	
 }
 
 function startAnimation() {
 	
-	clear_id = setInterval( updateFrame, 1000/60 );
-	running = true;
+	if ( !running ) {
+
+		clear_id = setInterval( updateFrame, 1000/60 );
+		running = true;
+
+	}
 	return;
 	
 }
@@ -57,11 +72,11 @@ function updateFrame() {
 
 window.onload=function(){
 	
-	init();
-	
 	field = new FluidField(canvas);
 	field.setUICallback(prepareFrame);
 	field.setDisplayFunction(toggleDisplayFunction(canvas));
+
+	init();
 	
 	updateRes = function() {
 		
@@ -70,6 +85,7 @@ window.onload=function(){
 		canvas.height = r;
 		fieldRes = r;
 		field.setResolution(r, r);
+        init(); // make this an injector
 		
 	}
 	
