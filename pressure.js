@@ -1,8 +1,10 @@
 // Based on http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/GDC03.pdf
 /**
  * Copyright (c) 2008, 2009, Memo Akten, www.memo.tv
+ *** The Mega Super Awesome Visuals Company ***
  * Copyright (c) 2009 Oliver Hunt <http://nerget.com>
  * Copyright (c) 2012 Anirudh Joshi <http://anirudhjoshi.com>
+ * All rights reserved.
  * 
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -138,6 +140,27 @@ function FluidField(canvas) {
         }
 
     }
+
+    var fadeSpeed = 0;
+    var holdAmount = 1 - fadeSpeed;
+
+    // Fades out velocities/densities to stop full stability
+    // MSAFluidSolver2d.java
+    function fade( x, u, v ) {
+
+        for (var i = 0; i < size; i++) {
+
+            // fade out
+            u[i] *= holdAmount;
+            v[i] *= holdAmount;
+            x[i] *= holdAmount;
+
+        }
+
+        return;
+    }    
+
+
     
     // Iterates over the entire array - diffusing dye density
     function diffuse(b, x, x0, dt) {
@@ -262,7 +285,9 @@ function FluidField(canvas) {
     }
     
     // Move forward in density
-    function dens_step(x, x0, u, v, dt) {
+    function dens_step( x0, u0, v0, x, u, v, dt) {
+
+        fade( x, u, v );
 
         // Combine old and new fields into the new field
         addFields(x, x0, dt);
@@ -323,7 +348,7 @@ function FluidField(canvas) {
 
         }
 
-        //MSAFluidSolver2d.java by RJ Marsan
+        //MSAFluidSolver2d.java
         this.setVelocityInterp = function( x, y, vx, vy ) {
 
             var colSize = rowSize;
@@ -398,7 +423,9 @@ function FluidField(canvas) {
         vel_step(u, v, u_prev, v_prev, dt);
 
         // Move dye intensity forward
-        dens_step(dens, dens_prev, u, v, dt);
+        if ( u_prev )
+        // dens_step(dens, dens_prev, u, v, dt);
+        dens_step(dens_prev, u_prev, v_prev, dens, u, v, dt );
 
         // Display/Return new density and vector fields
         displayFunc( new Field(dens, u, v) );
