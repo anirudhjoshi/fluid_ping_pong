@@ -16,6 +16,25 @@
 
 			<button id="start" onClick="startAnimation()">Start</button>
 			<button id="stop" onClick="stopAnimation()">End</button>
+      <button id="restart" onClick="restart()">Restart</button>
+      <button id="multiplayer" onClick="multiplayer()">Multiplayer</button>
+
+ <button onclick="field.setDisplayFunction(toggleDisplayFunction(canvas))">Toggle drawing mode</button><br />
+                    Solver Iterations:
+                    <input id=iterations type="range" onchange="field.setIterations(event.target.value)" min=1 max=75><br />
+                    Resolution:
+                    <select id=resolution onchange="updateRes()">
+                        <option>64</option>
+                        <option>8</option>
+                        <option>16</option>
+                        <option>24</option>
+                        <option>32</option>
+                        <option>48</option>
+                        <option>96</option>
+                        <option>128</option>
+                        <option>256</option>
+                        <option>512</option>
+                    </select>      
 
 		</div>
 

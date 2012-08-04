@@ -19,7 +19,8 @@ var ball = {
 }      
 
 var ai = {
-
+	"push": false,
+	"suck": false,
 	"x" : 0,
 	"y" : 0,
 	"width" : 0,
@@ -34,6 +35,7 @@ var ai = {
 
 var player = {
 	"push": false,
+	"suck": false,	
 	"x" : 0,
 	"y" : 0,
 	"width" : 0,
