@@ -320,7 +320,12 @@ var keyMap = {
 	"left": { "code" : 65, "on": false },
 	"up": { "code" : 87, "on": false },
 	"right": { "code" : 68, "on": false },
-	"down": { "code" : 83, "on": false }
+	"down": { "code" : 83, "on": false },
+	"left2": { "code" : 74, "on": false },
+	"up2": { "code" : 73, "on": false },
+	"right2": { "code" : 76, "on": false },
+	"down2": { "code" : 75, "on": false }
+
 }                     
 
 window.addEventListener("keydown", function(e) {
