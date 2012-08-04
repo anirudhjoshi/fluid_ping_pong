@@ -85,7 +85,7 @@ window.onload=function(){
 
 	init();
 
-	ai.multiplayer = true;
+	// ai.multiplayer = true;
 	
 	updateRes = function() {
 		
