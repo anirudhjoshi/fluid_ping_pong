@@ -317,10 +317,10 @@ function init() {
 }
 
 var keyMap = {
-	"left": { "code" : 37, "on": false },
-	"up": { "code" : 38, "on": false },
-	"right": { "code" : 39, "on": false },
-	"down": { "code" : 40, "on": false }
+	"left": { "code" : 65, "on": false },
+	"up": { "code" : 87, "on": false },
+	"right": { "code" : 68, "on": false },
+	"down": { "code" : 83, "on": false }
 }                     
 
 window.addEventListener("keydown", function(e) {
