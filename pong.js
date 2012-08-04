@@ -121,50 +121,120 @@ function updatePlayer() {
 
 function updateAi() {
 
-// calculate the middle of the paddle 
-real_y_pos = ai.y + (ai.height / 2); 
+	if ( keyMap.left2 || keyMap.up2 || keyMap.down2 || keyMap.righ2 ) {
 
-/* If the ball is moving in opposite direction to the paddle and is no danger for computer's goal move paddle back to the middle y - position*/ 
-if ( ball.vx < 0 ) {
+		ai.vy += ai.ay;     
 
-	// if the paddle's position is over the middle y - position 
-	if ( real_y_pos < ctx.canvas.height / 2 - ctx.canvas.height / 10 ) {
-	
-		ai.y  += speed; 
+		if ( keyMap.up2.on ) {
 		
-	} 
-
-	// Paddle is under the middle y - position 
-	else if (   real_y_pos > ctx.canvas.height / 2 + ctx.canvas.height / 10  ) {
-	
-		ai.y  -= speed; 
+			ai.ay = -speed_increase;
+			
+			if ( ai.vy < -speed ) {
+				
+				ai.vy = -speed;
+				
+			}
+			
+		}                    
 		
-	}
-	
-} 
-// ball is moving towards paddle 
-else if ( ball.vx > 0 ) {
-
-	// As long as ball's y - position and paddle's y - position are different 
-	if (  Math.abs(ball.y - real_y_pos ) > 2 ) {
-	
-		// If ball's position smaller than paddle's, move up 
-		if (ball.y < real_y_pos) {
+		 if ( keyMap.left2.on ) {
 		
-			ai.y -= speed; 
+			ai.push = true;
+
+			
+		} else {
+			
+			ai.push = false;
+			
+		}
+		
+		 if ( keyMap.right2.on ) {
+		
+			ai.suck = true;
+
+			
+		} else {
+			
+			ai.suck = false;
+			
+		}	
+		
+		if ( keyMap.down2.on ) {
+		
+			ai.ay = speed_increase;
+			
+			if ( ai.vy > speed ) {
+				
+				ai.vy = speed;
+				
+			}
+
+		}
+		
+		if ( ( !(keyMap.down2.on) && !(keyMap.up2.on) ) || (keyMap.down2.on && keyMap.up2.on) ) {
+			
+			ai.ay = 0;
+			ai.vy = 0;
+		
+		}
+		
+		if ( ( ai.y < 0 && ai.vy < 0 ) || ( ai.y + ai.height > ctx.canvas.height && ai.vy > 0 ) ) {
+			
+			ai.ay = 0;
+			ai.vy = 0;
+			
+		}
+		
+		ai.y += ai.vy;    
+
+
+	} else {
+
+		// calculate the middle of the paddle 
+		real_y_pos = ai.y + (ai.height / 2); 
+
+		/* If the ball is moving in opposite direction to the paddle and is no danger for computer's goal move paddle back to the middle y - position*/ 
+		if ( ball.vx < 0 ) {
+
+			// if the paddle's position is over the middle y - position 
+			if ( real_y_pos < ctx.canvas.height / 2 - ctx.canvas.height / 10 ) {
+			
+				ai.y  += speed; 
+				
+			} 
+
+			// Paddle is under the middle y - position 
+			else if (   real_y_pos > ctx.canvas.height / 2 + ctx.canvas.height / 10  ) {
+			
+				ai.y  -= speed; 
+				
+			}
 			
 		} 
-		
-		// If ball's position greater than padle's, move down 
-		else if ( ball.y > real_y_pos ) {
-		
-		 ai.y  += speed; 
-		 
-		}
-	
-	}
+		// ball is moving towards paddle 
+		else if ( ball.vx > 0 ) {
 
-}
+			// As long as ball's y - position and paddle's y - position are different 
+			if (  Math.abs(ball.y - real_y_pos ) > 2 ) {
+			
+				// If ball's position smaller than paddle's, move up 
+				if (ball.y < real_y_pos) {
+				
+					ai.y -= speed; 
+					
+				} 
+				
+				// If ball's position greater than padle's, move down 
+				else if ( ball.y > real_y_pos ) {
+				
+				 ai.y  += speed; 
+				 
+				}
+			
+			}
+
+		}
+	}
 
 }                           
 
@@ -317,6 +387,7 @@ function init() {
 }
 
 var keyMap = {
+
 	"left": { "code" : 65, "on": false },
 	"up": { "code" : 87, "on": false },
 	"right": { "code" : 68, "on": false },

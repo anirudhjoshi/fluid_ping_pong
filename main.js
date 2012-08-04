@@ -15,26 +15,32 @@ var canvas = document.getElementById("canvas");
 function prepareFrame( field ) {
 	
 	if ( player.push ) {
-
-		field.setVelocity( Math.floor( ai.x - ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
-		field.setDensity( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), 100);				
-		field.setDensityBl( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), 100);				
 		
 		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
-		field.setDensity( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), 100);				
 		field.setDensityG( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), 100);				
 		
 	}
 	
 	if ( player.suck ) {
-		
-		field.setVelocity( Math.floor( ai.x - ai.width / 2 - 30 ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
-		field.setDensity( Math.floor( ai.x - ai.width / 2 - 10 ) , Math.floor( ai.y + ai.height / 2 ), 100);
+	
+		field.setVelocity( Math.floor( player.x + player.width / 2 + 20 ), Math.floor( player.y + player.height / 2 ), -50, 0 );	
+		field.setDensityG( Math.floor( player.x + player.width / 2 + 20 ) , Math.floor( player.y + player.height / 2 ), 500);
 
-		field.setVelocity( Math.floor( player.x + player.width / 2 + 30 ), Math.floor( player.y + player.height / 2 ), -50, 0 );	
-		field.setDensity( Math.floor( player.x + player.width / 2 + 10 ) , Math.floor( player.y + player.height / 2 ), 100);
-			
 	}				
+
+	if ( ai.push ) {
+
+		field.setVelocity( Math.floor( ai.x - ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
+		field.setDensityBl( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), 100);				
+		
+	}	
+
+	if ( ai.suck ) {
+
+		field.setVelocity( Math.floor( ai.x - ai.width / 2 - 20  ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
+		field.setDensityBl( Math.floor( ai.x - ai.width / 2 - 20 ) , Math.floor( ai.y + ai.height / 2 ), 500);
+
+	}
 
 }
 
