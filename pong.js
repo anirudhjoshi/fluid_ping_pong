@@ -21,6 +21,7 @@ var ball = {
 var ai = {
 	"push": false,
 	"suck": false,
+	"multiplayer": false,
 	"x" : 0,
 	"y" : 0,
 	"width" : 0,
@@ -121,7 +122,7 @@ function updatePlayer() {
 
 function updateAi() {
 
-	if ( keyMap.left2 || keyMap.up2 || keyMap.down2 || keyMap.righ2 ) {
+	if ( ai.multiplayer ) {
 
 		ai.vy += ai.ay;     
 

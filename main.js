@@ -84,6 +84,8 @@ window.onload=function(){
 	field.setDisplayFunction(toggleDisplayFunction(canvas));
 
 	init();
+
+	ai.multiplayer = true;
 	
 	updateRes = function() {
 		
