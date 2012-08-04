@@ -143,7 +143,7 @@ function FluidField(canvas) {
 
     }
 
-    var fadeSpeed = 0;
+    var fadeSpeed = 0.01;
     var holdAmount = 1 - fadeSpeed;
 
     // Fades out velocities/densities to stop full stability
@@ -286,43 +286,27 @@ function FluidField(canvas) {
     function dens_step(r_prev, g_prev, bl_prev, u_prev, v_prev, r, g, bl, u, v, dt ) {
 
         // Stop filling stability
-        // fade( r );
-        // fade( u );
-        // fade( v );        
-        //fade( g );
-        //fade( bl );
+        fade( r );
+        fade( g );
+        fade( bl );
 
-
+        fade( u );
+        fade( v );        
 
         // Combine old and new fields into the new field
         addFields( r, r_prev, dt);
         addFields( g, g_prev, dt);
         addFields( bl, bl_prev, dt);
 
-        // for ( var i = 0; i < size; i++ ) {
-            // if ( r[i] > 10 ){}
-                // console.log(r[i], i);
-
-        // }
-
-        // console.log( r );
-
-        // addFields( g, g_prev, dt);
-        // addFields( bl, bl_prev, dt);
-
         // Diffuse over old and new new field
         diffuse(0, r_prev, r, dt );
         diffuse(0, g_prev, g, dt );
         diffuse(0, bl_prev, bl, dt );
-        // diffuse(0, g_prev, g, dt );
-        // diffuse(0, bl_prev, bl, dt );
 
         // Combine vectors into a forward vector model
         advect(0, r, r_prev, u, v, dt );
         advect(0, g, g_prev, u, v, dt );
         advect(0, bl, bl_prev, u, v, dt );
-        // advect(0, g, g_prev, u, v, dt );
-        // advect(0, bl, bl_prev, u, v, dt );
 
     }
     
