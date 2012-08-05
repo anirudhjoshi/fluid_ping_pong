@@ -32,8 +32,8 @@ function prepareFrame( field ) {
 	
 	if ( player.suck ) {
 	
-		field.setVelocity( Math.floor( player.x + player.width / 2 + 20 ), Math.floor( player.y + player.height / 2 ), -50, 0 );	
-		field.setDensityRGB( Math.floor( player.x + player.width / 2 + 20 ) , Math.floor( player.y + player.height / 2 ), [ 500, 500, 500 ] );
+		// field.setVelocity( Math.floor( player.x + player.width / 2 + 20 ), Math.floor( player.y + player.height / 2 ), -50, 0 );	
+		// field.setDensityRGB( Math.floor( player.x + player.width / 2 + 20 ) , Math.floor( player.y + player.height / 2 ), [ 500, 500, 500 ] );
 
 	}				
 
@@ -46,8 +46,8 @@ function prepareFrame( field ) {
 
 	if ( ai.suck ) {
 
-		field.setVelocity( Math.floor( ai.x - ai.width / 2 - 20  ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
-		field.setDensityRGB( Math.floor( ai.x - ai.width / 2 - 20 ) , Math.floor( ai.y + ai.height / 2 ), [500,500,500]);
+		// field.setVelocity( Math.floor( ai.x - ai.width / 2 - 20  ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
+		// field.setDensityRGB( Math.floor( ai.x - ai.width / 2 - 20 ) , Math.floor( ai.y + ai.height / 2 ), [500,500,500]);
 
 	}
 
