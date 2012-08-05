@@ -339,49 +339,32 @@ function FluidField(canvas) {
         // Just exposing the fields here rather than using accessors is a measurable win during display (maybe 5%)
         // but makes the code ugly.
 
-        this.setDensity = function(x, y, d) {
+        this.setDensityRGB = function(x, y, d) {
 
-             r[(x + 1) + (y + 1) * rowSize] = d;
+             r[(x + 1) + (y + 1) * rowSize] = d[0];
+             g[(x + 1) + (y + 1) * rowSize] = d[1];
+             bl[(x + 1) + (y + 1) * rowSize] = d[2];
 
-        }
-
-        this.getDensity = function(x, y) {
-
-             return r[(x + 1) + (y + 1) * rowSize];
+             return;
 
         }
 
+        this.getDensityRGB = function(x, y) {
 
-        this.setDensityG = function(x, y, d) {
+             var r_dens = r[(x + 1) + (y + 1) * rowSize];
+             var g_dens = g[(x + 1) + (y + 1) * rowSize];
+             var bl_dens = bl[(x + 1) + (y + 1) * rowSize];
 
-             g[(x + 1) + (y + 1) * rowSize] = d;
-
-        }       
-
-         this.getDensityG = function(x, y) {
-
-             return g[(x + 1) + (y + 1) * rowSize];
-
-        }
-
-        this.setDensityBl = function(x, y, d) {
-
-             bl[(x + 1) + (y + 1) * rowSize] = d;
-
-        }       
-
-         this.getDensityBl = function(x, y) {
-
-             return bl[(x + 1) + (y + 1) * rowSize];
+             return [ r_dens, g_dens, bl_dens ];
 
         }        
-        
-
 
         this.setVelocity = function(x, y, xv, yv) {
 
              u[(x + 1) + (y + 1) * rowSize] = xv;
              v[(x + 1) + (y + 1) * rowSize] = yv;
+
+             return;
 
         }
 
@@ -420,6 +403,8 @@ function FluidField(canvas) {
             this.setVelocity(i2, j1, vx2, vy2);
             this.setVelocity(i1, j2, vx3, vy3);
             this.setVelocity(i2, j2, vx4, vy4);
+
+            return;
 
         }         
 

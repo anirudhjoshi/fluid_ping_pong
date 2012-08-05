@@ -145,15 +145,16 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
 
 
                         var index = 4 * (y * height +  x);
-                        var r = Math.round( field.getDensity(x, y) * 255 / 5 );
-                        var g = Math.round( field.getDensityG(x, y) * 255 / 5 );
-                        var bl = Math.round( field.getDensityBl(x, y) * 255 / 5 );
+                        // var RGB = Math.round( field.getDensityRGB(x, y) * 255 / 5 );
+                        var RGB = field.getDensityRGB(x, y);
+                        // var g = Math.round( field.getDensityG(x, y) * 255 / 5 );
+                        // var bl = Math.round( field.getDensityBl(x, y) * 255 / 5 );
 
                         // console.log( r );
                         
-                        data[ index + 0] = r;
-                        data[ index + 1] = g;
-                        data[ index + 2] = bl;
+                        data[ index + 0] = Math.round( RGB[0] * 255 / 5 );
+                        data[ index + 1] = Math.round( RGB[1] * 255 / 5 );
+                        data[ index + 2] = Math.round( RGB[2] * 255 / 5 );
                         // data[ index + 2] = r * Math.cos( r );
 
                     }
