@@ -13,6 +13,15 @@ var running = false;
 var canvas = document.getElementById("canvas");
 
 function prepareFrame( field ) {
+
+	// console.log( Math.ceil( ball.vx ), Math.ceil(ball.vy));
+	console.log( ball.vx, ball.vy );
+
+	field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( -ball.vy ) * 2, Math.ceil( ball.vx ) * 2   );	
+	field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( ball.vy ) * 2, Math.ceil( -ball.vx ) * 2  );	
+	field.setDensityG( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 100);				
+	// field.setDensityG( Math.floor( ball.x  ) , Math.floor( ball.y ), 100);				
+	field.setDensity( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 100);				
 	
 	if ( player.push ) {
 		
