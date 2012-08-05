@@ -267,7 +267,7 @@ function updateBall() {
 	// x
 	if ( ( ball.x < 0 && ball.vx < 0 ) || ( ball.x + ball.width > ctx.canvas.width && ball.vx > 0 ) ) {
 
-		console.log( ball.x, ball.y, ball.vx, ball.vy, ai.x, ai.y, ctx.canvas.width );
+		// console.log( ball.x, ball.y, ball.vx, ball.vy, ai.x, ai.y, ctx.canvas.width );
 
 		ball.x = ( ctx.canvas.width - ball.width ) / 2;
 		ball.y = ctx.canvas.height / 2;

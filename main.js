@@ -12,6 +12,11 @@ var clear_id;
 var running = false;
 var canvas = document.getElementById("canvas");
 
+var L = 50;
+var distanceRotator = 74;
+var distanceRotator2 = 110;
+
+
 function prepareFrame( field ) {
 
 	// console.log( Math.ceil( ball.vx ), Math.ceil(ball.vy));
@@ -19,14 +24,41 @@ function prepareFrame( field ) {
 
 	// field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( -ball.vy ) * 2, Math.ceil( ball.vx ) * 2   );	
 	// field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( ball.vy ) * 2, Math.ceil( -ball.vx ) * 2  );	
-	field.setDensityRGB( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), [100, 100, 100] );				
+	
+
+	player.stream = cielabToRGB( L, distanceRotator, distanceRotator2, [0.9642, 1, 0.8249 ] )
+	ai.stream = cielabToRGB( L, -distanceRotator, distanceRotator2, [0.9642, 1, 0.8249 ] )
+	ball.stream = cielabToRGB( L, distanceRotator, -distanceRotator2, [0.9642, 1, 0.8249 ] )
+	// ai.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
+	// player.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
+
+	field.setDensityRGB( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), ball.stream );				
+
+		distanceRotator += 0.5;
+
+		if ( distanceRotator > 110 ) {
+
+			distanceRotator = 74;
+
+		}
+
+		distanceRotator2 -= 0.5;
+
+		if ( distanceRotator2 < 0 ) {
+
+			distanceRotator2 = 110;
+		}
+
+    // var RGB2 = cielabToRGB( 0, RGB[0], 0, [0.9642, 1, 0.8249 ] );
+	// var RGB3 = cielabToRGB( 0, 0, RGB[1], [0.9642, 1, 0.8249 ] );
+    // var RGB4 = cielabToRGB( RGB[2], 0, 0, [0.9642, 1, 0.8249 ] );	
 	// field.setDensityG( Math.floor( ball.x  ) , Math.floor( ball.y ), 100);				
 	// field.setDensity( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 100);				
 	
 	if ( player.push ) {
 		
 		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
-		field.setDensityRGB( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), [ 100, 100, 100 ]);				
+		field.setDensityRGB( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), player.stream);				
 		
 	}
 	
@@ -40,7 +72,7 @@ function prepareFrame( field ) {
 	if ( ai.push ) {
 
 		field.setVelocity( Math.floor( ai.x - ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
-		field.setDensityRGB( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), [100,100,100]);				
+		field.setDensityRGB( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), ai.stream );				
 		
 	}	
 
@@ -64,6 +96,32 @@ function stopAnimation() {
 
 	return;
 	
+}
+
+var white = [0.9642, 1, 0.8249 ];
+
+function cielabToRGB( L, a, b, white ) {
+
+	x = white[0] * inverseCielab( ( 1 / 116 ) * ( L + 16 ) + ( 1 / 500 ) * a  ) * 255;
+	y = white[1] * inverseCielab( ( 1 / 116 ) * ( L + 16 ) ) * 255;
+	z = white[2] * inverseCielab( ( 1 / 116 ) * ( L + 16 ) + ( 1 / 200 ) * b  ) * 255;
+
+	return [ x, y, z];
+}
+
+function inverseCielab( t ) {
+
+	if ( t > ( 6 / 29 ) ){
+
+		return Math.pow( t, 3);
+
+	} else {
+
+		return 3 * Math.pow( 6 / 29, 2 )* ( t - 4 / 29);
+
+	}
+
+
 }
 
 function startAnimation() {
