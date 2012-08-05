@@ -241,41 +241,16 @@ function updateAi() {
 
 function updateBall() {
 	
-	// x
-	if ( ( ball.x < 0 && ball.vx < 0 ) || ( ball.x + ball.width > ctx.canvas.width && ball.vx > 0 ) ) {
 
-		ball.x = ( ctx.canvas.width - ball.width ) / 2;
-		ball.y = ctx.canvas.height / 2;
-		
-		theta = Math.random() * 2*Math.PI;
-		if(theta > Math.PI/4 && theta < 3* Math.PI/4) {
-			theta = Math.round(Math.random()) === 1 ? Math.PI/4 : 3 * Math.PI/4;
-		}
-		if(theta > Math.PI + Math.PI/4 && theta < 3* Math.PI/4 + Math.PI) {
-			theta = Math.round(Math.random()) === 1 ? Math.PI/4 + Math.PI : 3 * Math.PI/4 + Math.PI;
-		}
-		ball.vx = ball.speed * Math.cos(theta);
-		ball.vy = ball.speed * Math.sin(theta);
-		//field.reset();
-		
-		if ( Math.round( Math.random() ) === 1 ) {
-		
-		ball.vy = -ball.vy;
-		
-		}
-		
-	}
-	
-	ball.vx += ball.ax;
-	ball.x += ball.vx;
-	
+
 	// pong
-	if ( (ball.x < player.x + player.width && player.y < ball.y + 0.1 * player.height && ball.y < player.y + 1.1 * player.height ) ) {
+	if ( ( Math.abs( ball.x  - player.x ) < Math.abs( ball.vx ) && player.y < ball.y + 0.1 * player.height && ball.y < player.y + 1.1 * player.height ) ) {
 		theta = ((player.y + player.height/2) - ball.y ) / ( player.height  /  2 );
 		ball.vx = ball.speed * Math.cos(theta);
 		ball.vy = -ball.speed * Math.sin(theta);
 	}
-	if ( ( ball.x > ai.x ) && (ai.y < ball.y ) && ( ball.y < ai.y + ai.height ) ) {
+	
+	if ( ( Math.abs(ball.x - ai.x) < ball.vx && ball.y > ai.y && ball.y < ai.y + ai.height ) ) {
 		theta = ((ai.y + ai.height/2) - ball.y ) / ( ai.height  /  2 );
 		ball.vx = -ball.speed * Math.cos(theta);
 		ball.vy = ball.speed * Math.sin(theta);
@@ -287,9 +262,47 @@ function updateBall() {
 		ball.vy = -ball.vy;
 		
 	}
+
+
+	// x
+	if ( ( ball.x < 0 && ball.vx < 0 ) || ( ball.x + ball.width > ctx.canvas.width && ball.vx > 0 ) ) {
+
+		console.log( ball.x, ball.y, ball.vx, ball.vy, ai.x, ai.y, ctx.canvas.width );
+
+		ball.x = ( ctx.canvas.width - ball.width ) / 2;
+		ball.y = ctx.canvas.height / 2;
+		
+		theta = Math.random() * 2*Math.PI;
+
+		if (theta > Math.PI/4 && theta < 3* Math.PI/4) {
+
+			theta = Math.round(Math.random()) === 1 ? Math.PI/4 : 3 * Math.PI/4;
+
+		}
+
+		if (theta > Math.PI + Math.PI/4 && theta < 3* Math.PI/4 + Math.PI) {
+
+			theta = Math.round(Math.random()) === 1 ? Math.PI/4 + Math.PI : 3 * Math.PI/4 + Math.PI;
+
+		}
+
+		ball.vx = ball.speed * Math.cos(theta);
+		ball.vy = ball.speed * Math.sin(theta);
+		
+		if ( Math.round( Math.random() ) === 1 ) {
+		
+			ball.vy = -ball.vy;
+		
+		}
+		
+	}	
 	
-  ball.vy += ball.ay;   
-  ball.y += ball.vy;           
+
+	ball.vx += ball.ax;
+	ball.x += ball.vx;
+
+	ball.vy += ball.ay;   
+	ball.y += ball.vy;           
 
 }                
 
