@@ -5,11 +5,13 @@ fluid_ping_pong
 
 [Click here to play now!](http://anirudhjoshi.github.com/fluid_ping_pong/)
 
-This is a demonstration of the possibilites that HTML5/browsers have to offer inspired by the great work done by Steve Taylor.
+This is a demonstration of the possibilites that HTML5/browsers have to offer inspired by the wonderful work done by Steve Taylor ([Plasma Pong](http://www.plasmapong.com/)).
 
 #### Introduction ####
 
-It renders a ping pong game interacting with a full color real-time fluid simulation at 60 FPS using the algorithim created by Jos Stam (Real-Time Fluid Dynamics for Games), monochrome implemented by Oliver Hunt (Oliver's simple fluid dynamics simulator), aided by RJ Marsan's RGB example and a little bit of special sauce from me.
+It renders a ping pong game interacting with a full-color real-time fluid simulation at 60 FPS.
+
+It utilizes the algorithim created by Jos Stam ([Real-Time Fluid Dynamics for Games](http://www.autodeskresearch.com/pdf/GDC03.pdf)), monochrome dynamics implemented by Oliver Hunt ([Oliver's simple fluid dynamics simulator](http://nerget.com/fluidSim/)), amended with RJ Marsan's RGB example ([Plasma Pong Android by RJ Marsan](https://github.com/rjmarsan/PlasmaPongAndroid)) and a little special sauce by yours truly.
 
 For those of whom don't understand why this is impressive: It just is.
 
