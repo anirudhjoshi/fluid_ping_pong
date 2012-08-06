@@ -104,8 +104,8 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
         var height = field.height();
 			
 		// Stop using global variables - add accessors
-        ball.vy += field.getYVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 10;
-		ball.vx += field.getXVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 10;
+        ball.vy += field.getYVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
+		ball.vx += field.getXVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
 
         if (bufferData) {
 			

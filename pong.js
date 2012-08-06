@@ -7,7 +7,6 @@ var ball = {
 
 	"x" : 0,
 	"y" : 0,
-
 	"radius": 0,
 	"speed": 1,
 	"width" : 0,
@@ -21,10 +20,11 @@ var ball = {
 }      
 
 var ai = {
-	"push": false,
+
+	"push": true,
 	"suck": false,
 	"stream": [ 0, 0, 0],
-	"multiplayer": true,
+	"multiplayer": false,
 	"x" : 0,
 	"y" : 0,
 	"width" : 0,
@@ -38,6 +38,7 @@ var ai = {
 }                                
 
 var player = {
+
 	"push": false,
 	"suck": false,	
 	"stream": [ 0, 0, 0],
