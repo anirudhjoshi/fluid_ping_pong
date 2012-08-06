@@ -7,6 +7,8 @@ var ball = {
 
 	"x" : 0,
 	"y" : 0,
+
+	"radius": 0,
 	"speed": 1,
 	"width" : 0,
 	"height" : 0,
@@ -332,7 +334,7 @@ function drawRectangle( x, y, width, height, color ) {
 
 	if (color instanceof Array) {
 
-		ctx.fillStyle = "rgb(" + color[0] + "," +color[1] + "," + color[2] + ")";
+		ctx.fillStyle = "rgb(" + Math.floor( color[0] ) + "," + Math.floor( color[1] ) + "," + Math.floor( color[2] ) + ")";
 
 	} else {
 
@@ -350,11 +352,33 @@ function drawPlayer( player ) {
 
 }
 
+function drawBall( ball ) {
+
+	// if (ball.color instanceof Array) {
+
+	// 	ctx.fillStyle = "rgb(" + Math.floor( ball.color[0] ) + "," + Math.floor( ball.color[1] ) + "," + Math.floor( ball.color[2] ) + ")";
+
+	// } else {
+
+	// 	ctx.fillStyle = ball.color;
+
+	// }
+
+        ctx.beginPath();
+        ctx.lineWidth = 1;
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "white";        
+        ctx.arc(ball.x, ball.y, ball.width, 0, 2 * Math.PI, false);
+        ctx.fill();
+        ctx.stroke();
+	
+}
+
 function render() {
 
 	drawPlayer( player );
 	drawPlayer( ai );                    
-	drawPlayer( ball );
+	drawBall( ball );
 
 }
 
@@ -367,8 +391,8 @@ function loop() {
 
 function init() {
 
-	var pong_width = ctx.canvas.width / 150
-	var pong_height = ctx.canvas.height / 7
+	var pong_width = ctx.canvas.width / 75;
+	var pong_height = ctx.canvas.height / 6;
 	
 	var screen_width = ctx.canvas.width;
 	var screen_height= ctx.canvas.height;

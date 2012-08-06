@@ -46,10 +46,11 @@ function prepareFrame( field ) {
 	var ai_ab = rotator( distanceRotators[1] );
 	var ball_ab = rotator( distanceRotators[2] );
 
-	player.stream = cielabToRGB( L, player_ab[0], player_ab[1], [0.9642, 1, 0.8249 ] )
-	player.color = player.stream;
-	ai.stream = cielabToRGB( L, ai_ab[0], ai_ab[1], [0.9642, 1, 0.8249 ] )
-	ball.stream = cielabToRGB( L, ball_ab[0], ball_ab[1], [0.9642, 1, 0.8249 ] )	
+	player.color = cielabToRGB( L, player_ab[0], player_ab[1], [0.9642, 1, 0.8249 ] )
+
+	ai.color = cielabToRGB( L, ai_ab[0], ai_ab[1], [0.9642, 1, 0.8249 ] )
+	// player.color = player.stream;
+	ball.color = cielabToRGB( L, ball_ab[0], ball_ab[1], [0.9642, 1, 0.8249 ] )	
 
 	for ( var i = 0; i < 3; i++ ){
 
@@ -70,7 +71,7 @@ function prepareFrame( field ) {
 	// ai.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
 	// player.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
 
-	field.setDensityRGB( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), ball.stream );				
+	field.setDensityRGB( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), ball.color );				
 
     // var RGB2 = cielabToRGB( 0, RGB[0], 0, [0.9642, 1, 0.8249 ] );
 	// var RGB3 = cielabToRGB( 0, 0, RGB[1], [0.9642, 1, 0.8249 ] );
@@ -81,7 +82,7 @@ function prepareFrame( field ) {
 	if ( player.push ) {
 		
 		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
-		field.setDensityRGB( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), player.stream);				
+		field.setDensityRGB( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), player.color);				
 		
 	}
 	
@@ -95,7 +96,7 @@ function prepareFrame( field ) {
 	if ( ai.push ) {
 
 		field.setVelocity( Math.floor( ai.x - ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
-		field.setDensityRGB( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), ai.stream );				
+		field.setDensityRGB( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), ai.color );				
 		
 	}	
 
