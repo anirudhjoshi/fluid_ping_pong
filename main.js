@@ -12,6 +12,28 @@ var clear_id;
 var running = false;
 var canvas = document.getElementById("canvas");
 
+var beep = new Audio("./assets/beep.wav"); // buffers automatically when created
+var ball_pop = new Audio("./assets/ball_pop.wav"); // buffers automatically when created
+var button_press = new Audio("./assets/button_press.wav"); // buffers automatically when created
+var button_select1 = new Audio("./assets/button_select1.wav"); // buffers automatically when created
+var button_select2 = new Audio("./assets/button_select2.wav"); // buffers automatically when created
+var jet_shoot = new Audio("./assets/jet_shoot.wav"); // buffers automatically when created
+var paddle_blast = new Audio("./assets/paddle_blast.wav"); // buffers automatically when created
+var paddle_hit = new Audio("./assets/paddle_hit.wav"); // buffers automatically when created
+var paddle_suck = new Audio("./assets/paddle_suck.wav"); // buffers automatically when created
+var wall_hit = new Audio("./assets/wall_hit.wav"); // buffers automatically when created
+
+// beep.play();
+// ball_pop.play();
+// button_press.play();
+// button_select1.play();
+// button_select2.play();
+// jet_shoot.play();
+// paddle_blast.play();
+// paddle_hit.play();
+// paddle_suck.play();
+// wall_hit.play();
+
 var L = 75;
 
 var distanceRotators = [ 0, 201, 401 ];
@@ -83,6 +105,8 @@ function prepareFrame( field ) {
 
 		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
 		field.setDensityRGB( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), player.color);				
+
+		 // jet_shoot.play();
 		
 	}
 	
@@ -90,6 +114,8 @@ function prepareFrame( field ) {
 		
 		// player.explode = true;
 		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 1000, 0 );	
+
+		// paddle_blast.play();
 		// field.setDensityRGB( Math.floor( player.x + player.width / 2 + 20 ) , Math.floor( player.y + player.height / 2 ), [ 500, 500, 500 ] );
 
 	}				
@@ -98,12 +124,16 @@ function prepareFrame( field ) {
 
 		field.setVelocity( Math.floor( ai.x + ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
 		field.setDensityRGB( Math.floor( ai.x + ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), ai.color );				
+
+		 // jet_shoot.play();
 		
 	}	
 
 	if ( ai.suck ) {
 
 		field.setVelocity( Math.floor( ai.x + ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -1000, 0 );	
+		
+		// paddle_blast.play();
 		// field.setVelocity( Math.floor( ai.x - ai.width / 2 - 20  ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
 		// field.setDensityRGB( Math.floor( ai.x - ai.width / 2 - 20 ) , Math.floor( ai.y + ai.height / 2 ), [500,500,500]);
 

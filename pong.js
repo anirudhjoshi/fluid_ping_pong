@@ -307,18 +307,24 @@ function updateBall() {
 		theta = ((player.y + player.height/2) - ball.y ) / ( player.height  /  2 );
 		ball.vx = ball.speed * Math.cos(theta);
 		ball.vy = -ball.speed * Math.sin(theta);
+
+		// paddle_hit.play();
 	}
 	
 	if ( ( Math.abs(ball.x - ai.x) < ball.vx && ball.y > ai.y && ball.y < ai.y + ai.height ) ) {
 		theta = ((ai.y + ai.height/2) - ball.y ) / ( ai.height  /  2 );
 		ball.vx = -ball.speed * Math.cos(theta);
 		ball.vy = ball.speed * Math.sin(theta);
+
+		// paddle_hit.play();
 	}
 
    // y
 	if ( ( ball.y < 0 && ball.vy < 0 ) || ( ball.y + ball.radius > ctx.canvas.height && ball.vy > 0 ) ) {
 	
 		ball.vy = -ball.vy;
+
+		// wall_hit.play();
 		
 	}
 
