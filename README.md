@@ -23,4 +23,4 @@ It has been tested to work with the latest versions of Chrome/Firefox.
 
 * [Fluid Simulation for Dummies by Mike Ash](http://mikeash.com/pyblog/fluid-simulation-for-dummies.html)
 
-* [Real-Time Fluid Dynamics for Games](http://www.autodeskresearch.com/pdf/GDC03.pdf)
+* [Real-Time Fluid Dynamics for Games by Jos Stam of Alias | wavefront](http://www.autodeskresearch.com/pdf/GDC03.pdf)
