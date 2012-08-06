@@ -80,15 +80,16 @@ function prepareFrame( field ) {
 	// field.setDensity( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 100);				
 	
 	if ( player.push ) {
-		
+
 		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
 		field.setDensityRGB( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), player.color);				
 		
 	}
 	
 	if ( player.suck ) {
-	
-		// field.setVelocity( Math.floor( player.x + player.width / 2 + 20 ), Math.floor( player.y + player.height / 2 ), -50, 0 );	
+		
+		// player.explode = true;
+		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 1000, 0 );	
 		// field.setDensityRGB( Math.floor( player.x + player.width / 2 + 20 ) , Math.floor( player.y + player.height / 2 ), [ 500, 500, 500 ] );
 
 	}				
@@ -102,6 +103,7 @@ function prepareFrame( field ) {
 
 	if ( ai.suck ) {
 
+		field.setVelocity( Math.floor( ai.x + ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -1000, 0 );	
 		// field.setVelocity( Math.floor( ai.x - ai.width / 2 - 20  ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
 		// field.setDensityRGB( Math.floor( ai.x - ai.width / 2 - 20 ) , Math.floor( ai.y + ai.height / 2 ), [500,500,500]);
 

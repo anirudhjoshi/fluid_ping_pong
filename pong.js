@@ -41,6 +41,7 @@ var player = {
 
 	"push": false,
 	"suck": false,	
+	"explode": false,
 	"stream": [ 0, 0, 0],
 	"x" : 0,
 	"y" : 0,
