@@ -49,6 +49,21 @@ var L = 75;
 
 var distanceRotators = [ 0, 201, 401 ];
 
+function multiplayer() {
+
+	if ( ai.multiplayer )
+		ai.multiplayer = false;
+	else
+		ai.multiplayer = true;
+
+}
+
+function restart() {
+
+ begin();
+
+}
+
 function rotator( a ) {
 
 	if ( a >= 0 && a <= 200 ){
@@ -211,8 +226,8 @@ function updateFrame() {
 	
 }
 
-window.onload=function(){
-	
+function begin() {
+
 	field = new FluidField(canvas);
 	field.setUICallback(prepareFrame);
 	field.setDisplayFunction(toggleDisplayFunction(canvas));
@@ -234,5 +249,6 @@ window.onload=function(){
 	
 	updateRes();     
 	startAnimation();
-	
 }
+
+window.onload = begin;

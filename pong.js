@@ -251,9 +251,9 @@ function updateBall() {
 		ball.vx = ball.speed * Math.cos(theta);
 		ball.vy = -ball.speed * Math.sin(theta);
 
-		var snd = new Audio();
-		snd.src = paddle_hit.src;
-		snd.play();
+		// var snd = new Audio();
+		// snd.src = paddle_hit.src;
+		// snd.play();
 
 
 		// paddle_hit.play();
@@ -264,9 +264,9 @@ function updateBall() {
 		ball.vx = -ball.speed * Math.cos(theta);
 		ball.vy = ball.speed * Math.sin(theta);
 
-		var snd = new Audio();
-		snd.src = paddle_hit.src;
-		snd.play();
+		// var snd = new Audio();
+		// snd.src = paddle_hit.src;
+		// snd.play();
 
 		// paddle_hit.play();
 	}
@@ -276,9 +276,9 @@ function updateBall() {
 	
 		ball.vy = -ball.vy;
 
-		var snd = new Audio();
-		snd.src = wall_hit.src;
-		snd.play();
+		// var snd = new Audio();
+		// snd.src = wall_hit.src;
+		// snd.play();
 		
 	}
 
