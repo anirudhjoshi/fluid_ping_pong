@@ -9,8 +9,6 @@ var ball = {
 	"y" : 0,
 	"radius": 0,
 	"speed": 1,
-	"width" : 0,
-	"height" : 0,
 	"color" : "red" ,                    
 	"vx" : 0,
 	"vy" : 0,
@@ -249,6 +247,61 @@ function updateBall() {
 	
 
 
+	// // pong
+	// if ( ( Math.abs( ball.x  - player.x ) < Math.abs( ball.vx ) && player.y < ball.y + 0.1 * player.height && ball.y < player.y + 1.1 * player.height ) ) {
+	// 	theta = ((player.y + player.height/2) - ball.y ) / ( player.height  /  2 );
+	// 	ball.vx = ball.speed * Math.cos(theta);
+	// 	ball.vy = -ball.speed * Math.sin(theta);
+	// }
+	
+	// if ( ( Math.abs(ball.x - ai.x) < ball.vx && ball.y > ai.y && ball.y < ai.y + ai.height ) ) {
+	// 	theta = ((ai.y + ai.height/2) - ball.y ) / ( ai.height  /  2 );
+	// 	ball.vx = -ball.speed * Math.cos(theta);
+	// 	ball.vy = ball.speed * Math.sin(theta);
+	// }
+
+ //   // y
+	// if ( ( ball.y < 0 && ball.vy < 0 ) || ( ball.y + ball.height > ctx.canvas.height && ball.vy > 0 ) ) {
+	
+	// 	ball.vy = -ball.vy;
+		
+	// }
+
+
+	// // x
+	// if ( ( ball.x < 0 && ball.vx < 0 ) || ( ball.x + ball.width > ctx.canvas.width && ball.vx > 0 ) ) {
+
+	// 	// console.log( ball.x, ball.y, ball.vx, ball.vy, ai.x, ai.y, ctx.canvas.width );
+
+	// 	ball.x = ( ctx.canvas.width - ball.width ) / 2;
+	// 	ball.y = ctx.canvas.height / 2;
+		
+	// 	theta = Math.random() * 2*Math.PI;
+
+	// 	if (theta > Math.PI/4 && theta < 3* Math.PI/4) {
+
+	// 		theta = Math.round(Math.random()) === 1 ? Math.PI/4 : 3 * Math.PI/4;
+
+	// 	}
+
+	// 	if (theta > Math.PI + Math.PI/4 && theta < 3* Math.PI/4 + Math.PI) {
+
+	// 		theta = Math.round(Math.random()) === 1 ? Math.PI/4 + Math.PI : 3 * Math.PI/4 + Math.PI;
+
+	// 	}
+
+	// 	ball.vx = ball.speed * Math.cos(theta);
+	// 	ball.vy = ball.speed * Math.sin(theta);
+		
+	// 	if ( Math.round( Math.random() ) === 1 ) {
+		
+	// 		ball.vy = -ball.vy;
+		
+	// 	}
+		
+	// }	
+	
+
 	// pong
 	if ( ( Math.abs( ball.x  - player.x ) < Math.abs( ball.vx ) && player.y < ball.y + 0.1 * player.height && ball.y < player.y + 1.1 * player.height ) ) {
 		theta = ((player.y + player.height/2) - ball.y ) / ( player.height  /  2 );
@@ -263,7 +316,7 @@ function updateBall() {
 	}
 
    // y
-	if ( ( ball.y < 0 && ball.vy < 0 ) || ( ball.y + ball.height > ctx.canvas.height && ball.vy > 0 ) ) {
+	if ( ( ball.y < 0 && ball.vy < 0 ) || ( ball.y + ball.radius > ctx.canvas.height && ball.vy > 0 ) ) {
 	
 		ball.vy = -ball.vy;
 		
@@ -271,11 +324,11 @@ function updateBall() {
 
 
 	// x
-	if ( ( ball.x < 0 && ball.vx < 0 ) || ( ball.x + ball.width > ctx.canvas.width && ball.vx > 0 ) ) {
+	if ( ( ball.x < 0 && ball.vx < 0 ) || ( ball.x + ball.radius > ctx.canvas.width && ball.vx > 0 ) ) {
 
 		// console.log( ball.x, ball.y, ball.vx, ball.vy, ai.x, ai.y, ctx.canvas.width );
 
-		ball.x = ( ctx.canvas.width - ball.width ) / 2;
+		ball.x = ( ctx.canvas.width - ball.radius ) / 2;
 		ball.y = ctx.canvas.height / 2;
 		
 		theta = Math.random() * 2*Math.PI;
@@ -301,8 +354,7 @@ function updateBall() {
 		
 		}
 		
-	}	
-	
+	}		
 
 	ball.vx += ball.ax;
 	ball.x += ball.vx;
@@ -359,10 +411,10 @@ function drawPlayer( player ) {
 function drawBall( ball ) {
 
         ctx.beginPath();
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 0.5;
         ctx.fillStyle = "black";
         ctx.strokeStyle = "white";        
-        ctx.arc(ball.x, ball.y, ball.width, 0, 2 * Math.PI, false);
+        ctx.arc(ball.x, ball.y, ball.radius, 0, 2 * Math.PI, false);
         ctx.fill();
         ctx.stroke();
 	
@@ -402,8 +454,7 @@ function init() {
 	
 	player.y = screen_height / 2;
 	
-	ball.width = pong_width*2;
-	ball.height = pong_width*2;
+	ball.radius = pong_width*2;
 		
 	theta = Math.PI;
 	
@@ -422,7 +473,7 @@ function init() {
 	ball.vx = ball.speed * Math.cos(theta);
 	ball.vy = ball.speed * Math.sin(theta);
 	
-	ball.x = ( ctx.canvas.width - ball.width ) / 2;
+	ball.x = ( ctx.canvas.width ) / 2;
 	ball.y = ctx.canvas.height / 2;
 	
 }
