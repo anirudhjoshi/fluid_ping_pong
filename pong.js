@@ -330,7 +330,16 @@ function clear() {
 
 function drawRectangle( x, y, width, height, color ) {
 
-	ctx.fillStyle = color;
+	if (color instanceof Array) {
+
+		ctx.fillStyle = "rgb(" + color[0] + "," +color[1] + "," + color[2] + ")";
+
+	} else {
+
+		ctx.fillStyle = color;
+
+	}
+
 	ctx.fillRect( x, y, width, height );
 	
 }

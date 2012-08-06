@@ -12,10 +12,28 @@ var clear_id;
 var running = false;
 var canvas = document.getElementById("canvas");
 
-var L = 50;
-var distanceRotator = 74;
-var distanceRotator2 = 110;
+var L = 75;
 
+var distanceRotators = [ 0, 201, 401 ];
+
+function rotator( a ) {
+
+	if ( a >= 0 && a <= 200 ){
+
+		return [ 200 - (100 + a), 100 ];
+
+	} else if ( a > 200 && a <= 400 ) {
+
+		return [ -100 + (a - 200), 100 - (a - 200) ];
+
+	} else if ( a > 400 && a <= 600 ) {
+
+		return [ 100, -100 + (a - 400) ]
+
+	}
+
+
+}
 
 function prepareFrame( field ) {
 
@@ -24,30 +42,35 @@ function prepareFrame( field ) {
 
 	// field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( -ball.vy ) * 2, Math.ceil( ball.vx ) * 2   );	
 	// field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( ball.vy ) * 2, Math.ceil( -ball.vx ) * 2  );	
-	
+	var player_ab = rotator( distanceRotators[0] );
+	var ai_ab = rotator( distanceRotators[1] );
+	var ball_ab = rotator( distanceRotators[2] );
 
-	player.stream = cielabToRGB( L, distanceRotator, distanceRotator2, [0.9642, 1, 0.8249 ] )
-	ai.stream = cielabToRGB( L, -distanceRotator, distanceRotator2, [0.9642, 1, 0.8249 ] )
-	ball.stream = cielabToRGB( L, distanceRotator, -distanceRotator2, [0.9642, 1, 0.8249 ] )
+	player.stream = cielabToRGB( L, player_ab[0], player_ab[1], [0.9642, 1, 0.8249 ] )
+	player.color = player.stream;
+	ai.stream = cielabToRGB( L, ai_ab[0], ai_ab[1], [0.9642, 1, 0.8249 ] )
+	ball.stream = cielabToRGB( L, ball_ab[0], ball_ab[1], [0.9642, 1, 0.8249 ] )	
+
+	for ( var i = 0; i < 3; i++ ){
+
+		distanceRotators[i]++;
+
+		if ( distanceRotators[i] > 600 ) {
+
+			distanceRotators[i] = 0;
+		}
+
+
+
+	}
+
+	// ai.stream = player.stream;
+	// ball.stream = player.stream;
+
 	// ai.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
 	// player.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
 
 	field.setDensityRGB( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), ball.stream );				
-
-		distanceRotator += 0.5;
-
-		if ( distanceRotator > 110 ) {
-
-			distanceRotator = 74;
-
-		}
-
-		distanceRotator2 -= 0.5;
-
-		if ( distanceRotator2 < 0 ) {
-
-			distanceRotator2 = 110;
-		}
 
     // var RGB2 = cielabToRGB( 0, RGB[0], 0, [0.9642, 1, 0.8249 ] );
 	// var RGB3 = cielabToRGB( 0, 0, RGB[1], [0.9642, 1, 0.8249 ] );
