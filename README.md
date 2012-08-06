@@ -27,6 +27,10 @@ It has been tested to work with the latest versions of Chrome/Firefox.
 
 * [Plasma Pong by Steve Taylor](http://www.plasmapong.com/)
 
+* [Plasma Pong](http://en.wikipedia.org/wiki/Plasma_Pong)
+
+* [Plasma Pong Demonstration](http://www.youtube.com/watch?v=NDjseVmruH8)
+
 * [Fluid Simulation for Dummies by Mike Ash](http://mikeash.com/pyblog/fluid-simulation-for-dummies.html)
 
 * [Real-Time Fluid Dynamics for Games by Jos Stam of Alias | wavefront](http://www.autodeskresearch.com/pdf/GDC03.pdf)
