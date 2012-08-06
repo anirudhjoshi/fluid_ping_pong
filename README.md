@@ -5,6 +5,8 @@ fluid_ping_pong
 
 [Click here to play now!](http://anirudhjoshi.github.com/fluid_ping_pong/)
 
+[Click here to watch the video!](http://www.youtube.com/watch?v=gcF-ZenWEM4&feature=plcp)
+
 This is a demonstration of the possibilites that HTML5/browsers have to offer inspired by the wonderful work done by Steve Taylor ([Plasma Pong](http://www.plasmapong.com/)).
 
 #### Introduction ####
