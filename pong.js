@@ -23,7 +23,8 @@ var ball = {
 var ai = {
 	"push": false,
 	"suck": false,
-	"multiplayer": false,
+	"stream": [ 0, 0, 0],
+	"multiplayer": true,
 	"x" : 0,
 	"y" : 0,
 	"width" : 0,
@@ -39,6 +40,7 @@ var ai = {
 var player = {
 	"push": false,
 	"suck": false,	
+	"stream": [ 0, 0, 0],
 	"x" : 0,
 	"y" : 0,
 	"width" : 0,
@@ -353,16 +355,6 @@ function drawPlayer( player ) {
 }
 
 function drawBall( ball ) {
-
-	// if (ball.color instanceof Array) {
-
-	// 	ctx.fillStyle = "rgb(" + Math.floor( ball.color[0] ) + "," + Math.floor( ball.color[1] ) + "," + Math.floor( ball.color[2] ) + ")";
-
-	// } else {
-
-	// 	ctx.fillStyle = ball.color;
-
-	// }
 
         ctx.beginPath();
         ctx.lineWidth = 1;

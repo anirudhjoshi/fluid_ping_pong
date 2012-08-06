@@ -95,8 +95,8 @@ function prepareFrame( field ) {
 
 	if ( ai.push ) {
 
-		field.setVelocity( Math.floor( ai.x - ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
-		field.setDensityRGB( Math.floor( ai.x - ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), ai.color );				
+		field.setVelocity( Math.floor( ai.x + ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
+		field.setDensityRGB( Math.floor( ai.x + ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), ai.color );				
 		
 	}	
 
