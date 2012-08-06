@@ -161,7 +161,7 @@ function onYouTubePlayerReady(playerId) {
   ytplayer.addEventListener("onStateChange", "onPlayerStateChange");
   ytplayer.addEventListener("onError", "onPlayerError");
   //Load an initial video into the player
-  ytplayer.cueVideoById("GvpR-yprNk0");
+  ytplayer.cueVideoById("GusLypfx7OQ");
 }
 
 // The "main method" of this sample. Called when someone clicks "Run".
