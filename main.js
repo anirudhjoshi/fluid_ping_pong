@@ -87,6 +87,19 @@ function rotator( a ) {
 
 }
 
+var field;
+
+function explosion(  ) {
+
+	
+	// field.setDensityRGB( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), ball.color );				
+	// field.setVelocity( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 1000, 0 );	
+
+
+}
+
+var counter = 0;
+
 function prepareFrame( field ) {
 
 	// console.log( Math.ceil( ball.vx ), Math.ceil(ball.vy));
@@ -123,7 +136,7 @@ function prepareFrame( field ) {
 	// ai.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
 	// player.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
 
-	field.setDensityRGB( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), ball.color );				
+	field.setDensityRGB( Math.floor( ball.x + ball.radius / 2  ) , Math.floor( ball.y + ball.radius / 2 ), ball.color );				
 
     // var RGB2 = cielabToRGB( 0, RGB[0], 0, [0.9642, 1, 0.8249 ] );
 	// var RGB3 = cielabToRGB( 0, 0, RGB[1], [0.9642, 1, 0.8249 ] );
@@ -138,6 +151,36 @@ function prepareFrame( field ) {
 
 		 // jet_shoot.play();
 		
+	}
+
+	if ( ball.out ){
+
+		if ( ball.xo > canvas.width / 2 ) {
+			var x = canvas.width-1;
+			var mult = -1;
+
+	} else {
+
+		var mult = 1;
+		var x = 0;
+	}
+
+		// console.log( mult*1000)
+		// console.log( ai.x, canvas.width )
+		field.setDensityRGB( x, Math.floor( ball.yo + ball.radius / 2 ), ball.color );				
+		field.setVelocity( x, Math.floor( ball.yo + ball.radius / 2 ), mult*1000, 0 );		
+
+		counter++;
+
+		if ( counter == 12 ) {
+	
+			ball.out = false;
+			counter = 0;
+
+		}
+
+
+
 	}
 	
 	if ( player.suck ) {
@@ -222,12 +265,6 @@ function inverseCielab( t ) {
 function startAnimation() {
 	
 	running = true;
-	// if ( !running ) {
-
-	// 	clear_id = setInterval( updateFrame, 1000/60 );
-		
-
-	// }
 
 	return;
 	
@@ -283,6 +320,7 @@ function begin() {
 		fieldRes = r;
 		field.setResolution(r, r);
         init(); // make this an injector
+        loop();
 		
 	}
 	

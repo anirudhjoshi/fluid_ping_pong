@@ -7,6 +7,9 @@ var ball = {
 
 	"x" : 0,
 	"y" : 0,
+	"xo" : 0,
+	"yo" : 0,
+	"out" : false,
 	"radius": 0,
 	"speed": 1,
 	"color" : "red" ,                    
@@ -287,6 +290,11 @@ function updateBall() {
 	if ( ( ball.x < 0 && ball.vx < 0 ) || ( ball.x + ball.radius > ctx.canvas.width && ball.vx > 0 ) ) {
 
 		// console.log( ball.x, ball.y, ball.vx, ball.vy, ai.x, ai.y, ctx.canvas.width );
+
+		ball.xo = ball.x;
+		ball.yo = ball.y;
+
+		ball.out = true;
 
 		ball.x = ( ctx.canvas.width - ball.radius ) / 2;
 		ball.y = ctx.canvas.height / 2;
