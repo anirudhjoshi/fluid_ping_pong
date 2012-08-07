@@ -126,6 +126,12 @@ function updatePlayer() {
 	
 }
 
+function distance( player1, player2 ){
+
+	return Math.sqrt( Math.pow(player2.x - player1.x, 2) + Math.pow( player2.y - player1.y, 2) );
+
+}
+
 
 function updateAi() {
 

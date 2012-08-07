@@ -99,7 +99,7 @@ function explosion(  ) {
 }
 
 var counter = 0;
-var suck_counter_1 = 12;
+var suck_counter_1 = 100;
 
 function prepareFrame( field ) {
 
@@ -184,20 +184,34 @@ function prepareFrame( field ) {
 	
 	if ( player.suck ) {
 		
+		var straight_line_dist = distance(player, ball );
 
-		if ( suck_counter_1 > 0 & suck_counter_1 <= 12  ) {
+		if ( suck_counter_1 > 90 & suck_counter_1 <= 100  ) {
 
 			// player.explode = true;
-			field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 1000, 0 );				
+			field.setVelocity( 0, Math.floor( player.y + player.height / 2 ), 1000, 0 );				
+			field.setDensityRGB( 0, Math.floor( player.y + player.height / 2 ), player.color );
+			straight_line_dist = 100;
 
 		} else if ( suck_counter_1 == 0 ){
 
 			suck_counter_1 = 100;
 		}
 
+		
+
+		if ( straight_line_dist < 20 ) {
+
+			ball.x = player.x + 10 + Math.random();
+			ball.y = player.y + player.height / 2 + Math.random();
+			ball.vx = 0;
+			ball.vy = 0;
+		}		
+
+		console.log( suck_counter_1 )
 			suck_counter_1--;
 		// paddle_blast.play();
-		// field.setDensityRGB( Math.floor( player.x + player.width / 2 + 20 ) , Math.floor( player.y + player.height / 2 ), [ 500, 500, 500 ] );
+		
 
 	}				
 
