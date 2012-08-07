@@ -99,6 +99,7 @@ function explosion(  ) {
 }
 
 var counter = 0;
+var suck_counter_1 = 12;
 
 function prepareFrame( field ) {
 
@@ -165,10 +166,8 @@ function prepareFrame( field ) {
 		var x = 0;
 	}
 
-		// console.log( mult*1000)
-		// console.log( ai.x, canvas.width )
-		field.setDensityRGB( x, Math.floor( ball.yo + ball.radius / 2 ), ball.color );				
-		field.setVelocity( x, Math.floor( ball.yo + ball.radius / 2 ), mult*1000, 0 );		
+	field.setDensityRGB( x, Math.floor( ball.yo + ball.radius / 2 ), ball.color );				
+	field.setVelocity( x, Math.floor( ball.yo + ball.radius / 2 ), mult*1000, 0 );		
 
 		counter++;
 
@@ -185,9 +184,18 @@ function prepareFrame( field ) {
 	
 	if ( player.suck ) {
 		
-		// player.explode = true;
-		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 1000, 0 );	
 
+		if ( suck_counter_1 > 0 & suck_counter_1 <= 12  ) {
+
+			// player.explode = true;
+			field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 1000, 0 );				
+
+		} else if ( suck_counter_1 == 0 ){
+
+			suck_counter_1 = 100;
+		}
+
+			suck_counter_1--;
 		// paddle_blast.play();
 		// field.setDensityRGB( Math.floor( player.x + player.width / 2 + 20 ) , Math.floor( player.y + player.height / 2 ), [ 500, 500, 500 ] );
 
