@@ -290,8 +290,8 @@ function FluidField(canvas) {
         fade( g );
         fade( bl );
 
-        fade( u );
-        fade( v );        
+        // fade( u );
+        // fade( v );        
 
         // Combine old and new fields into the new field
         addFields( r, r_prev, dt);
