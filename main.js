@@ -273,11 +273,7 @@ function begin() {
 
 	field = new FluidField(canvas);
 	field.setUICallback(prepareFrame);
-	field.setDisplayFunction(toggleDisplayFunction(canvas));
-
-	init();
-
-	// ai.multiplayer = true;
+	field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
 	
 	updateRes = function() {
 		

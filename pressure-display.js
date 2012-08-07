@@ -247,9 +247,9 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
         
     }
     
-    var showVectors = false;
+    // var showVectors = false;
     
-    toggleDisplayFunction = function( canvas ) {
+    toggleDisplayFunction = function( canvas, showVectors ) {
 		// showVectors = true;
         if (showVectors) {
 			
