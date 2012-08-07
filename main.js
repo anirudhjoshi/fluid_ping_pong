@@ -52,9 +52,13 @@ var distanceRotators = [ 0, 201, 401 ];
 function multiplayer() {
 
 	if ( ai.multiplayer )
+
 		ai.multiplayer = false;
+
 	else
+
 		ai.multiplayer = true;
+		ai.push = true;
 
 }
 
@@ -167,15 +171,23 @@ function prepareFrame( field ) {
 
 }
 
-function stopAnimation() {
+function switchAnimation() {
 
-	running = false;	
-	// if ( running ) {
+	
+	if ( running ) {
 		
-	// 	clearInterval( clear_id );
+		running = false;	
+		document.getElementById("switch").innerHTML = "Unpause"
 
 
-	// }
+	} else {
+
+		running = true;
+		document.getElementById("switch").innerHTML = "Pause"
+
+	}
+
+
 
 	return;
 	
