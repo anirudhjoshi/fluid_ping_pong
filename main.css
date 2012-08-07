@@ -7,16 +7,10 @@ body {
 	
 }
 
-.outer-center {
-    float: right;
-    right: 50%;
-    position: relative;
-}
-.inner-center {
-    float: right;
-    right: -50%;
-    position: relative;
-}
+a:link {color:#FF0000;}      /* unvisited link */
+a:visited {color:#00FF00;}  /* visited link */
+a:hover {color:#FF00FF;}  /* mouse over link */
+a:active {color:#0000FF;}  /* selected link */
 
 .clear {
     clear: both;
@@ -32,29 +26,32 @@ body {
 
 	float: left;
     position: relative;
-	width: 33%;
+	width: 28%;
 
 }
+
 
 #middle {
 
 	float: left;
-
     position: relative;
-    
+	width: 28%;
+
+}
+
+#right {
+
+	float: right;
+    position: relative;
+    padding-right: 4%;
 	width: 33%;
 
 }
+
+
 	
 canvas {
 
-	height: 32em;
-	
-}
-
-
-#sidebar {
-
-
+	height: 28em;
 	
 }
