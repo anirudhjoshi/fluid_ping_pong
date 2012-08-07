@@ -168,13 +168,14 @@ function prepareFrame( field ) {
 }
 
 function stopAnimation() {
-	
-	if ( running ) {
-		
-		clearInterval( clear_id );
-		running = false;
 
-	}
+	running = false;	
+	// if ( running ) {
+		
+	// 	clearInterval( clear_id );
+
+
+	// }
 
 	return;
 	
@@ -208,21 +209,51 @@ function inverseCielab( t ) {
 
 function startAnimation() {
 	
-	if ( !running ) {
+	running = true;
+	// if ( !running ) {
 
-		clear_id = setInterval( updateFrame, 1000/60 );
-		running = true;
+	// 	clear_id = setInterval( updateFrame, 1000/60 );
+		
 
-	}
+	// }
+
 	return;
 	
 }
 
+ 
+    // shim layer with setTimeout fallback
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function( callback ){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
+ 
+ 
+    // usage: 
+    // instead of setInterval(render, 16) ....
+ 
+    (function animloop(){
+
+      requestAnimFrame(animloop);
+
+      updateFrame();
+
+    })();
 
 function updateFrame() {
 	
-	field.update();                    
-	loop();
+	if ( running ) {
+	
+		field.update();                    
+		loop();
+
+	}
 	
 }
 
@@ -250,5 +281,6 @@ function begin() {
 	updateRes();     
 	startAnimation();
 }
+
 
 window.onload = begin;
