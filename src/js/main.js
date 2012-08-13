@@ -51,14 +51,14 @@ var distanceRotators = [ 0, 201, 401 ];
 
 function multiplayer() {
 
-	if ( ai.multiplayer )
+	if ( pong.ai.multiplayer )
 
-		ai.multiplayer = false;
+		pong.ai.multiplayer = false;
 
 	else
 
-		ai.multiplayer = true;
-		ai.push = true;
+		pong.ai.multiplayer = true;
+		pong.ai.push = true;
 
 }
 
@@ -88,6 +88,7 @@ function rotator( a ) {
 }
 
 var field;
+var pong;
 
 function explosion(  ) {
 
@@ -112,11 +113,11 @@ function prepareFrame( field ) {
 	var ai_ab = rotator( distanceRotators[1] );
 	var ball_ab = rotator( distanceRotators[2] );
 
-	player.color = cielabToRGB( L, player_ab[0], player_ab[1], [0.9642, 1, 0.8249 ] )
+	pong.player.color = cielabToRGB( L, player_ab[0], player_ab[1], [0.9642, 1, 0.8249 ] )
 
-	ai.color = cielabToRGB( L, ai_ab[0], ai_ab[1], [0.9642, 1, 0.8249 ] )
+	pong.ai.color = cielabToRGB( L, ai_ab[0], ai_ab[1], [0.9642, 1, 0.8249 ] )
 	// player.color = player.stream;
-	ball.color = cielabToRGB( L, ball_ab[0], ball_ab[1], [0.9642, 1, 0.8249 ] )	
+	pong.ball.color = cielabToRGB( L, ball_ab[0], ball_ab[1], [0.9642, 1, 0.8249 ] )	
 
 	for ( var i = 0; i < 3; i++ ){
 
@@ -137,7 +138,7 @@ function prepareFrame( field ) {
 	// ai.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
 	// player.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
 
-	field.setDensityRGB( Math.floor( ball.x + ball.radius / 2  ) , Math.floor( ball.y + ball.radius / 2 ), ball.color );				
+	field.setDensityRGB( Math.floor( pong.ball.x + pong.ball.radius / 2  ) , Math.floor( pong.ball.y + pong.ball.radius / 2 ), pong.ball.color );				
 
     // var RGB2 = cielabToRGB( 0, RGB[0], 0, [0.9642, 1, 0.8249 ] );
 	// var RGB3 = cielabToRGB( 0, 0, RGB[1], [0.9642, 1, 0.8249 ] );
@@ -145,18 +146,18 @@ function prepareFrame( field ) {
 	// field.setDensityG( Math.floor( ball.x  ) , Math.floor( ball.y ), 100);				
 	// field.setDensity( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 100);				
 	
-	if ( player.push ) {
+	if ( pong.player.push ) {
 
-		field.setVelocity( Math.floor( player.x + player.width / 2 ), Math.floor( player.y + player.height / 2 ), 50, 0 );	
-		field.setDensityRGB( Math.floor( player.x + player.width / 2  ) , Math.floor( player.y + player.height / 2 ), player.color);				
+		field.setVelocity( Math.floor( pong.player.x + pong.player.width / 2 ), Math.floor( pong.player.y + pong.player.height / 2 ), 50, 0 );	
+		field.setDensityRGB( Math.floor( pong.player.x + pong.player.width / 2  ) , Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color);				
 
 		 // jet_shoot.play();
 		
 	}
 
-	if ( ball.out ){
+	if ( pong.ball.out ){
 
-		if ( ball.xo > canvas.width / 2 ) {
+		if ( pong.ball.xo > canvas.width / 2 ) {
 			var x = canvas.width-1;
 			var mult = -1;
 
@@ -166,31 +167,28 @@ function prepareFrame( field ) {
 		var x = 0;
 	}
 
-	field.setDensityRGB( x, Math.floor( ball.yo + ball.radius / 2 ), ball.color );				
-	field.setVelocity( x, Math.floor( ball.yo + ball.radius / 2 ), mult*1000, 0 );		
+	field.setDensityRGB( x, Math.floor( pong.ball.yo + pong.ball.radius / 2 ), pong.ball.color );				
+	field.setVelocity( x, Math.floor( pong.ball.yo + pong.ball.radius / 2 ), mult*1000, 0 );		
 
 		counter++;
 
 		if ( counter == 12 ) {
 	
-			ball.out = false;
+			pong.ball.out = false;
 			counter = 0;
 
 		}
-
-
-
 	}
 	
-	if ( player.suck ) {
+	if ( pong.player.suck ) {
 		
-		var straight_line_dist = distance(player, ball );
+		var straight_line_dist = pong.distance(pong.player, pong.ball );
 
 		if ( suck_counter_1 > 90 & suck_counter_1 <= 100  ) {
 
 			// player.explode = true;
-			field.setVelocity( 0, Math.floor( player.y + player.height / 2 ), 1000, 0 );				
-			field.setDensityRGB( 0, Math.floor( player.y + player.height / 2 ), player.color );
+			field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 1000, 0 );				
+			field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );
 			straight_line_dist = 100;
 
 		} else if ( suck_counter_1 == 0 ){
@@ -198,14 +196,12 @@ function prepareFrame( field ) {
 			suck_counter_1 = 100;
 		}
 
-		
-
 		if ( straight_line_dist < 20 ) {
 
-			ball.x = player.x + 10 + Math.random();
-			ball.y = player.y + player.height / 2 + Math.random();
-			ball.vx = 0;
-			ball.vy = 0;
+			pong.ball.x = pong.player.x + 10 + Math.random();
+			pong.ball.y = pong.player.y + pong.player.height / 2 + Math.random();
+			pong.ball.vx = 0;
+			pong.ball.vy = 0;
 		}		
 
 		console.log( suck_counter_1 )
@@ -215,18 +211,18 @@ function prepareFrame( field ) {
 
 	}				
 
-	if ( ai.push ) {
+	if ( pong.ai.push ) {
 
-		field.setVelocity( Math.floor( ai.x + ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -50, 0 );	
-		field.setDensityRGB( Math.floor( ai.x + ai.width / 2  ) , Math.floor( ai.y + ai.height / 2 ), ai.color );				
+		field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -50, 0 );	
+		field.setDensityRGB( Math.floor( pong.ai.x + pong.ai.width / 2  ) , Math.floor( pong.ai.y + pong.ai.height / 2 ), pong.ai.color );				
 
 		 // jet_shoot.play();
 		
 	}	
 
-	if ( ai.suck ) {
+	if ( pong.ai.suck ) {
 
-		field.setVelocity( Math.floor( ai.x + ai.width / 2 ), Math.floor( ai.y + ai.height / 2 ), -1000, 0 );	
+		field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -1000, 0 );	
 		
 		// paddle_blast.play();
 		// field.setVelocity( Math.floor( ai.x - ai.width / 2 - 20  ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
@@ -385,7 +381,7 @@ function updateFrame() {
 		}
 
 		field.update();                    
-		loop();
+		pong.loop();
 
 	}
 	
@@ -399,9 +395,49 @@ function updateRes( r ) {
 		canvas.height = r;
 		fieldRes = r;
 		field.setResolution(r, r);
-        init(); // make this an injector
-        loop();	
+        pong.init(); // make this an injector
+        pong.loop();	
 
+
+}
+
+var keyDown = function(e) {
+
+	var i;		
+	
+	for(i in pong.keyMap) {
+
+		if (pong.keyMap.hasOwnProperty(i)) {
+		
+			if( e.keyCode === pong.keyMap[i].code ) {
+			
+					pong.keyMap[i].on = true;
+					break;
+					
+				}
+				
+			}   
+		}			
+
+}
+
+var keyUp = function(e) {
+
+	var i;
+	
+	for(i in pong.keyMap) {
+
+		if (pong.keyMap.hasOwnProperty(i)) {
+		
+			if( e.keyCode === pong.keyMap[i].code ) {
+			
+					pong.keyMap[i].on = false;
+					break;
+					
+				}
+				
+			}   
+		}			
 
 }
 
@@ -410,6 +446,11 @@ function begin() {
 	field = new FluidField(canvas);
 	field.setUICallback(prepareFrame);
 	field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
+
+	pong = new Pong(canvas);
+
+	window.addEventListener("keydown", keyDown, false);
+	window.addEventListener("keyup", keyUp, false);
 	
 	updateRes(r);     
 	startAnimation();

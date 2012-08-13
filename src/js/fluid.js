@@ -645,8 +645,8 @@ function FluidField(canvas) {
         var height = field.height();
             
         // Stop using global variables - add accessors
-        ball.vy += field.getYVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
-        ball.vx += field.getXVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
+        pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7;
+        pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7;
 
         if (bufferData) {
             
