@@ -134,130 +134,122 @@ function Pong(canvas) {
 
 	this.updateAi = function () {
 
-		var ai = this.ai,
-			keyMap = this.keyMap,
-			speed_increase = this.speed_increase,
-			speed = this.speed,
-			ctx = this.ctx,
-			ball = this.ball,
-			real_y_pos = 0;
+		var real_y_pos = 0;
 
-		if ( ai.multiplayer ) {
+		if ( this.ai.multiplayer ) {
 
-				ai.vy += ai.ay;     
+			this.ai.vy += this.ai.ay;     
 
-				if ( keyMap.up2.on ) {
+			if ( this.keyMap.up2.on ) {
+			
+				this.ai.ay = -this.speed_increase;
 				
-					ai.ay = -speed_increase;
+				if ( this.ai.vy < -this.speed ) {
 					
-					if ( ai.vy < -speed ) {
-						
-						ai.vy = -speed;
-						
-					}
-					
-				}                    
-				
-				if ( keyMap.left2.on ) {
-				
-					ai.push = true;
-
-					
-				} else {
-					
-					ai.push = false;
+					this.ai.vy = -this.speed;
 					
 				}
 				
-				if ( keyMap.right2.on ) {
-				
-					ai.suck = true;
+			}                    
+			
+			if ( this.keyMap.left2.on ) {
+			
+				this.ai.push = true;
 
-					
-				} else {
-					
-					ai.suck = false;
-					
-				}	
 				
-				if ( keyMap.down2.on ) {
-				
-					ai.ay = speed_increase;
-					
-					if ( ai.vy > speed ) {
-						
-						ai.vy = speed;
-						
-					}
-
-				}
-				
-				if ( ( !(keyMap.down2.on) && !(keyMap.up2.on) ) || (keyMap.down2.on && keyMap.up2.on) ) {
-					
-					ai.ay = 0;
-					ai.vy = 0;
-				
-				}
-				
-				if ( ( ai.y < 0 && ai.vy < 0 ) || ( ai.y + ai.height > ctx.canvas.height && ai.vy > 0 ) ) {
-					
-					ai.ay = 0;
-					ai.vy = 0;
-					
-				}
-				
-				ai.y += ai.vy;    
-
-
 			} else {
+				
+				this.ai.push = false;
+				
+			}
+			
+			if ( this.keyMap.right2.on ) {
+			
+				this.ai.suck = true;
 
-				// calculate the middle of the paddle 
-				real_y_pos = ai.y + (ai.height / 2); 
-
-				/* If the ball is moving in opposite direction to the paddle and is no danger for computer's goal move paddle back to the middle y - position*/ 
-				if ( ball.vx < 0 ) {
-
-					// if the paddle's position is over the middle y - position 
-					if ( real_y_pos < ctx.canvas.height / 2 - ctx.canvas.height / 10 ) {
+				
+			} else {
+				
+				this.ai.suck = false;
+				
+			}	
+			
+			if ( this.keyMap.down2.on ) {
+			
+				this.ai.ay = this.speed_increase;
+				
+				if ( this.ai.vy > this.speed ) {
 					
-						ai.y  += speed; 
-						
-					} 
-
-					// Paddle is under the middle y - position 
-					else if (   real_y_pos > ctx.canvas.height / 2 + ctx.canvas.height / 10  ) {
+					this.ai.vy = this.speed;
 					
-						ai.y  -= speed; 
-						
-					}
+				}
+
+			}
+			
+			if ( ( !(this.keyMap.down2.on) && !(this.keyMap.up2.on) ) || (this.keyMap.down2.on && this.keyMap.up2.on) ) {
+				
+				this.ai.ay = 0;
+				this.ai.vy = 0;
+			
+			}
+			
+			if ( ( this.ai.y < 0 && this.ai.vy < 0 ) || ( this.ai.y + this.ai.height > this.ctx.canvas.height && this.ai.vy > 0 ) ) {
+				
+				this.ai.ay = 0;
+				this.ai.vy = 0;
+				
+			}
+			
+			this.ai.y += this.ai.vy;    
+
+
+		} else {
+
+			// calculate the middle of the paddle 
+			real_y_pos = this.ai.y + (this.ai.height / 2); 
+
+			/* If the this.ball is moving in opposite direction to the paddle and is no danger for computer's goal move paddle back to the middle y - position*/ 
+			if ( this.ball.vx < 0 ) {
+
+				// if the paddle's position is over the middle y - position 
+				if ( real_y_pos < this.ctx.canvas.height / 2 - this.ctx.canvas.height / 10 ) {
+				
+					this.ai.y  += this.speed; 
 					
 				} 
-				// ball is moving towards paddle 
-				else if ( ball.vx > 0 ) {
 
-					// As long as ball's y - position and paddle's y - position are different 
-					if (  Math.abs(ball.y - real_y_pos ) > 2 ) {
+				// Paddle is under the middle y - position 
+				else if (   real_y_pos > this.ctx.canvas.height / 2 + this.ctx.canvas.height / 10  ) {
+				
+					this.ai.y  -= this.speed; 
 					
-						// If ball's position smaller than paddle's, move up 
-						if (ball.y < real_y_pos) {
-						
-							ai.y -= speed; 
-							
-						} 
-						
-						// If ball's position greater than padle's, move down 
-						else if ( ball.y > real_y_pos ) {
-						
-							ai.y  += speed; 
-						 
-						}
-					
-					}
-
 				}
-			}
+				
+			} 
+			// this.ball is moving towards paddle 
+			else if ( this.ball.vx > 0 ) {
 
-			this.ai = ai;
+				// As long as this.ball's y - position and paddle's y - position are different 
+				if (  Math.abs(this.ball.y - real_y_pos ) > 2 ) {
+				
+					// If this.ball's position smaller than paddle's, move up 
+					if (this.ball.y < real_y_pos) {
+					
+						this.ai.y -= this.speed; 
+						
+					} 
+					
+					// If this.ball's position greater than padle's, move down 
+					else if ( this.ball.y > real_y_pos ) {
+					
+						this.ai.y  += this.speed; 
+					 
+					}
+				
+				}
+
+			}
+		}
 
 	};
 
