@@ -255,78 +255,69 @@ function Pong(canvas) {
 
 	this.updateBall = function (){
 
-		var ball = this.ball,
-			player = this.player,
-			theta = this.theta,
-			ai = this.ai,
-			ctx = this.ctx;
-
-			// pong
-		if ( ( Math.abs( ball.x  - player.x ) < Math.abs( ball.vx ) && player.y < ball.y + 0.1 * player.height && ball.y < player.y + 1.1 * player.height ) ) {
-			theta = ((player.y + player.height/2) - ball.y ) / ( player.height  /  2 );
-			ball.vx = ball.speed * Math.cos(theta);
-			ball.vy = -ball.speed * Math.sin(theta);
+		if ( ( Math.abs( this.ball.x  - this.player.x ) < Math.abs( this.ball.vx ) && this.player.y < this.ball.y + 0.1 * this.player.height && this.ball.y < this.player.y + 1.1 * this.player.height ) ) {
+			this.theta = ((this.player.y + this.player.height/2) - this.ball.y ) / ( this.player.height  /  2 );
+			this.ball.vx = this.ball.speed * Math.cos(this.theta);
+			this.ball.vy = -this.ball.speed * Math.sin(this.theta);
 
 		}
 		
-		if ( ( Math.abs(ball.x - ai.x) < ball.vx && ball.y > ai.y && ball.y < ai.y + ai.height ) ) {
+		if ( ( Math.abs(this.ball.x - this.ai.x) < this.ball.vx && this.ball.y > this.ai.y && this.ball.y < this.ai.y + this.ai.height ) ) {
 
-			theta = ((ai.y + ai.height/2) - ball.y ) / ( ai.height  /  2 );
-			ball.vx = -ball.speed * Math.cos(theta);
-			ball.vy = ball.speed * Math.sin(theta);
+			this.theta = ((this.ai.y + this.ai.height/2) - this.ball.y ) / ( this.ai.height  /  2 );
+			this.ball.vx = -this.ball.speed * Math.cos(this.theta);
+			this.ball.vy = this.ball.speed * Math.sin(this.theta);
 		}
 
 		// y
-		if ( ( ball.y < 0 && ball.vy < 0 ) || ( ball.y + ball.radius > ctx.canvas.height && ball.vy > 0 ) ) {
+		if ( ( this.ball.y < 0 && this.ball.vy < 0 ) || ( this.ball.y + this.ball.radius > this.ctx.canvas.height && this.ball.vy > 0 ) ) {
 		
-			ball.vy = -ball.vy;
+			this.ball.vy = -this.ball.vy;
 
 		}
 
 
 		// x
-		if ( ( ball.x < 0 && ball.vx < 0 ) || ( ball.x + ball.radius > ctx.canvas.width && ball.vx > 0 ) ) {
+		if ( ( this.ball.x < 0 && this.ball.vx < 0 ) || ( this.ball.x + this.ball.radius > this.ctx.canvas.width && this.ball.vx > 0 ) ) {
 
-			ball.xo = ball.x;
-			ball.yo = ball.y;
+			this.ball.xo = this.ball.x;
+			this.ball.yo = this.ball.y;
 
-			ball.out = true;
+			this.ball.out = true;
 
-			ball.x = ( ctx.canvas.width - ball.radius ) / 2;
-			ball.y = ctx.canvas.height / 2;
+			this.ball.x = ( this.ctx.canvas.width - this.ball.radius ) / 2;
+			this.ball.y = this.ctx.canvas.height / 2;
 			
-			theta = Math.random() * 2*Math.PI;
+			this.theta = Math.random() * 2*Math.PI;
 
-			if (theta > Math.PI/4 && theta < 3* Math.PI/4) {
+			if (this.theta > Math.PI/4 && this.theta < 3* Math.PI/4) {
 
-				theta = Math.round(Math.random()) === 1 ? Math.PI/4 : 3 * Math.PI/4;
-
-			}
-
-			if (theta > Math.PI + Math.PI/4 && theta < 3* Math.PI/4 + Math.PI) {
-
-				theta = Math.round(Math.random()) === 1 ? Math.PI/4 + Math.PI : 3 * Math.PI/4 + Math.PI;
+				this.theta = Math.round(Math.random()) === 1 ? Math.PI/4 : 3 * Math.PI/4;
 
 			}
 
-			ball.vx = ball.speed * Math.cos(theta);
-			ball.vy = ball.speed * Math.sin(theta);
+			if (this.theta > Math.PI + Math.PI/4 && this.theta < 3* Math.PI/4 + Math.PI) {
+
+				this.theta = Math.round(Math.random()) === 1 ? Math.PI/4 + Math.PI : 3 * Math.PI/4 + Math.PI;
+
+			}
+
+			this.ball.vx = this.ball.speed * Math.cos(this.theta);
+			this.ball.vy = this.ball.speed * Math.sin(this.theta);
 			
 			if ( Math.round( Math.random() ) === 1 ) {
 			
-				ball.vy = -ball.vy;
+				this.ball.vy = -this.ball.vy;
 			
 			}
 			
 		}		
 
-		ball.vx += ball.ax;
-		ball.x += ball.vx;
+		this.ball.vx += this.ball.ax;
+		this.ball.x += this.ball.vx;
 
-		ball.vy += ball.ay;   
-		ball.y += ball.vy; 
-
-		this.ball = ball;
+		this.ball.vy += this.ball.ay;   
+		this.ball.y += this.ball.vy; 
 
 	};
 
