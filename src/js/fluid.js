@@ -575,7 +575,7 @@ function FluidField(canvas) {
 
 }
 
-( function () {
+(function () {
     
     // Store the alpha blending data in a unsigned array
     var buffer;
