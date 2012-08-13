@@ -9,5 +9,6 @@ git checkout gh-pages
 cp ../../build/* ../
 
 rm -rf ../../build/
+rm -rf ../build/
 
 git checkout develop
