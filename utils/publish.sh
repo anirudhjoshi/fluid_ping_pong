@@ -12,4 +12,6 @@ cp ../../build/* ../
 rm -rf ../../build/
 rm -rf ../build/
 
+git commit -am "updated"
+
 git checkout develop
