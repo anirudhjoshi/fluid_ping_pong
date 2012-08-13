@@ -335,7 +335,7 @@ function run_benchmark() {
 
 	avg[avg_index] = 1000/frameTime;  		
 
-	if ( avg_index > 24 ) {
+	if ( avg_index > 6 ) {
 
 		var mini_avg = 0;
 
