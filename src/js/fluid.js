@@ -32,6 +32,18 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+ // Check if we have access to contexts
+if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData ) {
+    
+    // Grabber helper function
+    CanvasRenderingContext2D.prototype.createImageData = function ( w, h ) {
+        
+        return this.getImageData( 0, 0, w, h);
+        
+    }
+    
+}
+
 function FluidField(canvas) {
     // Add fields x and s together over dt
     function addFields(x, s, dt) {
@@ -559,19 +571,10 @@ function FluidField(canvas) {
         return false;
     }
 
+    this.buffer = null;
+
 }
 
-// Check if we have access to contexts
-if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData ) {
-    
-    // Grabber helper function
-    CanvasRenderingContext2D.prototype.createImageData = function ( w, h ) {
-        
-        return this.getImageData( 0, 0, w, h);
-        
-    }
-    
-}
 ( function () {
     
     // Store the alpha blending data in a unsigned array
@@ -681,51 +684,16 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
 
                     for ( var y = 0; y < height; y++ ) {
 
-
-                        var index = 4 * (y * height +  x);
-                        // var RGB = Math.round( field.getDensityRGB(x, y) * 255 / 5 );
-                        var RGB = field.getDensityRGB(x, y);
-
-
-                        // var g = Math.round( field.getDensityG(x, y) * 255 / 5 );
-                        // var bl = Math.round( field.getDensityBl(x, y) * 255 / 5 );
-
-                        // console.log( r );
+                        var index = 4 * (y * height +  x);                        
+                        var RGB = field.getDensityRGB(x, y);                        
 
                         data[ index + 0] = Math.round( RGB[0] * 255 / 5 );
                         data[ index + 1] = Math.round( RGB[1] * 255 / 5 );
                         data[ index + 2] = Math.round( RGB[2] * 255 / 5 );
-                        // data[ index + 2] = r * Math.cos( r );
 
                     }
                         
                 }
-
-                
-
-
-                ///console.log( data[0], data[1], data[2], data[3], height );                
-
-                                        //data[ 4 * (y * height +  x ) + 1] = data[ 4 * (y * height +  x ) + 0];
-                        //data[ 4 * (y * height +  x ) + 1] = A_VAR;
-                        //data[ 4 * (y * height +  x ) + 2] = A_VAR;
-
-
-                        //data[4*(y * height + x) + 0] = Math.random() * 255;
-                        //data[4*(y * height + x) + 1] = Math.random() * 255;
-                        //data[4*(y * height + x) + 2] = Math.random() * 255;
-                        //data[4*(y * height + x) + 3] = 255 / 5;
-                        //data[4* (y * height +  x ) + 0] = field.getDensity(x, y) * 255 / 5;
-                        //data[4* (y * height +  x ) + 1] = field.getDensity(x, y) * 255 / 5;
-                        //data[4* ( y * height +  x ) + 0] = field.getDensity(x, y) * 100;
-                        //data[4* ( y * height +  x ) + 1] = field.getDensity(x, y) * 255;;
-                        
-                        //data[6* (y * height +  x) + 1] = field.getDensity(x, y) * 255;
-                        //data[4*(y * height + x + 1) + 0] = field.getDensity(x, y) * 255;
-                        //data[4*(y * height + x) + 0] = field.getDensity(x, y) * Math.random( 255 );
-
-                        // if ( A_VAR > 0 )
-                            // console.log( A_VAR );                
                 
             }
 
