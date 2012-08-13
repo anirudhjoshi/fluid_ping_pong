@@ -1,4 +1,4 @@
-#!bin/sh
+#!/bin/sh
 
 ./build.sh
 
@@ -9,3 +9,5 @@ git checkout gh-pages
 cp -r ../../build/* ../
 
 rm -rf ../../build/
+
+git checkout develop
