@@ -3,10 +3,10 @@
  ****************************************************
  * Copyright (c) 2009 Oliver Hunt <http://nerget.com>
  ****************************************************
+ * Copyright (c) 2012 Anirudh Joshi <http://anirudhjoshi.com>
+ **************************************************** 
  * Copyright (c) 2008, 2009, Memo Akten, www.memo.tv
  *** The Mega Super Awesome Visuals Company ***
- ****************************************************
- * Copyright (c) 2012 Anirudh Joshi <http://anirudhjoshi.com>
  ****************************************************
  * All rights reserved. 
  * 
