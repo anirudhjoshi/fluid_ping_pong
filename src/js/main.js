@@ -328,6 +328,8 @@ function updateFrame() {
 	
 }
 
+var r = 32;
+
 function begin() {
 
 	field = new FluidField(canvas);
@@ -335,8 +337,7 @@ function begin() {
 	field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
 	
 	updateRes = function() {
-		
-		var r = 96;
+	
 		canvas.width = r;
 		canvas.height = r;
 		fieldRes = r;

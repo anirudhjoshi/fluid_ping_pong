@@ -263,8 +263,8 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
         
         showVectors = true;
         
-        canvas.width = fieldRes;
-        canvas.height = fieldRes;
+        // canvas.width = fieldRes;
+        // canvas.height = fieldRes;
         
         return displayDensity;
         

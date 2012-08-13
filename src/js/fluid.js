@@ -28,8 +28,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-function FluidField(canvas) {
 
+function FluidField(canvas) {
     // Add fields x and s together over dt
     function addFields(x, s, dt) {
 
@@ -557,8 +557,6 @@ function FluidField(canvas) {
         
         return false;
     }
-
-    this.setResolution( 16, 16 );
 
 }
 
