@@ -321,17 +321,67 @@ function startAnimation() {
 // A value of 1 will only keep the last value
 var filterStrength = 20;
 var frameTime = 0, lastLoop = new Date, thisLoop;
+var avg = Array( 120 );
+var avg_index = 0;
+var avgs = 0;
+var avgs_index = 0;
+var benchmarking = true;
+
+function run_benchmark() {
+
+	var thisFrameTime = (thisLoop=new Date) - lastLoop;
+	frameTime+= (thisFrameTime - frameTime) / filterStrength;
+	lastLoop = thisLoop;	
+
+	avg[avg_index] = 1000/frameTime;  		
+
+	if ( avg_index > 24 ) {
+
+		var mini_avg = 0;
+
+		for ( var i = 0; i < avg_index; i++ ) {
+			
+			mini_avg += avg[avg_index];
+
+		}
+
+		console.log( mini_avg / avg_index, avg_index );  			
+
+		if ( avgs_index > 5 ){
+
+			if ( avgs < 60 ) {
+
+				updateRes( 24 );
+
+			}
+
+			benchmarking = false;
+
+		}
+
+
+		avgs += mini_avg / avg_index;
+
+		avgs_index++
+
+		avg_index = 0;
+
+	}
+
+	avg_index++;
+
+}
 
 function updateFrame() {
 	
 	if ( running ) {
-
-  		var thisFrameTime = (thisLoop=new Date) - lastLoop;
-  		frameTime+= (thisFrameTime - frameTime) / filterStrength;
-  		lastLoop = thisLoop;		
-
-  		console.log( 1000/frameTime );
 	
+		if ( benchmarking ){
+
+			run_benchmark();
+
+		}
+
 		field.update();                    
 		loop();
 
@@ -341,24 +391,25 @@ function updateFrame() {
 
 var r = 96;
 
+function updateRes( r ) {
+
+		canvas.width = r;
+		canvas.height = r;
+		fieldRes = r;
+		field.setResolution(r, r);
+        init(); // make this an injector
+        loop();	
+
+
+}
+
 function begin() {
 
 	field = new FluidField(canvas);
 	field.setUICallback(prepareFrame);
 	field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
 	
-	updateRes = function() {
-	
-		canvas.width = r;
-		canvas.height = r;
-		fieldRes = r;
-		field.setResolution(r, r);
-        init(); // make this an injector
-        loop();
-		
-	}
-	
-	updateRes();     
+	updateRes(r);     
 	startAnimation();
 }
 
