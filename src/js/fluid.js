@@ -1,10 +1,14 @@
 // Based on http://www.dgp.toronto.edu/people/stam/reality/Research/pdf/GDC03.pdf
 /**
+ ****************************************************
+ * Copyright (c) 2009 Oliver Hunt <http://nerget.com>
+ ****************************************************
  * Copyright (c) 2008, 2009, Memo Akten, www.memo.tv
  *** The Mega Super Awesome Visuals Company ***
- * Copyright (c) 2009 Oliver Hunt <http://nerget.com>
+ ****************************************************
  * Copyright (c) 2012 Anirudh Joshi <http://anirudhjoshi.com>
  * All rights reserved.
+ ****************************************************
  * 
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -532,8 +536,6 @@ function FluidField(canvas) {
             r[i] = g[i] = bl[i] = r_prev[i] = g_prev[i] = bl_prev[i] = 0;
 
         }
-
-        // console.log( r );
 
     }
 
