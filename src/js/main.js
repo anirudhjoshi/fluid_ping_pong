@@ -329,6 +329,8 @@ var benchmarking = true;
 
 function run_benchmark() {
 
+	// http://stackoverflow.com/questions/4787431/check-fps-in-js
+
 	var thisFrameTime = (thisLoop=new Date) - lastLoop;
 	frameTime+= (thisFrameTime - frameTime) / filterStrength;
 	lastLoop = thisLoop;	
