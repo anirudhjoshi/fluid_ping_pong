@@ -3,10 +3,10 @@
 
 ./build.sh
 
-cp ../build/ ../../build/
+cp -r ../build/ ../../
 
 git checkout gh-pages
 
-cp ../../build/* ../
+cp -r ../../build/* ../
 
-rm -rf ../../build/
+#rm -rf ../../build/
