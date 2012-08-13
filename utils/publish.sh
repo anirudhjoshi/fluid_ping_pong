@@ -6,7 +6,7 @@ cp -r ../build/ ../../
 
 git checkout gh-pages
 
-cp -r ../../build/* ../
+cp ../../build/* ../
 
 rm -rf ../../build/
 
