@@ -347,7 +347,7 @@ function run_benchmark() {
 
 		console.log( mini_avg / avg_index, avg_index );  			
 
-		if ( avgs_index > 5 ){
+		if ( avgs_index > 3 ){
 
 			if ( avgs < 60 ) {
 
