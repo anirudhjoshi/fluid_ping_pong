@@ -1,4 +1,3 @@
-
 #!bin/sh
 
 ./build.sh
@@ -9,4 +8,4 @@ git checkout gh-pages
 
 cp -r ../../build/* ../
 
-#rm -rf ../../build/
+rm -rf ../../build/
