@@ -1,5 +1,10 @@
 /**
+ ****************************************************
  * Copyright (c) 2009 Oliver Hunt <http://nerget.com>
+ ****************************************************
+ * Copyright (c) 2012 Anirudh Joshi <http://anirudhjoshi.com>
+ ****************************************************
+ * All rights reserved. 
  * 
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation

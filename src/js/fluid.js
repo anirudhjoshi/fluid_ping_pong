@@ -7,8 +7,8 @@
  *** The Mega Super Awesome Visuals Company ***
  ****************************************************
  * Copyright (c) 2012 Anirudh Joshi <http://anirudhjoshi.com>
- * All rights reserved.
  ****************************************************
+ * All rights reserved. 
  * 
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
