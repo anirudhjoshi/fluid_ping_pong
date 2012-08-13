@@ -1,10 +1,3 @@
-var frames = 0;
-var force = 5;
-var source = 100;
-var sources = [];
-var omx, omy;
-var mx, my;
-var mouseIsDown = false;
 var res;
 var displaySize = 512;
 var fieldRes;
