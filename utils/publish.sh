@@ -3,6 +3,7 @@
 ./build.sh
 
 cp -r ../build/ ../../
+rm -rf ../build/
 
 git checkout gh-pages
 

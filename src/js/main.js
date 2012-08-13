@@ -317,9 +317,20 @@ function startAnimation() {
 
     })();
 
+// The higher this value, the less the fps will reflect temporary variations
+// A value of 1 will only keep the last value
+var filterStrength = 20;
+var frameTime = 0, lastLoop = new Date, thisLoop;
+
 function updateFrame() {
 	
 	if ( running ) {
+
+  		var thisFrameTime = (thisLoop=new Date) - lastLoop;
+  		frameTime+= (thisFrameTime - frameTime) / filterStrength;
+  		lastLoop = thisLoop;		
+
+  		console.log( 1000/frameTime );
 	
 		field.update();                    
 		loop();
@@ -328,7 +339,7 @@ function updateFrame() {
 	
 }
 
-var r = 32;
+var r = 96;
 
 function begin() {
 
