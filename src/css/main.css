@@ -19,7 +19,7 @@ a:active {color:#e55e5f;}  /* selected link */
 
 #container {
 
-	width: 100%;
+	float: center;
 	margin: 0 auto;
 }
 
