@@ -480,26 +480,26 @@ function FluidField(canvas) {
     };
     
     // Move vector fields (u,v) forward over dt
-    this.vel_step = function(u, v, u0, v0, dt) {
+    this.vel_step = function() {
 
         var temp;
 
-        this.addFields(u, u0, dt );
-        this.addFields(v, v0, dt );
+        this.addFields(this.u, this.u_prev, this.dt );
+        this.addFields(this.v, this.v_prev, this.dt );
         
-        temp = u0; u0 = u; u = temp;
-        temp = v0; v0 = v; v = temp;
+        temp = this.u_prev; this.u_prev = this.u; this.u = temp;
+        temp = this.v_prev; this.v_prev = this.v; this.v = temp;
         
-        this.diffuse2(u,u0,v,v0, dt);
-        this.project(u, v, u0, v0);
+        this.diffuse2(this.u, this.u_prev,this.v,this.v_prev, this.dt);
+        this.project(this.u, this.v, this.u_prev, this.v_prev);
         
-        temp = u0; u0 = u; u = temp; 
-        temp = v0; v0 = v; v = temp;
+        temp = this.u_prev; this.u_prev = this.u; this.u = temp; 
+        temp = this.v_prev; this.v_prev = this.v; this.v = temp;
         
-        this.advect(1, u, u0, u0, v0, dt);
-        this.advect(2, v, v0, u0, v0, dt);
+        this.advect(1, this.u, this.u_prev, this.u_prev, this.v_prev, this.dt);
+        this.advect(2, this.v, this.v_prev, this.u_prev, this.v_prev, this.dt);
         
-        this.project(u, v, u0, v0 );
+        this.project(this.u, this.v, this.u_prev, this.v_prev );
 
     };
 
@@ -608,7 +608,8 @@ function FluidField(canvas) {
 
         // Display/Return new density and vector fields
         // new Field(this.r, this.g, this.bl, this.u, this.v)
-        this.displayFunc();
+        // this.displayFunc();
+        this.displayDensity();
 
     };
 
@@ -626,12 +627,6 @@ function FluidField(canvas) {
            this.iterations = iters;
 
         }           
-
-    };
-
-    this.setUICallback = function( callback ) {
-        
-        this.uiCallback = callback;
 
     };
 
@@ -663,6 +658,7 @@ function FluidField(canvas) {
             this.r[i] = this.g[i] = this.bl[i] = this.r_prev[i] = this.g_prev[i] = this.bl_prev[i] = 0;
 
         }
+
 
     };
 

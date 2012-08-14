@@ -226,10 +226,10 @@ function prepareFrame() {
 	}
 
     // Stop using global variables - add accessors
-    pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;
-    pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;	
+    // pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;
+    // pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;	
 
-    console.log( pong.ball.vx );
+    // console.log( pong.ball.vx );
 
 
 }
@@ -379,7 +379,7 @@ function updateFrame() {
 			run_benchmark();
 
 		}
-
+		prepareFrame();
 		field.update();                    
 		pong.loop();
 
@@ -395,7 +395,7 @@ function updateRes( r ) {
 		canvas.width = r;
 		canvas.height = r;
 		fieldRes = r;
-		// field.setResolution(r, r);
+		field.setResolution(r, r);
         pong.init(); 
         // pong.loop();	
 
