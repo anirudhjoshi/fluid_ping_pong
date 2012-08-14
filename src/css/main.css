@@ -7,6 +7,7 @@ body {
 	
 }
 
+a {text-decoration: none}
 a:link {color:#e55e5f;}      /* unvisited link */
 a:visited {color:#e55e5f;}  /* visited link */
 a:hover {color:#e55e5f;}  /* mouse over link */
