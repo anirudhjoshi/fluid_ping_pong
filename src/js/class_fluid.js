@@ -32,29 +32,13 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+
  // Check if we have access to contexts
-// (function (){
-
-//     'use strict';    
-
-//     if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData ) {
-    
-//     // Grabber helper function
-//     CanvasRenderingContext2D.prototype.createImageData = function ( w, h ) {
-        
-//         return this.getImageData( 0, 0, w, h);
-        
-//     };
-    
-// }
-
-
-
-// }());
 
 function FluidField(canvas) {
+
     'use strict';
-    
+
     // More iterations = much slower simulation (10 is good default)
 
     this.iterations = 10;
@@ -62,25 +46,25 @@ function FluidField(canvas) {
     this.visc = 0.5;
     this.dt = 0.1;
 
-    this.r = null;
-    this.r_prev = null;
+    this.r = [];
+    this.r_prev = [];
 
-    this.g = null;
-    this.g_prev = null;
+    this.g = [];
+    this.g_prev = [];
 
-    this.bl = null;
-    this.bl_prev = null;    
+    this.bl = [];
+    this.bl_prev = [];    
 
-    this.u = null;
-    this.u_prev = null;
+    this.u = [];
+    this.u_prev = [];
 
-    this.v = null;
-    this.v_prev = null;
+    this.v = [];
+    this.v_prev = [];
 
-    this.width = null;
-    this.height = null;
+    this.width = 0;
+    this.height = 0;
 
-    this.rowSize = null;
+    this.rowSize = 0;
     this.size = 0;
 
     this.displayFunc = null;   
@@ -177,7 +161,6 @@ function FluidField(canvas) {
                     currentRow += 1;
 
                 }
-
             }
 
             this.set_bnd(b, x);
@@ -205,22 +188,21 @@ function FluidField(canvas) {
 
                         lastX = x[currentRow - 1] = (x0[currentRow - 1] + a*(lastX+x[currentRow]+x[lastRow]+x[nextRow])) * invC;
 
+                    }   
+
                 }
 
-                this.set_bnd(b, x);
+                this.set_bnd(b, x);                
 
             }
 
         }
 
-    }
-
-    this.fadeSpeed = 0.01;
-    this.holdAmount = 1 - this.fadeSpeed;
+    };
 
     // Fades out velocities/densities to stop full stability
     // MSAFluidSolver2d.java
-    this.fade = function( x ) {
+    this.fade = function(x) {
 
         var i;
 
@@ -247,6 +229,7 @@ function FluidField(canvas) {
         var i,
             j,
             k,
+            invC,
             currentRow,
             lastRow,
             nextRow,
@@ -770,57 +753,57 @@ function FluidField(canvas) {
     };
 
     this.displayDensity = function() {
-        
+
         // Continously buffer data to reduce computation overhead
         this.prepareBuffer();
-        
+
         var context = canvas.getContext("2d"),
-            data,
-            dlength,
-            index,
-            RGB,
-            x,
-            d,
-            y;            
-            
+        data,
+        dlength,
+        index,
+        RGB,
+        x,
+        d,
+        y;            
+
         // Stop using global variables - add accessors
         // ball.vy += this.getYVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
         // ball.vx += this.getXVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
 
         if (this.bufferData) {
-            
+
             // Decouple from pixels to reduce overhead
             data = this.bufferData.data;
             dlength = this.data.length;
-            
+
             if ( this.clampData ) {
-                
+
                 for ( x = 0; x < this.width; x += 1 ) {
-                    
+
                     for ( y = 0; y < this.height; y += 1 ) {
-                        
+
                         d = this.getDensity(x, y) * 255 / 5;
-                        
+
                         d = d || 0;
-                        
+
                         if ( d > 255 ) {
-                        
+
                             d = 255;
 
                         }
-                            
+
                         data[ 4 * ( y * this.height + x ) + 1] = d;
-                        
+
                     }
-                    
+
                 }
-                
+
             } else {
 
-                for ( x = 0; x < this.width; x += 1 ) {
+                    for ( x = 0; x < this.width; x += 1 ) {
 
 
-                    for ( y = 0; y < this.height; y += 1 ) {
+                        for ( y = 0; y < this.height; y += 1 ) {
 
                         index = 4 * (y * this.height +  x);
                         RGB = this.getDensityRGB(x, y);                        
@@ -829,33 +812,48 @@ function FluidField(canvas) {
                         data[index+1] = Math.round( RGB[1] * 255 / 5 );
                         data[index+2] = Math.round( RGB[2] * 255 / 5 );
 
-                    }
-                        
+                        }
+
                 }
-                
-            }
+
+            }   
 
             context.putImageData(this.bufferData, 0, 0);
-            
-            } else {
-                
-                for ( x = 0; x < this.width; x += 1 ) {
-                    
-                    for ( y = 0; y < this.height; y += 1 ) {
-                        
-                        d = this.getDensity(x, y) / 5;
-                        
-                        context.setFillColor(0, d, 0, 1);
-                        context.fillRect(x, y, 1, 1);
-                        
-                    }
-                    
+
+        } else {
+
+            for ( x = 0; x < this.width; x += 1 ) {
+
+                for ( y = 0; y < this.height; y += 1 ) {
+
+                d = this.getDensity(x, y) / 5;
+
+                context.setFillColor(0, d, 0, 1);
+                context.fillRect(x, y, 1, 1);
+
                 }
-                
+
             }
-        
-        };
+
+        }
 
     };
 
 }
+
+// (function (){
+
+//     'use strict';    
+
+//     if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData ) {
+    
+//     // Grabber helper function
+//     CanvasRenderingContext2D.prototype.createImageData = function ( w, h ) {
+        
+//         return this.getImageData( 0, 0, w, h);
+        
+//     };
+    
+// }
+
+// }());

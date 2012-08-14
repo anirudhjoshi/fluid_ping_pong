@@ -95,7 +95,7 @@ function explosion(  ) {
 var counter = 0;
 var suck_counter_1 = 100;
 
-function prepareFrame( field ) {
+function prepareFrame() {
 
     // console.log( field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7 )
 
@@ -288,9 +288,7 @@ function startAnimation() {
 
 	return;
 	
-}
-
- 
+} 
     // shim layer with setTimeout fallback
     window.requestAnimFrame = (function(){
       return  window.requestAnimationFrame       || 
@@ -390,15 +388,16 @@ function updateFrame() {
 }
 
 var r = 96;
+var field;
 
 function updateRes( r ) {
 
 		canvas.width = r;
 		canvas.height = r;
 		fieldRes = r;
-		field.setResolution(r, r);
-        pong.init(); // make this an injector
-        pong.loop();	
+		// field.setResolution(r, r);
+        pong.init(); 
+        // pong.loop();	
 
 
 }
@@ -446,8 +445,9 @@ var keyUp = function(e) {
 function begin() {
 
 	field = new FluidField(canvas);
-	field.setUICallback(prepareFrame);
-	field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
+	// field.setResolution(r, r);
+	// field.setUICallback(prepareFrame);
+	// field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
 
 	pong = new Pong(canvas);
 
