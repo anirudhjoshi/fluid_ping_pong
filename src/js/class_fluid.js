@@ -242,8 +242,8 @@ function FluidField(canvas) {
 
     };
     
-    this.lin_solve2 = function(x, x0, y, y0, a, c)
-    {
+    this.lin_solve2 = function(x, x0, y, y0, a, c) {
+
         var i,
             j,
             k,
@@ -307,16 +307,17 @@ function FluidField(canvas) {
 
             }
         }
+
     };
     
-    this.diffuse2 = function(x, x0, y, y0, dt)
-    {
+    this.diffuse2 = function(x, x0, y, y0, dt) {
+
         var a = 0;
         this.lin_solve2(x, x0, y, y0, a, 1 + 4 * a);
+
     };
     
-    this.advect = function(b, d, d0, u, v, dt)
-    {
+    this.advect = function(b, d, d0, u, v, dt) {
         
         var i,
             j,
@@ -391,9 +392,7 @@ function FluidField(canvas) {
 
     };
     
-    this.project = function(u, v, p, div)
-    {
-
+    this.project = function(u, v, p, div) {
 
         var h = -0.5 / Math.sqrt(this.width * this.height),
             row,
@@ -451,6 +450,7 @@ function FluidField(canvas) {
 
         this.set_bnd(1, u);
         this.set_bnd(2, v);
+
     };
     
     // Move forward in density
@@ -688,6 +688,7 @@ function FluidField(canvas) {
         }
         
         return false;
+
     };
 
     // Store the alpha blending data in a unsigned array
@@ -756,4 +757,96 @@ function FluidField(canvas) {
 
     };
 
-}  
+    this.displayDensity = function() {
+        
+        // Continously buffer data to reduce computation overhead
+        this.prepareBuffer();
+        
+        var context = canvas.getContext("2d"),
+            width = this.width,
+            height = this.height,
+            data,
+            dlength,
+            index,
+            RGB,
+            j = -3,
+            x,
+            d,
+            y;            
+            
+        // Stop using global variables - add accessors
+        // ball.vy += this.getYVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
+        // ball.vx += this.getXVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
+
+        if (this.bufferData) {
+            
+            // Decouple from pixels to reduce overhead
+            data = this.bufferData.data;
+            dlength = this.data.length;
+            
+            if ( this.clampData ) {
+                
+                for ( x = 0; x < this.width; x += 1 ) {
+                    
+                    for ( y = 0; y < this.height; y += 1 ) {
+                        
+                        d = this.getDensity(x, y) * 255 / 5;
+                        
+                        d = d || 0;
+                        
+                        if ( d > 255 ) {
+                        
+                            d = 255;
+
+                        }
+                            
+                        data[ 4 * ( y * this.height + x ) + 1] = d;
+                        
+                    }
+                    
+                }
+                
+            } else {
+
+                for ( x = 0; x < this.width; x += 1 ) {
+
+
+                    for ( y = 0; y < this.height; y += 1 ) {
+
+                        index = 4 * (y * this.height +  x);                        
+                        RGB = this.getDensityRGB(x, y);                        
+
+                        data[ index + 0] = Math.round( RGB[0] * 255 / 5 );
+                        data[ index + 1] = Math.round( RGB[1] * 255 / 5 );
+                        data[ index + 2] = Math.round( RGB[2] * 255 / 5 );
+
+                    }
+                        
+                }
+                
+            }
+
+            context.putImageData(this.bufferData, 0, 0);
+            
+            } else {
+                
+                for ( x = 0; x < this.width; x += 1 ) {
+                    
+                    for ( y = 0; y < this.height; y += 1 ) {
+                        
+                        d = this.getDensity(x, y) / 5;
+                        
+                        context.setFillColor(0, d, 0, 1);
+                        context.fillRect(x, y, 1, 1);
+                        
+                    }
+                    
+                }
+                
+            }
+        
+        };
+
+    };
+
+}
