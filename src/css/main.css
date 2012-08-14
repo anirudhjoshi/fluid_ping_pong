@@ -102,7 +102,7 @@ canvas {
 
 #widget {
 
-	!text-align: right;
+	text-align: right !important;
 	
 }
 ​
