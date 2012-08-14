@@ -100,14 +100,3 @@ canvas {
     
 }
 ​
-/*http://dominoc925.blogspot.com.au/2011/10/how-to-align-facebook-like-button-with.html*/
-#sidebar #social {
-    margin: 10px;
-}    
-div .plusone, .twitter, .fb-like {
-    font-size: 1px;
-    display: inline-block;
-}
-div .fb_reset {
-    display: inline;
-} 
