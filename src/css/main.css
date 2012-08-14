@@ -55,3 +55,47 @@ canvas {
 	height: 28em;
 	
 }
+
+
+
+#key {
+    padding: 0.4em;
+    margin: 0.1em;
+    background: #FFFFCC;
+    border-radius: 0.4em;
+    border: 0.1em solid black;
+    width: 1.5em;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 2em;
+    display: inline-block;
+
+}
+
+#row {
+    text-align: center;      
+    color: black;
+}
+
+#b_wrapper {
+
+	margin: 0 auto;
+	width: 66%;
+
+}
+
+#in {
+    
+    padding: 0.4em;
+    margin: 0.5em;
+    background: #FFFFCC;
+    border-radius: 0.4em;
+    border: 0.1em solid black;
+    width: 3em;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 1em;
+    display: inline-block;    
+    
+}
+​

@@ -14,44 +14,79 @@
 
         <div id="left">
 
-            <h1>Controls</h1>
-
-            <button id="switch" onClick="switchAnimation()">Pause</button>
-            <button id="restart" onClick="restart()">Restart</button>
-            <button id="multiplayer" onClick="multiplayer()">Multiplayer</button>           
             <h2>First Player</h2>
 
-            <ul>
+            <div id="row">
+            <div id="in">UP</div>
+            </div>
+            <div id="row">
 
-                <li>Up: W</li>
-                <li>Suck: A</li>
-                <li>Down: S</li>
-                <li>Push: D</li>
+            <div id="in">SUCK</div>
 
-            </ul>
+            <div id="key">W</div>
+                
+            <div id="in">PUSH</div>
 
-            <h2>Second Player</h2>
-
-            <ul>
-
-                <li>Up: I</li>
-                <li>Suck: J</li>
-                <li>Down: K</li>
-                <li>Push: L</li>
-
-            </ul>      
+            </div>
+            <div id="row">
+            <div id="key">A</div>
+            <div id="key">S</div>
+            <div id="key">D</div>
+            </div>
+            <div id="row">
+            <div id="in">DOWN</div>
+            </div>             
 
         </div>
 
         <div id="middle">
 
-          <canvas id="canvas"></canvas>
+            <canvas id="canvas"></canvas>
+
+            <div id="b_wrapper">
+
+                <button id="switch" onClick="switchAnimation()">Pause</button>
+                <button id="restart" onClick="restart()">Restart</button>
+                <button id="multiplayer" onClick="multiplayer()">Multiplayer</button>                
+
+            </div>
 
         </div>
 
-        <div id="right">
+        <div id="right">          
 
-            <h1>Fluid Ping Pong</h1>          
+             <h2>Second Player</h2>
+
+            <div id="row">
+            <div id="in">UP</div>
+            </div>
+            <div id="row">
+
+            <div id="in">PUSH</div>
+
+            <div id="key">I</div>
+                
+            <div id="in">SUCK</div>
+
+            </div>
+            <div id="row">
+            <div id="key">J</div>
+            <div id="key">K</div>
+            <div id="key">L</div>
+            </div>
+            <div id="row">
+            <div id="in">DOWN</div>
+            </div>   
+
+        </div>
+
+              <a href="https://github.com/anirudhjoshi/fluid_ping_pong"><img width=149 height=149 style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+
+       <div class="clear"></div>
+
+       <div class="middle">
+
+            <h1>Fluid Ping Pong</h1>     
 
             <p>This is a demonstration of the possibilites that HTML5/browsers have to offer inspired by the wonderful work done by Steve Taylor (<a href="http://www.plasmapong.com/">Plasma Pong</a>).</p>
 
@@ -66,11 +101,9 @@
 
             <p>This is possible mainly due to the wonderful work done by both the Chrome and Mozilla teams.</p>
 
-            <p>It has been tested to work with the latest versions of Chrome/Firefox.</p>  
+            <p>It has been tested to work with the latest versions of Chrome/Firefox.</p>            
 
-        </div>
-
-              <a href="https://github.com/anirudhjoshi/fluid_ping_pong"><img width=149 height=149 style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
+       </div>
 
        <div class="clear"></div>
 
