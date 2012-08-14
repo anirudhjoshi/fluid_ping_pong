@@ -37,15 +37,15 @@ a:active {color:#e55e5f;}  /* selected link */
 
 	float: left;
     position: relative;
-	width: 28%;
+	width: 28em;
 
 }
 
 #right {
 
-	float: right;
+	float: left;
     position: relative;
-    padding-right: 2%;
+    padding-left: 1em;
 	width: 28em;
 
 }
