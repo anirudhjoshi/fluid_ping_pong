@@ -426,13 +426,17 @@ function FluidField(canvas) {
 
         this.getXVelocity = function(x, y) {
 
-             return u[(x + 1) + (y + 1) * rowSize];
+             var x_vel = u[(x + 1) + (y + 1) * rowSize];
+
+             return x_vel;
 
         }
         
         this.getYVelocity = function(x, y) {
 
-             return v[(x + 1) + (y + 1) * rowSize];
+             var y_vel = v[(x + 1) + (y + 1) * rowSize];
+
+             return y_vel;
 
         }
 
@@ -445,7 +449,9 @@ function FluidField(canvas) {
 
         for ( var i = 0; i < size; i++ )
 
-            u[ i ] = v[ i ] = r[ i ] = g[i] = bl[i] = 0.0;
+            r[ i ] = g[i] = bl[i] = 0.0;
+
+        // u[ i ] = v[ i ] = - figure out better way!
 
         uiCallback( new Field( r, g, bl, u, v ) );
 
@@ -637,16 +643,13 @@ function FluidField(canvas) {
 
     function displayDensity(field) {
         
-        // Continously buffer data to reduce computation overhead
-        prepareBuffer(field);
-        
         var context = canvas.getContext("2d");
         var width = field.width();
         var height = field.height();
-            
-        // Stop using global variables - add accessors
-        pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7;
-        pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7;
+
+        // console.log( field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7 )
+        // Continously buffer data to reduce computation overhead
+        prepareBuffer(field);        
 
         if (bufferData) {
             

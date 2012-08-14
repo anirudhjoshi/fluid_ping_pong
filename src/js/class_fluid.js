@@ -33,124 +33,181 @@
  */
 
  // Check if we have access to contexts
-if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData ) {
+// (function (){
+
+//     'use strict';    
+
+//     if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData ) {
     
-    // Grabber helper function
-    CanvasRenderingContext2D.prototype.createImageData = function ( w, h ) {
+//     // Grabber helper function
+//     CanvasRenderingContext2D.prototype.createImageData = function ( w, h ) {
         
-        return this.getImageData( 0, 0, w, h);
+//         return this.getImageData( 0, 0, w, h);
         
-    }
+//     };
     
-}
+// }
+
+
+
+// }());
 
 function FluidField(canvas) {
-    // Add fields x and s together over dt
-    function addFields(x, s, dt) {
+    'use strict';
+    
+    // More iterations = much slower simulation (10 is good default)
 
-        for ( var i = 0; i < size; i++ ) {
+    this.iterations = 10;
+
+    this.visc = 0.5;
+    this.dt = 0.1;
+
+    this.r = null;
+    this.r_prev = null;
+
+    this.g = null;
+    this.g_prev = null;
+
+    this.bl = null;
+    this.bl_prev = null;    
+
+    this.u = null;
+    this.u_prev = null;
+
+    this.v = null;
+    this.v_prev = null;
+
+    this.width = null;
+    this.height = null;
+
+    this.rowSize = null;
+    this.size = 0;
+
+    this.displayFunc = null;   
+
+    // Add fields x and s together over dt
+    this.addFields = function(x, s, dt) {
+
+        var i;
+
+        for ( i = 0; i < this.size; i += 1 ) {
             
             x[ i ] += dt * s[ i ];
 
         }
 
-    } 
+    };
 
     // Fluid bounding function over a field for stability
-    function set_bnd(b, x) {
+    this.set_bnd = function(b, x) {
+
+        var i, j, maxEdge, height = 0, rowsize = 0;
 
 
         if ( b === 1 ) {
 
-            for ( var i = 1; i <= width; i++ ) {
+            for ( i = 1; i <= this.width; i += 1 ) {
 
-                x[ i ] =  x[ i + rowSize ];
-                x[ i + ( height + 1 ) * rowSize] = x[ i + height * rowSize ];
+                x[i] = x[i + this.rowSize];
+                x[i + (this.height + 1) * this.rowSize] = x[i + this.height * this.rowSize];
 
             }
 
-            for (var j = 1; i <= height; i++) {
+            for (j = 1; i <= this.height; i += 1) {
 
-                x[j * rowSize] = -x[1 + j * rowSize];
-                x[(width + 1) + j * rowSize] = -x[width + j * rowSize];
+                x[j * this.rowSize] = -x[1 + j * this.rowSize];
+                x[(this.width + 1) + j * this.rowSize] = -x[this.width + j * this.rowSize];
 
             }
 
         } else if (b === 2) {
-            for (var i = 1; i <= width; i++) {
-                x[i] = -x[i + rowSize];
-                x[i + (height + 1) * rowSize] = -x[i + height * rowSize];
+            for ( i = 1; i <= this.width; i  += 1) {
+                x[i] = -x[i + this.rowSize];
+                x[i + (this.height + 1) * this.rowSize] = -x[i + this.height * this.rowSize];
             }
 
-            for (var j = 1; j <= height; j++) {
-                x[j * rowSize] =  x[1 + j * rowSize];
-                x[(width + 1) + j * rowSize] =  x[width + j * rowSize];
+            for ( j = 1; j <= this.height; j += 1) {
+                x[j * this.rowSize] =  x[1 + j * this.rowSize];
+                x[(this.width + 1) + j * this.rowSize] =  x[this.width + j * this.rowSize];
             }
         } else {
-            for (var i = 1; i <= width; i++) {
-                x[i] =  x[i + rowSize];
-                x[i + (height + 1) * rowSize] = x[i + height * rowSize];
+            for ( i = 1; i <= this.width; i  += 1) {
+                x[i] =  x[i + this.rowSize];
+                x[i + (this.height + 1) * this.rowSize] = x[i + this.height * this.rowSize];
             }
 
-            for (var j = 1; j <= height; j++) {
-                x[j * rowSize] =  x[1 + j * rowSize];
-                x[(width + 1) + j * rowSize] =  x[width + j * rowSize];
+            for ( j = 1; j <= this.height; j  += 1) {
+                x[j * this.rowSize] =  x[1 + j * this.rowSize];
+                x[(this.width + 1) + j * this.rowSize] =  x[this.width + j * this.rowSize];
             }
         }
 
-        var maxEdge = (height + 1) * rowSize;
+        maxEdge = (this.height + 1) * this.rowSize;
 
-        x[ 0 ]                 = 0.5 * ( x[ 1 ] + x[ rowSize ] );
-        x[ maxEdge ]           = 0.5 * (x[1 + maxEdge] + x[height * rowSize]);
-        x[ ( width + 1 ) ]         = 0.5 * (x[width] + x[(width + 1) + rowSize]);
-        x[ ( width + 1) + maxEdge ] = 0.5 * (x[width + maxEdge] + x[(width + 1) + height * rowSize]);
+        x[ 0 ]                 = 0.5 * ( x[ 1 ] + x[ this.rowSize ] );
+        x[ maxEdge ]           = 0.5 * (x[1 + maxEdge] + x[this.height * this.rowSize]);
+        x[ ( this.width + 1 ) ]         = 0.5 * (x[this.width] + x[(this.width + 1) + this.rowSize]);
+        x[ ( this.width + 1) + maxEdge ] = 0.5 * (x[this.width + maxEdge] + x[(this.width + 1) + this.height * this.rowSize]);
 
-    }
+    };
 
     // This combines neighbour velocities onto selected cell
-    function lin_solve(b, x, x0, a, c) {
+    this.lin_solve = function(b, x, x0, a, c) {
+        
+        var i,
+            j,
+            k,
+            invC,
+            currentRow,
+            lastRow,
+            nextRow,
+            lastX;
 
         if (a === 0 && c === 1) {
 
-            for (var j=1 ; j<=height; j++) {
+            for ( j=1 ; j<=this.height; j += 1) {
 
-                var currentRow = j * rowSize;
+                currentRow = j * this.rowSize;
 
-                ++currentRow;
+                currentRow += 1;
 
-                for ( var i = 0; i < width; i++ ) {
+                for ( i = 0; i < this.width; i  += 1) {
 
                     x[currentRow] = x0[currentRow];
-                    ++currentRow;
+                    currentRow += 1;
 
                 }
 
             }
 
-            set_bnd(b, x);
+            this.set_bnd(b, x);
 
         } else {
 
-            var invC = 1 / c;
+            invC = 1 / c;
 
-            for (var k=0 ; k<iterations; k++) {
+            for (k=0 ; k<this.iterations; k  += 1) {
 
-                for (var j=1 ; j<=height; j++) {
+                for (j=1 ; j<=this.height; j  += 1) {
 
-                    var lastRow = (j - 1) * rowSize;
-                    var currentRow = j * rowSize;
-                    var nextRow = (j + 1) * rowSize;
-                    var lastX = x[currentRow];
+                    lastRow = (j - 1) * this.rowSize;
+                    currentRow = j * this.rowSize;
+                    nextRow = (j + 1) * this.rowSize;
+                    lastX = x[currentRow];
 
-                    ++currentRow;
+                    currentRow += 1;
 
-                    for (var i=1; i<=width; i++)
+                    for (i=1; i<=this.width; i  += 1) {
 
-                        lastX = x[currentRow] = (x0[currentRow] + a*(lastX+x[++currentRow]+x[++lastRow]+x[++nextRow])) * invC;
+                        currentRow += 1;
+                        lastRow += 1;
+                        nextRow += 1;
+
+                        lastX = x[currentRow - 1] = (x0[currentRow - 1] + a*(lastX+x[currentRow]+x[lastRow]+x[nextRow])) * invC;
 
                 }
 
-                set_bnd(b, x);
+                this.set_bnd(b, x);
 
             }
 
@@ -158,451 +215,511 @@ function FluidField(canvas) {
 
     }
 
-    var fadeSpeed = 0.01;
-    var holdAmount = 1 - fadeSpeed;
+    this.fadeSpeed = 0.01;
+    this.holdAmount = 1 - this.fadeSpeed;
 
     // Fades out velocities/densities to stop full stability
     // MSAFluidSolver2d.java
-    function fade( x ) {
+    this.fade = function( x ) {
 
-        for (var i = 0; i < size; i++) {
+        var i;
+
+        for ( i = 0; i < this.size; i += 1) {
 
             // fade out
-            x[i] *= holdAmount;
+            x[i] *= this.holdAmount;
 
         }
 
         return;
-    }    
+    };
 
     // Iterates over the entire array - diffusing dye density
-    function diffuse(b, x, x0, dt) {
+    this.diffuse = function(b, x, x0, dt) {
 
         var a = 0;
-        lin_solve(b, x, x0, a, 1 + 4*a);
+        this.lin_solve(b, x, x0, a, 1 + 4*a);
 
-    }
+    };
     
-    function lin_solve2(x, x0, y, y0, a, c)
+    this.lin_solve2 = function(x, x0, y, y0, a, c)
     {
+        var i,
+            j,
+            k,
+            currentRow,
+            lastRow,
+            nextRow,
+            lastX,
+            lastY;
+
         if (a === 0 && c === 1) {
-            for (var j=1 ; j <= height; j++) {
-                var currentRow = j * rowSize;
-                ++currentRow;
-                for (var i = 0; i < width; i++) {
+            for ( j=1 ; j <= this.height; j += 1) {
+
+                 currentRow = j * this.rowSize;
+
+                currentRow += 1;
+                
+                for ( i = 0; i < this.width; i += 1) {
+
                     x[currentRow] = x0[currentRow];
                     y[currentRow] = y0[currentRow];
-                    ++currentRow;
+                    currentRow += 1;
+
                 }
+
             }
-            set_bnd(1, x);
-            set_bnd(2, y);
+
+            this.set_bnd(1, x);
+            this.set_bnd(2, y);
+
         } else {
-            var invC = 1/c;
-            for (var k=0 ; k<iterations; k++) {
-                for (var j=1 ; j <= height; j++) {
-                    var lastRow = (j - 1) * rowSize;
-                    var currentRow = j * rowSize;
-                    var nextRow = (j + 1) * rowSize;
-                    var lastX = x[currentRow];
-                    var lastY = y[currentRow];
-                    ++currentRow;
-                    for (var i = 1; i <= width; i++) {
+
+            invC = 1/c;
+
+            for (k=0 ; k<this.iterations; k += 1) {
+
+                for (j=1 ; j <= this.height; j += 1) {
+
+                    lastRow = (j - 1) * this.rowSize;
+                    currentRow = j * this.rowSize;
+                    nextRow = (j + 1) * this.rowSize;
+                    lastX = x[currentRow];
+                    lastY = y[currentRow];
+
+                    currentRow += 1;
+
+                    for (i = 1; i <= this.width; i += 1) {
+
                         lastX = x[currentRow] = (x0[currentRow] + a * (lastX + x[currentRow] + x[lastRow] + x[nextRow])) * invC;
-                        lastY = y[currentRow] = (y0[currentRow] + a * (lastY + y[++currentRow] + y[++lastRow] + y[++nextRow])) * invC;
+
+                        currentRow += 1;
+                        lastRow += 1;
+                        nextRow += 1;
+
+                        lastY = y[currentRow - 1] = (y0[currentRow - 1] + a * (lastY + y[currentRow] + y[lastRow] + y[nextRow])) * invC;
+
                     }
                 }
-                set_bnd(1, x);
-                set_bnd(2, y);
+
+                this.set_bnd(1, x);
+                this.set_bnd(2, y);
+
             }
         }
-    }
+    };
     
-    function diffuse2(x, x0, y, y0, dt)
+    this.diffuse2 = function(x, x0, y, y0, dt)
     {
         var a = 0;
-        lin_solve2(x, x0, y, y0, a, 1 + 4 * a);
-    }
+        this.lin_solve2(x, x0, y, y0, a, 1 + 4 * a);
+    };
     
-    function advect(b, d, d0, u, v, dt)
+    this.advect = function(b, d, d0, u, v, dt)
     {
-        var Wdt0 = dt * width;
-        var Hdt0 = dt * height;
-        var Wp5 = width + 0.5;
-        var Hp5 = height + 0.5;
-        for (var j = 1; j<= height; j++) {
-            var pos = j * rowSize;
-            for (var i = 1; i <= width; i++) {
-                var x = i - Wdt0 * u[++pos]; 
-                var y = j - Hdt0 * v[pos];
-                if (x < 0.5)
+        
+        var i,
+            j,
+            pos,
+            x,
+            y,
+            i0,
+            i1,
+            j0,
+            j1,
+            s1,
+            s0,
+            t1, 
+            t0,
+            row1,
+            row2,
+            Wdt0 = dt * this.width,
+            Hdt0 = dt * this.height,
+            Wp5 = this.width + 0.5,  
+            Hp5 = this.height + 0.5;
+
+        for ( j = 1; j<= this.height; j += 1) {
+             pos = j * this.rowSize;
+            for ( i = 1; i <= this.width; i += 1) {
+
+                pos += 1;
+
+                x = i - Wdt0 * u[pos]; 
+                y = j - Hdt0 * v[pos - 1];
+
+                if (x < 0.5) {
+                
                     x = 0.5;
-                else if (x > Wp5)
+
+                }
+
+                else if (x > Wp5) {
+
                     x = Wp5;
-                var i0 = x | 0;
-                var i1 = i0 + 1;
-                if (y < 0.5)
+
+                }
+
+                i0 = x || 0; // |
+                i1 = i0 + 1;
+
+                if (y < 0.5) {
+                
                     y = 0.5;
-                else if (y > Hp5)
+
+                }
+                else if (y > Hp5) {
+                    
                     y = Hp5;
-                var j0 = y | 0;
-                var j1 = j0 + 1;
-                var s1 = x - i0;
-                var s0 = 1 - s1;
-                var t1 = y - j0;
-                var t0 = 1 - t1;
-                var row1 = j0 * rowSize;
-                var row2 = j1 * rowSize;
+
+                }
+
+                j0 = y || 0; // |
+                j1 = j0 + 1;
+                s1 = x - i0;
+                s0 = 1 - s1;
+                t1 = y - j0;
+                t0 = 1 - t1;
+                row1 = j0 * this.rowSize;
+                row2 = j1 * this.rowSize;
+
                 d[pos] = s0 * (t0 * d0[i0 + row1] + t1 * d0[i0 + row2]) + s1 * (t0 * d0[i1 + row1] + t1 * d0[i1 + row2]);
+
             }
         }
-        set_bnd(b, d);
-    }
+
+        this.set_bnd(b, d);
+
+    };
     
-    function project(u, v, p, div)
+    this.project = function(u, v, p, div)
     {
-        var h = -0.5 / Math.sqrt(width * height);
-        for (var j = 1 ; j <= height; j++ ) {
-            var row = j * rowSize;
-            var previousRow = (j - 1) * rowSize;
-            var prevValue = row - 1;
-            var currentRow = row;
-            var nextValue = row + 1;
-            var nextRow = (j + 1) * rowSize;
-            for (var i = 1; i <= width; i++ ) {
+
+
+        var h = -0.5 / Math.sqrt(this.width * this.height),
+            row,
+            previousRow,
+            prevValue,
+            currentRow,
+            nextValue,
+            nextRow,
+            prevRow,
+            wScale,
+            hScale,
+            prevPos,
+            currentPos,
+            nextPos,
+            i,
+            j;
+
+        for (j = 1 ; j <= this.height; j += 1 ) {
+            row = j * this.rowSize;
+            previousRow = (j - 1) * this.rowSize;
+            prevValue = row - 1;
+            currentRow = row;
+            nextValue = row + 1;
+            nextRow = (j + 1) * this.rowSize;
+            for (i = 1; i <= this.width; i += 1 ) {
                 div[++currentRow] = h * (u[++nextValue] - u[++prevValue] + v[++nextRow] - v[++previousRow]);
                 p[currentRow] = 0;
             }
         }
-        set_bnd(0, div);
-        set_bnd(0, p);
+        this.set_bnd(0, div);
+        this.set_bnd(0, p);
         
-        lin_solve(0, p, div, 1, 4 );
-        var wScale = 0.5 * width;
-        var hScale = 0.5 * height;
-        for (var j = 1; j<= height; j++ ) {
-            var prevPos = j * rowSize - 1;
-            var currentPos = j * rowSize;
-            var nextPos = j * rowSize + 1;
-            var prevRow = (j - 1) * rowSize;
-            var currentRow = j * rowSize;
-            var nextRow = (j + 1) * rowSize;
+        this.lin_solve(0, p, div, 1, 4 );
 
-            for (var i = 1; i<= width; i++) {
+        wScale = 0.5 * this.width;
+        hScale = 0.5 * this.height;
+
+        for (j = 1; j<= this.height; j += 1 ) {
+
+            prevPos = j * this.rowSize - 1;
+            currentPos = j * this.rowSize;
+            nextPos = j * this.rowSize + 1;
+            prevRow = (j - 1) * this.rowSize;
+            currentRow = j * this.rowSize;
+            nextRow = (j + 1) * this.rowSize;
+
+            for (i = 1; i<= this.width; i += 1) {
+
                 u[++currentPos] -= wScale * (p[++nextPos] - p[++prevPos]);
                 v[currentPos]   -= hScale * (p[++nextRow] - p[++prevRow]);
+
             }
+
         }
-        set_bnd(1, u);
-        set_bnd(2, v);
-    }
+
+        this.set_bnd(1, u);
+        this.set_bnd(2, v);
+    };
     
     // Move forward in density
-    function dens_step(r_prev, g_prev, bl_prev, u_prev, v_prev, r, g, bl, u, v, dt ) {
+    this.dens_step = function(r_prev, g_prev, bl_prev, u_prev, v_prev, r, g, bl, u, v, dt ) {
 
         // Stop filling stability
-        fade( r );
-        fade( g );
-        fade( bl );
+        this.fade( this.r );
+        this.fade( this.g );
+        this.fade( this.bl );
 
         // fade( u );
         // fade( v );        
 
         // Combine old and new fields into the new field
-        addFields( r, r_prev, dt);
-        addFields( g, g_prev, dt);
-        addFields( bl, bl_prev, dt);
+        this.addFields( this.r, this.r_prev, this.dt);
+        this.addFields( this.g, this.g_prev, this.dt);
+        this.addFields( this.bl, this.bl_prev, this.dt);
 
         // Diffuse over old and new new field
-        diffuse(0, r_prev, r, dt );
-        diffuse(0, g_prev, g, dt );
-        diffuse(0, bl_prev, bl, dt );
+        this.diffuse(0, this.r_prev, this.r, this.dt );
+        this.diffuse(0, this.g_prev, this.g, this.dt );
+        this.diffuse(0, this.bl_prev, this.bl, this.dt );
 
         // Combine vectors into a forward vector model
-        advect(0, r, r_prev, u, v, dt );
-        advect(0, g, g_prev, u, v, dt );
-        advect(0, bl, bl_prev, u, v, dt );
+        this.advect(0, this.r, this.r_prev, this.u, this.v, this.dt );
+        this.advect(0, this.g, this.g_prev, this.u, this.v, this.dt );
+        this.advect(0, this.bl, this.bl_prev, this.u, this.v, this.dt );
 
-    }
+    };
     
     // Move vector fields (u,v) forward over dt
-    function vel_step(u, v, u0, v0, dt) {
+    this.vel_step = function(u, v, u0, v0, dt) {
 
-        addFields(u, u0, dt );
-        addFields(v, v0, dt );
+        var temp;
+
+        this.addFields(u, u0, dt );
+        this.addFields(v, v0, dt );
         
-        var temp = u0; u0 = u; u = temp;
-        var temp = v0; v0 = v; v = temp;
+        temp = u0; u0 = u; u = temp;
+        temp = v0; v0 = v; v = temp;
         
-        diffuse2(u,u0,v,v0, dt);
-        project(u, v, u0, v0);
+        this.diffuse2(u,u0,v,v0, dt);
+        this.project(u, v, u0, v0);
         
-        var temp = u0; u0 = u; u = temp; 
-        var temp = v0; v0 = v; v = temp;
+        temp = u0; u0 = u; u = temp; 
+        temp = v0; v0 = v; v = temp;
         
-        advect(1, u, u0, u0, v0, dt);
-        advect(2, v, v0, u0, v0, dt);
+        this.advect(1, u, u0, u0, v0, dt);
+        this.advect(2, v, v0, u0, v0, dt);
         
-        project(u, v, u0, v0 );
+        this.project(u, v, u0, v0 );
 
-    }
+    };
 
-    var uiCallback = function( r, g, bl, u, v ) {};
+    this.uiCallback = function( r, g, bl, u, v ) {};
 
-    function Field(r, g, bl, u, v) {
 
-        // Just exposing the fields here rather than using accessors is a measurable win during display (maybe 5%)
-        // but makes the code ugly.
+    this.setDensityRGB = function(x, y, d) {
 
-        this.setDensityRGB = function(x, y, d) {
+         this.r[(x + 1) + (y + 1) * this.rowSize] = d[0];
+         this.g[(x + 1) + (y + 1) * this.rowSize] = d[1];
+         this.bl[(x + 1) + (y + 1) * this.rowSize] = d[2];
 
-             r[(x + 1) + (y + 1) * rowSize] = d[0];
-             g[(x + 1) + (y + 1) * rowSize] = d[1];
-             bl[(x + 1) + (y + 1) * rowSize] = d[2];
+         return;
 
-             return;
+    };
 
-        }
+    this.getDensityRGB = function(x, y) {
 
-        this.getDensityRGB = function(x, y) {
+         var r_dens = this.r[(x + 1) + (y + 1) * this.rowSize],
+            g_dens = this.g[(x + 1) + (y + 1) * this.rowSize],
+            bl_dens = this.bl[(x + 1) + (y + 1) * this.rowSize];
 
-             var r_dens = r[(x + 1) + (y + 1) * rowSize];
-             var g_dens = g[(x + 1) + (y + 1) * rowSize];
-             var bl_dens = bl[(x + 1) + (y + 1) * rowSize];
+         return [ r_dens, g_dens, bl_dens ];
 
-             return [ r_dens, g_dens, bl_dens ];
+    }; 
 
-        }        
+    this.setVelocity = function(x, y, xv, yv) {
 
-        this.setVelocity = function(x, y, xv, yv) {
+         this.u[(x + 1) + (y + 1) * this.rowSize] = xv;
+         this.v[(x + 1) + (y + 1) * this.rowSize] = yv;
 
-             u[(x + 1) + (y + 1) * rowSize] = xv;
-             v[(x + 1) + (y + 1) * rowSize] = yv;
+         return;
 
-             return;
+    };
 
-        }
+    //MSAFluidSolver2d.java
+    this.setVelocityInterp = function( x, y, vx, vy ) {
 
-        //MSAFluidSolver2d.java
-        this.setVelocityInterp = function( x, y, vx, vy ) {
+        var colSize = this.rowSize,
+            rI = x + 2,
+            rJ = y + 2,
 
-            var colSize = rowSize;
+            i1 = (x + 2),
+            i2 = (rI - i1 < 0) ? (x + 3) : (x + 1),
 
-            rI = x + 2;
-            rJ = y + 2;
-
-            i1 = (x + 2);
-            i2 = (rI - i1 < 0) ? (x + 3) : (x + 1);
-
-            j1 = (y + 2);
-            j2 = (rJ - j1 < 0) ? (y  + 3) : (y + 1);
+            j1 = (y + 2),
+            j2 = (rJ - j1 < 0) ? (y  + 3) : (y + 1),
             
-            diffx = (1-(rI-i1));
-            diffy = (1-(rJ-j1));
+            diffx = (1-(rI-i1)),
+            diffy = (1-(rJ-j1)),
             
-            vx1 = vx * diffx*diffy;
-            vy1 = vy * diffy*diffx;
+            vx1 = vx * diffx*diffy,
+            vy1 = vy * diffy*diffx,
             
-            vx2 = vx * (1-diffx)*diffy;
-            vy2 = vy * diffy*(1-diffx);
+            vx2 = vx * (1-diffx)*diffy,
+            vy2 = vy * diffy*(1-diffx),
             
-            vx3 = vx * diffx*(1-diffy);
-            vy3 = vy * (1-diffy)*diffx;
+            vx3 = vx * diffx*(1-diffy),
+            vy3 = vy * (1-diffy)*diffx,
             
-            vx4 = vx * (1-diffx)*(1-diffy);
+            vx4 = vx * (1-diffx)*(1-diffy),
             vy4 = vy * (1-diffy)*(1-diffx);
-            
-            if(i1<2 || i1>rowSize-1 || j1<2 || j1>colSize-1) return;
-
-            this.setVelocity(i1, j1, vx1, vy1);
-            this.setVelocity(i2, j1, vx2, vy2);
-            this.setVelocity(i1, j2, vx3, vy3);
-            this.setVelocity(i2, j2, vx4, vy4);
-
-            return;
-
-        }         
-
-
-        this.getXVelocity = function(x, y) {
-
-             return u[(x + 1) + (y + 1) * rowSize];
-
-        }
         
-        this.getYVelocity = function(x, y) {
+        if (i1<2 || i1>this.rowSize-1 || j1<2 || j1>colSize-1) {
 
-             return v[(x + 1) + (y + 1) * rowSize];
+             return;
 
-        }
+         }
 
-        this.width = function() { return width; }
-        this.height = function() { return height; }
+        this.setVelocity(i1, j1, vx1, vy1);
+        this.setVelocity(i2, j1, vx2, vy2);
+        this.setVelocity(i1, j2, vx3, vy3);
+        this.setVelocity(i2, j2, vx4, vy4);
 
-    }
+        return;
 
-    function queryUI( r, g, bl, u, v ) {
+    };
 
-        for ( var i = 0; i < size; i++ )
 
-            u[ i ] = v[ i ] = r[ i ] = g[i] = bl[i] = 0.0;
+    this.getXVelocity = function(x, y) {
 
-        uiCallback( new Field( r, g, bl, u, v ) );
+         return this.u[(x + 1) + (y + 1) * this.rowSize];
 
-    }
+    };
+    
+    this.getYVelocity = function(x, y) {
+
+         return this.v[(x + 1) + (y + 1) * this.rowSize];
+
+    };
+
+    this.displayFunc = null;
 
     // Push simulation forward one step
     this.update = function () {
 
-        queryUI(r_prev, g_prev, bl_prev, u_prev, v_prev);
-
         // Move vector fields forward
-        vel_step(u, v, u_prev, v_prev, dt);
+        // this.u, this.v, this.u_prev, this.v_prev, this.dt
+        this.vel_step();
 
         // Move dye intensity forward
         // dens_step(dens, dens_prev, u, v, dt);
-        if ( u_prev )
-            dens_step(r_prev, g_prev, bl_prev, u_prev, v_prev, r, g, bl, u, v, dt );
+        if ( this.u_prev ){
+
+            //this.r_prev, this.g_prev, this.bl_prev, this.u_prev, this.v_prev, this.r, this.g, this.bl, this.u, this.v, this.dt 
+            this.dens_step();
+
+        }
 
         // Display/Return new density and vector fields
-        displayFunc( new Field(r, g, bl, u, v) );
+        // new Field(this.r, this.g, this.bl, this.u, this.v)
+        this.displayFunc();
 
-    }
+    };
 
     this.setDisplayFunction = function( func ) {
 
-        displayFunc = func;
+        this.displayFunc = func;
 
-    }
-    
-    // More iterations = much slower simulation (10 is good default)
-    this.iterations = function() { return iterations; }
+    };
 
     // Iteration setter and capper
     this.setIterations = function( iters ) {
 
-        if ( iters > 0 && iters <= 100 )
+        if ( iters > 0 && iters <= 100 ){
 
-           iterations = iters;
+           this.iterations = iters;
 
-    }
+        }           
+
+    };
 
     this.setUICallback = function( callback ) {
         
-        uiCallback = callback;
+        this.uiCallback = callback;
 
-    }
+    };
 
-    var iterations = 10;
+    this.reset = function() {
 
-    var visc = 0.5;
-    var dt = 0.1;
+        this.rowSize = this.width + 2;
+        this.size = (this.width+2)*(this.height+2);
 
-    var r;
-    var r_prev;
+        this.r = [];
+        this.r_prev = [];
 
-    var g;
-    var g_prev;
+        this.g = [];
+        this.g_prev = [];
 
-    var bl;
-    var bl_prev;    
+        this.bl = [];
+        this.bl_prev = [];
 
-    var u;
-    var u_prev;
+        this.u = [];
+        this.u_prev = [];
 
-    var v;
-    var v_prev;
+        this.v = [];
+        this.v_prev = [];
+        
+        var i;
 
-    var width;
-    var height;
+        for ( i = 0; i < this.size; i += 1) {
 
-    var rowSize;
-    var size;
-
-    var displayFunc;
-
-    function reset() {
-
-        rowSize = width + 2;
-        size = (width+2)*(height+2);
-
-        r = new Array(size);
-        r_prev = new Array(size);        
-
-        g = new Array(size);
-        g_prev = new Array(size);        
-
-        bl = new Array(size);
-        bl_prev = new Array(size);                
-
-        u = new Array(size);
-        u_prev = new Array(size);
-
-        v = new Array(size);
-        v_prev = new Array(size);
-
-        for (var i = 0; i < size; i++) {
-
-            u_prev[i] = v_prev[i] = u[i] = v[i] = 0;
-            r[i] = g[i] = bl[i] = r_prev[i] = g_prev[i] = bl_prev[i] = 0;
+            this.u_prev[i] = this.v_prev[i] = this.u[i] = this.v[i] = 0;
+            this.r[i] = this.g[i] = this.bl[i] = this.r_prev[i] = this.g_prev[i] = this.bl_prev[i] = 0;
 
         }
 
-    }
-
-    this.reset = reset;
+    };
 
     // Resolution bounder and resetter
     this.setResolution = function ( hRes, wRes ) {
 
         var res = wRes * hRes;
 
-        if (res > 0 && res < 1000000 && (wRes != width || hRes != height)) {
+        if (res > 0 && res < 1000000 && (wRes !== this.width || hRes !== this.height)) {
 
-            width = wRes;
-            height = hRes;
+            this.width = wRes;
+            this.height = hRes;
 
-            reset();
+            this.reset();
 
             return true;
 
         }
         
         return false;
-    }
+    };
 
-    this.buffer = null;
-
-}
-
-(function () {
-    
     // Store the alpha blending data in a unsigned array
-    var buffer;
-    var bufferData;
-    var clampData = false;
+    this.buffer = null;
+    this.bufferData = null;
+    this.clampData = false;
     
-    var canvas = document.getElementById("canvas");;
+    this.canvas = canvas;
     
     // First run to generate alpha blending array
-    function prepareBuffer(field) {
+    this.prepareBuffer = function() {
         
         // Check bounds/existance between blending data and simulation field
-        if ( buffer && buffer.width == field.width() && buffer.height == field.height() )
+        if ( this.buffer && this.buffer.width === this.width && this.buffer.height === this.height ) {
         
             return;
+
+        }
         
-        // Else create buffer array    
-        buffer = document.createElement("canvas");
-        buffer.width = field.width();
-        buffer.height = field.height();
+        // Else create this.buffer array    
+        this.buffer = document.createElement("canvas");
+        this.buffer.width = this.width;
+        this.buffer.height = this.height;
         
-        var context = buffer.getContext("2d");
+        var context = this.buffer.getContext("2d"),
+            max,
+            i;
         
         try {
             
             // Try to fill up using helper function
-            bufferData = context.createImageData( field.width(), field.height() );
+            this.bufferData = context.createImageData( this.width, this.height );
             
         } catch(e) {
             
@@ -611,167 +728,32 @@ function FluidField(canvas) {
         }
         
         // Return for non-existant canvas
-        if (!bufferData)
+        if (!this.bufferData) {
         
             return null;
-            
-        // Generate over square buffer array (r,b,g,a)
-        var max = field.width() * field.height() * 4;
 
-        for ( var i = 3; i < max; i += 4 )
+        }
+            
+        // Generate over square this.buffer array (r,b,g,a)
+        max = this.width * this.height * 4;
+
+        for ( i = 3; i < max; i += 4 ){
             
             // Set all alpha values to maximium opacity
-            bufferData.data[i] = 255;
-            
-        bufferData.data[0] = 256;
-        
-        if (bufferData.data[0] > 255)
-        
-            clampData = true;
-            
-        bufferData.data[0] = 0;
-        
-
-
-    }
-
-    function displayDensity(field) {
-        
-        // Continously buffer data to reduce computation overhead
-        prepareBuffer(field);
-        
-        var context = canvas.getContext("2d");
-        var width = field.width();
-        var height = field.height();
-            
-        // Stop using global variables - add accessors
-        ball.vy += field.getYVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
-        ball.vx += field.getXVelocity(Math.round( ball.x ), Math.round( ball.y ) ) / 7;
-
-        if (bufferData) {
-            
-            // Decouple from pixels to reduce overhead
-            var data = bufferData.data;
-
-            var dlength = data.length;
-            var j = -3;
-            
-            if ( clampData ) {
-                
-                for ( var x = 0; x < width; x++ ) {
-                    
-                    for ( var y = 0; y < height; y++ ) {
-                        
-                        var d = field.getDensity(x, y) * 255 / 5;
-                        
-                        d = d | 0;
-                        
-                        if ( d > 255 )
-                        
-                            d = 255;
-                            
-                        data[ 4 * ( y * height + x ) + 1] = d;
-                        
-                    }
-                    
-                }
-                
-            } else {
-                // console.log( field.getDensity(1, 1) );
-
-                for ( var x = 0; x < width; x++ ) {
-
-
-                    for ( var y = 0; y < height; y++ ) {
-
-                        var index = 4 * (y * height +  x);                        
-                        var RGB = field.getDensityRGB(x, y);                        
-
-                        data[ index + 0] = Math.round( RGB[0] * 255 / 5 );
-                        data[ index + 1] = Math.round( RGB[1] * 255 / 5 );
-                        data[ index + 2] = Math.round( RGB[2] * 255 / 5 );
-
-                    }
-                        
-                }
-                
-            }
-
-            context.putImageData(bufferData, 0, 0);
-            
-        } else {
-            
-            for ( var x = 0; x < width; x++ ) {
-                
-                for ( var y = 0; y < height; y++ ) {
-                    
-                    var d = field.getDensity(x, y) / 5;
-                    
-                    context.setFillColor(0, d, 0, 1);
-                    context.fillRect(x, y, 1, 1);
-                    
-                }
-                
-            }
-            
-        }
-        
-    }
+            this.bufferData.data[i] = 255;
     
-    function displayVelocity( field ) {
-        
-        var context = canvas.getContext("2d");
-        
-        context.save();
-        context.lineWidth = 1;
-        
-        var wScale = canvas.width / field.width();
-        var hScale = canvas.height / field.height();
-        
-        context.fillStyle="black";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        context.strokeStyle = "rgb(0,255,0)";
-        
-        var vectorScale = 10;
-        
-        context.beginPath();
-        
-        for (var x = 0; x < field.width(); x++) {
+        }            
             
-            for (var y = 0; y < field.height(); y++) {
-                
-                context.moveTo(x * wScale + 0.5 * wScale, y * hScale + 0.5 * hScale);
-                context.lineTo((x + 0.5 + vectorScale * field.getXVelocity(x, y)) * wScale, 
-                               (y + 0.5 + vectorScale * field.getYVelocity(x, y)) * hScale);
-                               
-            }
-            
-        }
+        this.bufferData.data[0] = 256;
         
-        context.stroke();
-        context.restore();
+        if (this.bufferData.data[0] > 255) {
         
-    }
-    
-    toggleDisplayFunction = function( canvas, showVectors ) {
+            this.clampData = true;
 
-        if (showVectors) {
+        }            
             
-            showVectors = false;
-            canvas.width = displaySize;
-            canvas.height = displaySize;
-            
-            return displayVelocity;
-            
-        }
-        
-        showVectors = true;
-        
-        canvas.width = fieldRes;
-        canvas.height = fieldRes;
-        
-        return displayDensity;
-        
-    }
-    
-})();
+        this.bufferData.data[0] = 0;
+
+    };
+
+}  

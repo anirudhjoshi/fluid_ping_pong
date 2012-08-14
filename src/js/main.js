@@ -97,6 +97,8 @@ var suck_counter_1 = 100;
 
 function prepareFrame( field ) {
 
+    // console.log( field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7 )
+
 	// console.log( Math.ceil( ball.vx ), Math.ceil(ball.vy));
 	// console.log( ball.vx, ball.vy );
 
@@ -197,7 +199,7 @@ function prepareFrame( field ) {
 			pong.ball.vy = 0;
 		}		
 
-		console.log( suck_counter_1 )
+		// console.log( suck_counter_1 )
 			suck_counter_1--;
 		// paddle_blast.play();
 		
@@ -222,6 +224,13 @@ function prepareFrame( field ) {
 		// field.setDensityRGB( Math.floor( ai.x - ai.width / 2 - 20 ) , Math.floor( ai.y + ai.height / 2 ), [500,500,500]);
 
 	}
+
+    // Stop using global variables - add accessors
+    pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;
+    pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;	
+
+    console.log( pong.ball.vx );
+
 
 }
 
@@ -336,7 +345,7 @@ function run_benchmark() {
 
 		}
 
-		console.log( mini_avg / avg_index, avg_index );  			
+		// console.log( mini_avg / avg_index, avg_index );  			
 
 		if ( avgs_index > 1 ){
 
