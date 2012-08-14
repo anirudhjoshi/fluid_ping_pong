@@ -97,8 +97,6 @@ var suck_counter_1 = 100;
 
 function prepareFrame(field) {
 
-	if ( field ) {
-
 	// var field = abs;
 	// console.log(abs)
 
@@ -231,13 +229,17 @@ function prepareFrame(field) {
 	}
 
     // Stop using global variables - add accessors
-    // pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;
-    // pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;	
+    // console.log( field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7000 )
+    // var temp = pong.ball.vy;
+
+    pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );
+    pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );	
+
+    // console.log( pong.ball.vy, temp )
+    
 
     // console.log( pong.ball.vx );
 
-	}
-	
 }
 
 function switchAnimation() {
@@ -386,7 +388,6 @@ function updateFrame() {
 
 		}
 
-		prepareFrame();
 		field.update();                    
 		pong.loop();
 
@@ -449,7 +450,7 @@ var keyUp = function(e) {
 
 function begin() {
 
-	field = new FluidField(canvas);
+	field = new Fluid(canvas);
 	field.setUICallback(prepareFrame);
 	field.setDisplayFunction(field.toggleDisplayFunction(canvas, 0));
 

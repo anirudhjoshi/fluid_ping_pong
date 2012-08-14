@@ -313,10 +313,10 @@ function Pong(canvas) {
 			
 		}		
 
-		this.ball.vx += this.ball.ax;
+		// this.ball.vx += this.ball.ax;
 		this.ball.x += this.ball.vx;
 
-		this.ball.vy += this.ball.ay;   
+		// this.ball.vy += this.ball.ay;   
 		this.ball.y += this.ball.vy; 
 
 	};
