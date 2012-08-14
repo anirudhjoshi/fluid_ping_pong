@@ -27,8 +27,8 @@ a:active {color:#e55e5f;}  /* selected link */
 
 	float: left;
     position: relative;
-	width: 28%;
-    padding-left: 2%;
+	width: 24em;
+    padding-left: 1em;
 
 }
 
@@ -46,7 +46,7 @@ a:active {color:#e55e5f;}  /* selected link */
 	float: right;
     position: relative;
     padding-right: 2%;
-	width: 33%;
+	width: 28em;
 
 }
 
@@ -76,6 +76,7 @@ canvas {
 #row {
     text-align: center;      
     color: #151924;
+ 
 }
 
 #b_wrapper {
