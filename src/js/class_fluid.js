@@ -447,7 +447,7 @@ function FluidField(canvas) {
     };
     
     // Move vector fields (u,v) forward over dt
-    vel_step = function() {
+    this.vel_step = function() {
 
         var temp;
 
@@ -486,7 +486,7 @@ function FluidField(canvas) {
 
         }
 
-        getDensityRGB = function(x, y) {
+        this.getDensityRGB = function(x, y) {
 
              var r_dens = r[(x + 1) + (y + 1) * rowSize];
              var g_dens = g[(x + 1) + (y + 1) * rowSize];
@@ -590,15 +590,15 @@ function FluidField(canvas) {
     };
 
     // Push simulation forward one step
-    update = function () {
+    this.update = function () {
 
         queryUI(r_prev, g_prev, bl_prev, u_prev, v_prev);       
 
         // Move vector fields forward
         // u, v, u_prev, v_prev, dt
-        vel_step();
+        this.vel_step();
 
-        // console.log( r[0] );
+        console.log( r[0] );
 
         // Move dye intensity forward
         // dens_step(dens, dens_prev, u, v, dt);
@@ -635,7 +635,7 @@ function FluidField(canvas) {
 
     };
 
-    reset = function() {
+    this.reset = function() {
 
         rowSize = width + 2;
         size = (width+2)*(height+2);
@@ -682,7 +682,7 @@ function FluidField(canvas) {
             width = wRes;
             height = hRes;
 
-            reset();
+            this.reset();
 
             return true;
 
