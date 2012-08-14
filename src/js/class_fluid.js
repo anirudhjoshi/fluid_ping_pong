@@ -101,7 +101,7 @@ function FluidField(canvas) {
     // Fluid bounding function over a field for stability
     this.set_bnd = function(b, x) {
 
-        var i, j, maxEdge, height = 0, rowsize = 0;
+        var i, j, maxEdge;
 
 
         if ( b === 1 ) {
@@ -115,15 +115,15 @@ function FluidField(canvas) {
 
             for (j = 1; i <= this.height; i += 1) {
 
-                x[j * this.rowSize] = -x[1 + j * this.rowSize];
-                x[(this.width + 1) + j * this.rowSize] = -x[this.width + j * this.rowSize];
+                x[j * this.rowSize] = -1 * x[1 + j * this.rowSize]; //jslint - gurantee neg
+                x[(this.width + 1) + j * this.rowSize] = -1*x[this.width + j * this.rowSize]; //jslint - gurantee neg
 
             }
 
         } else if (b === 2) {
             for ( i = 1; i <= this.width; i  += 1) {
-                x[i] = -x[i + this.rowSize];
-                x[i + (this.height + 1) * this.rowSize] = -x[i + this.height * this.rowSize];
+                x[i] = -1 * x[i + this.rowSize]; //jslint - gurantee neg
+                x[i + (this.height + 1) * this.rowSize] = -1 * x[i + this.height * this.rowSize]; //jslint - gurantee neg
             }
 
             for ( j = 1; j <= this.height; j += 1) {
@@ -235,7 +235,7 @@ function FluidField(canvas) {
     };
 
     // Iterates over the entire array - diffusing dye density
-    this.diffuse = function(b, x, x0, dt) {
+    this.diffuse = function(b, x, x0 ) {
 
         var a = 0;
         this.lin_solve(b, x, x0, a, 1 + 4*a);
@@ -310,7 +310,7 @@ function FluidField(canvas) {
 
     };
     
-    this.diffuse2 = function(x, x0, y, y0, dt) {
+    this.diffuse2 = function(x, x0, y, y0 ) {
 
         var a = 0;
         this.lin_solve2(x, x0, y, y0, a, 1 + 4 * a);
@@ -418,7 +418,14 @@ function FluidField(canvas) {
             nextValue = row + 1;
             nextRow = (j + 1) * this.rowSize;
             for (i = 1; i <= this.width; i += 1 ) {
-                div[++currentRow] = h * (u[++nextValue] - u[++prevValue] + v[++nextRow] - v[++previousRow]);
+
+                currentRow += 1;
+                nextValue += 1;
+                prevValue += 1;
+                nextRow += 1;
+                previousRow += 1;
+
+                div[currentRow] = h * (u[nextValue] - u[prevValue] + v[nextRow] - v[previousRow]);
                 p[currentRow] = 0;
             }
         }
@@ -441,8 +448,16 @@ function FluidField(canvas) {
 
             for (i = 1; i<= this.width; i += 1) {
 
-                u[++currentPos] -= wScale * (p[++nextPos] - p[++prevPos]);
-                v[currentPos]   -= hScale * (p[++nextRow] - p[++prevRow]);
+                currentPos += 1; 
+
+                nextPos += 1;
+                prevPos += 1;
+
+                nextRow += 1;
+                previousRow += 1;
+
+                u[currentPos] -= wScale * (p[nextPos] - p[prevPos]);
+                v[currentPos]   -= hScale * (p[nextRow] - p[prevRow]);
 
             }
 
@@ -454,7 +469,7 @@ function FluidField(canvas) {
     };
     
     // Move forward in density
-    this.dens_step = function(r_prev, g_prev, bl_prev, u_prev, v_prev, r, g, bl, u, v, dt ) {
+    this.dens_step = function() {
 
         // Stop filling stability
         this.fade( this.r );
@@ -470,9 +485,9 @@ function FluidField(canvas) {
         this.addFields( this.bl, this.bl_prev, this.dt);
 
         // Diffuse over old and new new field
-        this.diffuse(0, this.r_prev, this.r, this.dt );
-        this.diffuse(0, this.g_prev, this.g, this.dt );
-        this.diffuse(0, this.bl_prev, this.bl, this.dt );
+        this.diffuse(0, this.r_prev, this.r );
+        this.diffuse(0, this.g_prev, this.g );
+        this.diffuse(0, this.bl_prev, this.bl );
 
         // Combine vectors into a forward vector model
         this.advect(0, this.r, this.r_prev, this.u, this.v, this.dt );
@@ -504,9 +519,6 @@ function FluidField(canvas) {
         this.project(u, v, u0, v0 );
 
     };
-
-    this.uiCallback = function( r, g, bl, u, v ) {};
-
 
     this.setDensityRGB = function(x, y, d) {
 
@@ -763,13 +775,10 @@ function FluidField(canvas) {
         this.prepareBuffer();
         
         var context = canvas.getContext("2d"),
-            width = this.width,
-            height = this.height,
             data,
             dlength,
             index,
             RGB,
-            j = -3,
             x,
             d,
             y;            
@@ -813,12 +822,12 @@ function FluidField(canvas) {
 
                     for ( y = 0; y < this.height; y += 1 ) {
 
-                        index = 4 * (y * this.height +  x);                        
+                        index = 4 * (y * this.height +  x);
                         RGB = this.getDensityRGB(x, y);                        
 
-                        data[ index + 0] = Math.round( RGB[0] * 255 / 5 );
-                        data[ index + 1] = Math.round( RGB[1] * 255 / 5 );
-                        data[ index + 2] = Math.round( RGB[2] * 255 / 5 );
+                        data[index] = Math.round( RGB[0] * 255 / 5 );
+                        data[index+1] = Math.round( RGB[1] * 255 / 5 );
+                        data[index+2] = Math.round( RGB[2] * 255 / 5 );
 
                     }
                         
