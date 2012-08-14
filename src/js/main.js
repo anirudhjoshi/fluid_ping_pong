@@ -95,146 +95,142 @@ function explosion(  ) {
 var counter = 0;
 var suck_counter_1 = 100;
 
-function prepareFrame(field) {
+function prepareFrame(abs) {
+	console.log(abs)
 
-	if ( field ) {
-	// console.log(field)
+ //    // console.log( field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7 )
 
-    // console.log( field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7 )
+	// // console.log( Math.ceil( ball.vx ), Math.ceil(ball.vy));
+	// // console.log( ball.vx, ball.vy );
 
-	// console.log( Math.ceil( ball.vx ), Math.ceil(ball.vy));
-	// console.log( ball.vx, ball.vy );
+	// // field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( -ball.vy ) * 2, Math.ceil( ball.vx ) * 2   );	
+	// // field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( ball.vy ) * 2, Math.ceil( -ball.vx ) * 2  );	
+	// var player_ab = rotator( distanceRotators[0] );
+	// var ai_ab = rotator( distanceRotators[1] );
+	// var ball_ab = rotator( distanceRotators[2] );
 
-	// field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( -ball.vy ) * 2, Math.ceil( ball.vx ) * 2   );	
-	// field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( ball.vy ) * 2, Math.ceil( -ball.vx ) * 2  );	
-	var player_ab = rotator( distanceRotators[0] );
-	var ai_ab = rotator( distanceRotators[1] );
-	var ball_ab = rotator( distanceRotators[2] );
+	// pong.player.color = cielabToRGB( L, player_ab[0], player_ab[1], [0.9642, 1, 0.8249 ] )
 
-	pong.player.color = cielabToRGB( L, player_ab[0], player_ab[1], [0.9642, 1, 0.8249 ] )
+	// pong.ai.color = cielabToRGB( L, ai_ab[0], ai_ab[1], [0.9642, 1, 0.8249 ] )
+	// // player.color = player.stream;
+	// pong.ball.color = cielabToRGB( L, ball_ab[0], ball_ab[1], [0.9642, 1, 0.8249 ] )	
 
-	pong.ai.color = cielabToRGB( L, ai_ab[0], ai_ab[1], [0.9642, 1, 0.8249 ] )
-	// player.color = player.stream;
-	pong.ball.color = cielabToRGB( L, ball_ab[0], ball_ab[1], [0.9642, 1, 0.8249 ] )	
+	// for ( var i = 0; i < 3; i++ ){
 
-	for ( var i = 0; i < 3; i++ ){
+	// 	distanceRotators[i]++;
 
-		distanceRotators[i]++;
+	// 	if ( distanceRotators[i] > 600 ) {
 
-		if ( distanceRotators[i] > 600 ) {
-
-			distanceRotators[i] = 0;
-		}
+	// 		distanceRotators[i] = 0;
+	// 	}
 
 
 
-	}
+	// }
 
-	// ai.stream = player.stream;
-	// ball.stream = player.stream;
+	// // ai.stream = player.stream;
+	// // ball.stream = player.stream;
 
-	// ai.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
-	// player.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
+	// // ai.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
+	// // player.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
 
-	field.setDensityRGB( Math.floor( pong.ball.x + pong.ball.radius / 2  ) , Math.floor( pong.ball.y + pong.ball.radius / 2 ), pong.ball.color );				
+	// field.setDensityRGB( Math.floor( pong.ball.x + pong.ball.radius / 2  ) , Math.floor( pong.ball.y + pong.ball.radius / 2 ), pong.ball.color );				
 
-    // var RGB2 = cielabToRGB( 0, RGB[0], 0, [0.9642, 1, 0.8249 ] );
-	// var RGB3 = cielabToRGB( 0, 0, RGB[1], [0.9642, 1, 0.8249 ] );
-    // var RGB4 = cielabToRGB( RGB[2], 0, 0, [0.9642, 1, 0.8249 ] );	
-	// field.setDensityG( Math.floor( ball.x  ) , Math.floor( ball.y ), 100);				
-	// field.setDensity( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 100);				
+ //    // var RGB2 = cielabToRGB( 0, RGB[0], 0, [0.9642, 1, 0.8249 ] );
+	// // var RGB3 = cielabToRGB( 0, 0, RGB[1], [0.9642, 1, 0.8249 ] );
+ //    // var RGB4 = cielabToRGB( RGB[2], 0, 0, [0.9642, 1, 0.8249 ] );	
+	// // field.setDensityG( Math.floor( ball.x  ) , Math.floor( ball.y ), 100);				
+	// // field.setDensity( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 100);				
 	
-	if ( pong.player.push ) {
+	// if ( pong.player.push ) {
 
-		field.setVelocity( Math.floor( pong.player.x + pong.player.width / 2 ), Math.floor( pong.player.y + pong.player.height / 2 ), 50, 0 );	
-		field.setDensityRGB( Math.floor( pong.player.x + pong.player.width / 2  ) , Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color);				
+	// 	field.setVelocity( Math.floor( pong.player.x + pong.player.width / 2 ), Math.floor( pong.player.y + pong.player.height / 2 ), 50, 0 );	
+	// 	field.setDensityRGB( Math.floor( pong.player.x + pong.player.width / 2  ) , Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color);				
 
-		 // jet_shoot.play();
+	// 	 // jet_shoot.play();
 		
-	}
+	// }
 
-	if ( pong.ball.out ){
+	// if ( pong.ball.out ){
 
-		if ( pong.ball.xo > canvas.width / 2 ) {
-			var x = canvas.width-1;
-			var mult = -1;
+	// 	if ( pong.ball.xo > canvas.width / 2 ) {
+	// 		var x = canvas.width-1;
+	// 		var mult = -1;
 
-	} else {
+	// } else {
 
-		var mult = 1;
-		var x = 0;
-	}
+	// 	var mult = 1;
+	// 	var x = 0;
+	// }
 
-	field.setDensityRGB( x, Math.floor( pong.ball.yo + pong.ball.radius / 2 ), pong.ball.color );				
-	field.setVelocity( x, Math.floor( pong.ball.yo + pong.ball.radius / 2 ), mult*1000, 0 );		
+	// field.setDensityRGB( x, Math.floor( pong.ball.yo + pong.ball.radius / 2 ), pong.ball.color );				
+	// field.setVelocity( x, Math.floor( pong.ball.yo + pong.ball.radius / 2 ), mult*1000, 0 );		
 
-		counter++;
+	// 	counter++;
 
-		if ( counter == 12 ) {
+	// 	if ( counter == 12 ) {
 	
-			pong.ball.out = false;
-			counter = 0;
+	// 		pong.ball.out = false;
+	// 		counter = 0;
 
-		}
-	}
+	// 	}
+	// }
 	
-	if ( pong.player.suck ) {
+	// if ( pong.player.suck ) {
 		
-		var straight_line_dist = pong.distance(pong.player, pong.ball );
+	// 	var straight_line_dist = pong.distance(pong.player, pong.ball );
 
-		if ( suck_counter_1 > 90 & suck_counter_1 <= 100  ) {
+	// 	if ( suck_counter_1 > 90 & suck_counter_1 <= 100  ) {
 
-			// player.explode = true;
-			field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 1000, 0 );				
-			field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );
-			straight_line_dist = 100;
+	// 		// player.explode = true;
+	// 		field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 1000, 0 );				
+	// 		field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );
+	// 		straight_line_dist = 100;
 
-		} else if ( suck_counter_1 == 0 ){
+	// 	} else if ( suck_counter_1 == 0 ){
 
-			suck_counter_1 = 100;
-		}
+	// 		suck_counter_1 = 100;
+	// 	}
 
-		if ( straight_line_dist < 20 ) {
+	// 	if ( straight_line_dist < 20 ) {
 
-			pong.ball.x = pong.player.x + 10 + Math.random();
-			pong.ball.y = pong.player.y + pong.player.height / 2 + Math.random();
-			pong.ball.vx = 0;
-			pong.ball.vy = 0;
-		}		
+	// 		pong.ball.x = pong.player.x + 10 + Math.random();
+	// 		pong.ball.y = pong.player.y + pong.player.height / 2 + Math.random();
+	// 		pong.ball.vx = 0;
+	// 		pong.ball.vy = 0;
+	// 	}		
 
-		// console.log( suck_counter_1 )
-			suck_counter_1--;
-		// paddle_blast.play();
+	// 	// console.log( suck_counter_1 )
+	// 		suck_counter_1--;
+	// 	// paddle_blast.play();
 		
 
-	}				
+	// }				
 
-	if ( pong.ai.push ) {
+	// if ( pong.ai.push ) {
 
-		field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -50, 0 );	
-		field.setDensityRGB( Math.floor( pong.ai.x + pong.ai.width / 2  ) , Math.floor( pong.ai.y + pong.ai.height / 2 ), pong.ai.color );				
+	// 	field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -50, 0 );	
+	// 	field.setDensityRGB( Math.floor( pong.ai.x + pong.ai.width / 2  ) , Math.floor( pong.ai.y + pong.ai.height / 2 ), pong.ai.color );				
 
-		 // jet_shoot.play();
+	// 	 // jet_shoot.play();
 		
-	}	
+	// }	
 
-	if ( pong.ai.suck ) {
+	// if ( pong.ai.suck ) {
 
-		field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -1000, 0 );	
+	// 	field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -1000, 0 );	
 		
-		// paddle_blast.play();
-		// field.setVelocity( Math.floor( ai.x - ai.width / 2 - 20  ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
-		// field.setDensityRGB( Math.floor( ai.x - ai.width / 2 - 20 ) , Math.floor( ai.y + ai.height / 2 ), [500,500,500]);
+	// 	// paddle_blast.play();
+	// 	// field.setVelocity( Math.floor( ai.x - ai.width / 2 - 20  ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
+	// 	// field.setDensityRGB( Math.floor( ai.x - ai.width / 2 - 20 ) , Math.floor( ai.y + ai.height / 2 ), [500,500,500]);
 
-	}
+	// }
 
     // Stop using global variables - add accessors
     // pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;
     // pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7;	
 
     // console.log( pong.ball.vx );
-
-	}
 
 }
 
@@ -450,7 +446,7 @@ function begin() {
 	field = new FluidField(canvas);
 	// field.setResolution(r, r);
 	field.setUICallback(prepareFrame);
-	field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
+	// field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
 
 	pong = new Pong(canvas);
 
