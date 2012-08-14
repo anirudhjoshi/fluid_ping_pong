@@ -95,7 +95,10 @@ function explosion(  ) {
 var counter = 0;
 var suck_counter_1 = 100;
 
-function prepareFrame() {
+function prepareFrame(field) {
+
+	if ( field ) {
+	// console.log(field)
 
     // console.log( field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7 )
 
@@ -231,6 +234,7 @@ function prepareFrame() {
 
     // console.log( pong.ball.vx );
 
+	}
 
 }
 
@@ -446,7 +450,7 @@ function begin() {
 	field = new FluidField(canvas);
 	// field.setResolution(r, r);
 	field.setUICallback(prepareFrame);
-	// field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
+	field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
 
 	pong = new Pong(canvas);
 
