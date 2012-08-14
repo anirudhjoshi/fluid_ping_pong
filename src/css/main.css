@@ -1,16 +1,16 @@
 body {
 
-	background: black;
+	background: #151924;
 	color: white;
 	font-family: sans-serif;
 	margin: 0 auto;
 	
 }
 
-a:link {color:#FF0000;}      /* unvisited link */
-a:visited {color:#00FF00;}  /* visited link */
-a:hover {color:#FF00FF;}  /* mouse over link */
-a:active {color:#0000FF;}  /* selected link */
+a:link {color:#e55e5f;}      /* unvisited link */
+a:visited {color:#e55e5f;}  /* visited link */
+a:hover {color:#e55e5f;}  /* mouse over link */
+a:active {color:#e55e5f;}  /* selected link */
 
 .clear {
     clear: both;
@@ -27,6 +27,7 @@ a:active {color:#0000FF;}  /* selected link */
 	float: left;
     position: relative;
 	width: 28%;
+    padding-left: 2%;
 
 }
 
@@ -43,7 +44,7 @@ a:active {color:#0000FF;}  /* selected link */
 
 	float: right;
     position: relative;
-    padding-right: 4%;
+    padding-right: 2%;
 	width: 33%;
 
 }
@@ -59,11 +60,10 @@ canvas {
 
 
 #key {
-    padding: 0.4em;
+    padding: 0.5em;
     margin: 0.1em;
     background: #FFFFCC;
     border-radius: 0.4em;
-    border: 0.1em solid black;
     width: 1.5em;
     text-align: center;
     font-family: sans-serif;
@@ -74,7 +74,7 @@ canvas {
 
 #row {
     text-align: center;      
-    color: black;
+    color: #151924;
 }
 
 #b_wrapper {
