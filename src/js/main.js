@@ -329,7 +329,7 @@ var avg = Array( 120 );
 var avg_index = 0;
 var avgs = 0;
 var avgs_index = 0;
-var benchmarking = true;
+var benchmarking = false;
 
 function run_benchmark() {
 
