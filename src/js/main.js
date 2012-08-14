@@ -379,6 +379,7 @@ function updateFrame() {
 			run_benchmark();
 
 		}
+
 		prepareFrame();
 		field.update();                    
 		pong.loop();
@@ -397,8 +398,6 @@ function updateRes( r ) {
 		fieldRes = r;
 		field.setResolution(r, r);
         pong.init(); 
-        // pong.loop();	
-
 
 }
 
@@ -446,7 +445,7 @@ function begin() {
 
 	field = new FluidField(canvas);
 	// field.setResolution(r, r);
-	// field.setUICallback(prepareFrame);
+	field.setUICallback(prepareFrame);
 	// field.setDisplayFunction(toggleDisplayFunction(canvas, 0));
 
 	pong = new Pong(canvas);
