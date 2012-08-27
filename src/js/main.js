@@ -9,7 +9,7 @@ var L = 75;
 
 var distanceRotators = [ 0, 201, 401 ];
 
-function multiplayer() {
+function multiplayer() {	
 
 	if ( pong.ai.multiplayer )
 

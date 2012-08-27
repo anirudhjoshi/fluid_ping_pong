@@ -14,13 +14,19 @@ a:hover {color:#e55e5f;}  /* mouse over link */
 a:active {color:#e55e5f;}  /* selected link */
 
 .clear {
+
     clear: both;
+
 }
 
 #container {
 
 	float: center;
-	margin: 0 auto;
+    margin: 0 auto;
+    width: 100em;
+    margin: 0 auto;    
+	
+
 }
 
 #left {
@@ -50,7 +56,6 @@ a:active {color:#e55e5f;}  /* selected link */
 
 }
 
-
 	
 canvas {
 
@@ -58,9 +63,8 @@ canvas {
 	
 }
 
-
-
 #key {
+
     padding: 0.5em;
     margin: 0.1em;
     background: #FFFFCC;
@@ -74,6 +78,7 @@ canvas {
 }
 
 #row {
+
     text-align: center;      
     color: #151924;
  
@@ -107,13 +112,22 @@ canvas {
 }
 
 /*http://dominoc925.blogspot.com.au/2011/10/how-to-align-facebook-like-button-with.html*/
+
 #sidebar #social {
+
     margin: 10px;
+
 }    
+
 div .plusone, .twitter, .fb-like {
+
     font-size: 1px;
     display: inline-block;
+
 }
+
 div .fb_reset {
+
     display: inline;
+
 } 
