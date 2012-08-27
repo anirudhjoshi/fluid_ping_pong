@@ -5,39 +5,6 @@ var clear_id;
 var running = false;
 var canvas = document.getElementById("canvas");
 
-// var beep = new Audio("./assets/beep.wav"); // buffers automatically when created
-// var ball_pop = new Audio("./assets/ball_pop.wav"); // buffers automatically when created
-// var button_press = new Audio("./assets/button_press.wav"); // buffers automatically when created
-// var button_select1 = new Audio("./assets/button_select1.wav"); // buffers automatically when created
-// var button_select2 = new Audio("./assets/button_select2.wav"); // buffers automatically when created
-// var jet_shoot = new Audio("./assets/jet_shoot.wav"); // buffers automatically when created
-// var paddle_blast = new Audio("./assets/paddle_blast.wav"); // buffers automatically when created
-// var paddle_hit = new Audio("./assets/paddle_hit.wav"); // buffers automatically when created
-// var paddle_suck = new Audio("./assets/paddle_suck.wav"); // buffers automatically when created
-// var wall_hit = new Audio("./assets/wall_hit.wav"); // buffers automatically when created
-// var battle_loop = new Audio("./assets/battle_loop.mp3"); // buffers automatically when created
-// var intro_loop = new Audio("./assets/intro_loop.mp3"); // buffers automatically when created
-
-
-
-// battle_loop.loop = true;
-// intro_loop.loop = true;
-
-// intro_loop.play();
-
-// battle_loop.play();
-
-// beep.play();
-// ball_pop.play();
-// button_press.play();
-// button_select1.play();
-// button_select2.play();
-// jet_shoot.play();
-// paddle_blast.play();
-// paddle_hit.play();
-// paddle_suck.play();
-// wall_hit.play();
-
 var L = 75;
 
 var distanceRotators = [ 0, 201, 401 ];
