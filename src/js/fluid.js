@@ -44,7 +44,7 @@ if ( this.CanvasRenderingContext2D && !CanvasRenderingContext2D.createImageData 
     
 }
 
-function FluidField(canvas) {
+function Fluid(canvas) {
     // Add fields x and s together over dt
     function addFields(x, s, dt) {
 
@@ -577,12 +577,7 @@ function FluidField(canvas) {
         return false;
     }
 
-    this.buffer = null;
 
-}
-
-(function () {
-    
     // Store the alpha blending data in a unsigned array
     var buffer;
     var bufferData;
@@ -650,6 +645,9 @@ function FluidField(canvas) {
         // console.log( field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7 )
         // Continously buffer data to reduce computation overhead
         prepareBuffer(field);        
+
+        pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 5;
+        pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 5;          
 
         if (bufferData) {
             
@@ -756,7 +754,7 @@ function FluidField(canvas) {
         
     }
     
-    toggleDisplayFunction = function( canvas, showVectors ) {
+    this.toggleDisplayFunction = function( canvas, showVectors ) {
 
         if (showVectors) {
             
@@ -776,5 +774,5 @@ function FluidField(canvas) {
         return displayDensity;
         
     }
-    
-})();
+
+}
