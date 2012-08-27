@@ -38,52 +38,32 @@ function Pong(canvas) {
 	this.speed_increase = 0.7;
 	this.speed = 1;
 
-	this.ball = {
-		"x" : 0,
-		"y" : 0,
-		"xo" : 0,
-		"yo" : 0,
-		"out" : false,
-		"radius": 0,
-		"speed": 1,
-		"color" : "red",
-		"vx" : 0,
-		"vy" : 0,
-		"ax" : 0.001,
-		"ay" : 0.001
+	var player = function () {
+
+		this.push = true;
+		this.suck = false;
+		this.stream = [ 0, 0, 0];
+		this.multiplayer = false;
+		this.x  = 0;
+		this.y  = 0;
+		this.width  = 0;
+		this.height  = 0;
+		this.color  = "red";
+		this.vx  = 0;
+		this.vy  = 0;
+		this.ax  = 0;
+		this.ay  = 0;
+		this.xo  = 0;
+		this.yo  = 0;
+		this.out  = false;
+		this.radius = 0;
+		this.speed = 1
+
 	};
 
-	this.ai = {
-		"push": true,
-		"suck": false,
-		"stream": [ 0, 0, 0],
-		"multiplayer": false,
-		"x" : 0,
-		"y" : 0,
-		"width" : 0,
-		"height" : 0,
-		"color" : "red",
-		"vx" : 0,
-		"vy" : 0,
-		"ax" : 0,
-		"ay" : 0
-	};
-
-	this.player = {
-		"push": false,
-		"suck": false,
-		"explode": false,
-		"stream": [ 0, 0, 0],
-		"x" : 0,
-		"y" : 0,
-		"width" : 0,
-		"height" : 0,
-		"color" : "red",
-		"vx" : 0,
-		"vy" : 0,
-		"ax" : 0,
-		"ay" : 0
-	};
+	this.ball = new player();
+	this.ai = new player();
+	this.player = new player();
 
 	this.updatePlayer = function () {
 
