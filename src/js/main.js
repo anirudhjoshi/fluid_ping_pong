@@ -32,14 +32,14 @@ function multiplayer() {
 
 function restart() {
 
- 	pong.clear();
-
  	field.reset();
 
+	pong.display = false;
 	pong.init();
 
+ 	pong.clear();
+
 	run_coul = true;
-	pong.display = false;
 
 }
 
@@ -76,9 +76,14 @@ function explosion(  ) {
 
 var counter = 0;
 var suck_counter_1 = 100;
+var fps = 0;
 
 function prepareFrame(field) {
 
+	if ( fps == 60)
+		fps = 0;
+
+	fps++;
 
 	var player_ab = rotator( distanceRotators[0] );
 	var ai_ab = rotator( distanceRotators[1] );
@@ -164,7 +169,11 @@ function prepareFrame(field) {
 		// paddle_blast.play();
 		
 
-	}				
+	}			
+
+	if ( suck_counter_1 < 100 && fps % 10 == 1 )	{
+		suck_counter_1 += 2;
+	}
 
 	if ( pong.ai.push ) {
 
@@ -341,12 +350,27 @@ var symbols = [3,2,1, "GO!"];
 
 var coul_switch = true;
 var run_coul = true;
+var cout_color = [];
 
 function count_down(){
 
 		coul++;
 
+		if (cout_color.length == 0){
+			cout_color = pong.ai.color;
+		}
+
 		if ( coul == 60 * 1 ){
+
+			if (coul_incr % 2 == 0){
+
+				cout_color = pong.player.color;
+				
+			} else {
+				cout_color = pong.ai.color;
+			}
+
+			console.log( coul_incr, coul_incr % 2, cout_color, pong.player.color );
 
 			coul = 0;
 			coul_incr++;
@@ -358,11 +382,13 @@ function count_down(){
   			coul_incr = 0;
   			run_coul = false;
 
-  			pong.clear();
-
   			field.reset();
-  			pong.init();
-			pong.display = true;  			
+
+  			pong.display = true;
+  			pong.player.suck = false;
+  			pong.init();  			
+
+  			pong.clear();
 			
   			return;
 
@@ -382,11 +408,16 @@ function count_down(){
 	  	ctx.fillStyle = "black";
 	  	ctx.fillText(symbols[coul_incr], half_width - 1, half_height + 2);			
 
-	  	ctx.fillStyle = "white";
+	  	ctx.fillStyle = arrayToRGBA( cout_color );
 	  	ctx.font = "bold 32px Arial";
 	  	ctx.fillText(symbols[coul_incr], half_width, half_height);	
 
 
+}
+
+function arrayToRGBA( a ){
+
+	return "rgb(" + Math.floor( a[0] ) + "," + Math.floor( a[1] ) + "," + Math.floor( a[2] ) + ")";
 }
 
 function updateFrame() {
@@ -401,6 +432,13 @@ function updateFrame() {
 
 		field.update();    
 		pong.loop();
+
+		ctx.fillStyle = "black";
+		ctx.fillRect(0,1,canvas.width/ 2, 4);		
+
+		ctx.fillStyle = arrayToRGBA( pong.ai.color );
+		ctx.fillRect(1,2, canvas.width/ 2 * suck_counter_1 / 100 - 2, 2);		
+
 
 		if ( run_coul ){
 
@@ -421,9 +459,8 @@ function updateRes( r ) {
 		canvas.height = r;
 		fieldRes = r;
 		field.setResolution(r, r);
+		pong.display = false;
         pong.init(); 
-
-    	pong.display = false;
 
 }
 
@@ -483,4 +520,5 @@ function begin() {
 }
 
 
-window.onload = begin;
+begin();
+// window.onload = begin;
