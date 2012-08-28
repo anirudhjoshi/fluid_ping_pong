@@ -79,6 +79,7 @@ var suck_counter_1 = 100;
 var fps = 0;
 
 var suck_on = false;
+var ball_caught = false;
 
 function prepareFrame(field) {
 
@@ -142,19 +143,9 @@ function prepareFrame(field) {
 		}
 	}
 
-	console.log( suck_on );
+	// console.log( suck_on );
 	
-	if ( pong.player.suck ) {
-
-		if ( suck_counter_1 == 0 && suck_on ){
-
-			field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 5000, 0 );				
-			field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );			
-
-			suck_on = false;
-			console.log( "BOOM!");
-
-		}				
+	if ( pong.player.suck ) {			
 
 		if ( !suck_on && suck_counter_1 > 30 ) {
 
@@ -162,31 +153,49 @@ function prepareFrame(field) {
 
 		}
 
+		// make proportional power
+
 		if ( suck_on ) {
 
 			var straight_line_dist = pong.distance(pong.player, pong.ball );
 
 			if ( Math.abs( straight_line_dist ) < 20 ) {
 
+				ball_caught = true;
+
 				pong.ball.x = pong.player.x + 10 + Math.random();
 				pong.ball.y = pong.player.y + pong.player.height / 2 + Math.random();
 				pong.ball.vx = 0;
 				pong.ball.vy = 0;
 
-			}		
+				suck_counter_1--;				
 
-			suck_counter_1--;
+				if ( suck_counter_1 == 0 ){
+
+					field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 5000, 0 );				
+					field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );			
+
+					suck_on = false;
+					ball_caught = false;
+					console.log( "BOOM!");
+
+				}					
+
+			}		
 
 		}
 
 	}			
 
-	if ( suck_on && !pong.player.suck ){
+	console.log( suck_counter_1 );
+
+	if ( suck_on && !pong.player.suck && ball_caught ){
 
 		field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 5000, 0 );				
-		field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );			
+		field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );
 
 		suck_on = false;		
+		ball_caught = false;
 
 		console.log( "BOOM!");
 
@@ -203,32 +212,17 @@ function prepareFrame(field) {
 
 		field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -50, 0 );	
 		field.setDensityRGB( Math.floor( pong.ai.x + pong.ai.width / 2  ) , Math.floor( pong.ai.y + pong.ai.height / 2 ), pong.ai.color );				
-
-		 // jet_shoot.play();
 		
 	}	
 
 	if ( pong.ai.suck ) {
 
 		field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -1000, 0 );	
-		
-		// paddle_blast.play();
-		// field.setVelocity( Math.floor( ai.x - ai.width / 2 - 20  ), Math.floor( ai.y + ai.height / 2 ), 50, 0 );	
-		// field.setDensityRGB( Math.floor( ai.x - ai.width / 2 - 20 ) , Math.floor( ai.y + ai.height / 2 ), [500,500,500]);
 
 	}
 
-    // Stop using global variables - add accessors
-    // console.log( field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) * 7000 )
-    // var temp = pong.ball.vy;
-
-    pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );
-    pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );	
-
-    // console.log( pong.ball.vy, temp )
-    // console.log( pong.ball.vx );
-
-
+    // pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );
+    // pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );	
 
 }
 
@@ -287,29 +281,29 @@ function startAnimation() {
 	return;
 	
 } 
-    // shim layer with setTimeout fallback
-    window.requestAnimFrame = (function(){
-      return  window.requestAnimationFrame       || 
-              window.webkitRequestAnimationFrame || 
-              window.mozRequestAnimationFrame    || 
-              window.oRequestAnimationFrame      || 
-              window.msRequestAnimationFrame     || 
-              function( callback ){
-                window.setTimeout(callback, 1000 / 60);
-              };
-    })();
- 
- 
-    // usage: 
-    // instead of setInterval(render, 16) ....
- 
-    (function animloop(){
+// shim layer with setTimeout fallback
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       || 
+          window.webkitRequestAnimationFrame || 
+          window.mozRequestAnimationFrame    || 
+          window.oRequestAnimationFrame      || 
+          window.msRequestAnimationFrame     || 
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
 
-      requestAnimFrame(animloop);
 
-      updateFrame();
+// usage: 
+// instead of setInterval(render, 16) ....
 
-    })();
+(function animloop(){
+
+  requestAnimFrame(animloop);
+
+  updateFrame();
+
+})();
 
 // The higher this value, the less the fps will reflect temporary variations
 // A value of 1 will only keep the last value
@@ -458,13 +452,13 @@ function updateFrame() {
 		pong.loop();
 
 		ctx.fillStyle = "black";
-		ctx.fillRect(0,1,canvas.width/ 2, 4);		
-
-		ctx.fillRect(canvas.width / 2,1,canvas.width/ 2, 4);		
+		ctx.fillRect(0,1, canvas.width, 4);		
 
 		ctx.fillStyle = arrayToRGBA( pong.ai.color );
-		ctx.fillRect(1,2, canvas.width/ 2 * suck_counter_1 / 100 - 2, 2);
+		ctx.fillRect(1,2, ( canvas.width/ 2 - 2 ) * suck_counter_1 / 100, 2);
 
+		ctx.fillStyle = arrayToRGBA( pong.player.color );	
+		ctx.fillRect(canvas.width / 2 + ( canvas.width/ 2 - 2 ) * ( 1 - suck_counter_1 / 100 ),2, ( canvas.width/ 2 - 2 ) * suck_counter_1 / 100, 2);
 
 		if ( run_coul ){
 
@@ -545,6 +539,4 @@ function begin() {
 	startAnimation();
 }
 
-
 begin();
-// window.onload = begin;
