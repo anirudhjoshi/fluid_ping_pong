@@ -237,14 +237,14 @@ function Pong(canvas) {
 
 	this.updateBall = function (){
 
-		if ( ( Math.abs( this.ball.x  - this.player.x ) < Math.abs( this.ball.vx ) && this.player.y < this.ball.y + 0.1 * this.player.height && this.ball.y < this.player.y + 1.1 * this.player.height ) ) {
+		if ( ( Math.abs( this.ball.x - this.player.x ) < Math.abs( this.ball.vx ) && this.player.y < this.ball.y + 0.1 * this.player.height && this.ball.y < this.player.y + 1.1 * this.player.height ) ) {
 			this.theta = ((this.player.y + this.player.height/2) - this.ball.y ) / ( this.player.height  /  2 );
 			this.ball.vx = this.ball.speed * Math.cos(this.theta);
 			this.ball.vy = -this.ball.speed * Math.sin(this.theta);
 
 		}
 		
-		if ( ( Math.abs(this.ball.x - this.ai.x) < this.ball.vx && this.ball.y > this.ai.y && this.ball.y < this.ai.y + this.ai.height ) ) {
+		if ( ( Math.abs(this.ball.x - this.ai.x) < Math.abs( this.ball.vx ) && this.ai.y < this.ball.y + this.ai.height && this.ball.y < this.ai.y + this.ai.height ) ) {
 
 			this.theta = ((this.ai.y + this.ai.height/2) - this.ball.y ) / ( this.ai.height  /  2 );
 			this.ball.vx = -this.ball.speed * Math.cos(this.theta);
@@ -260,7 +260,8 @@ function Pong(canvas) {
 
 
 		// x
-		if ( ( this.ball.x < 0 && this.ball.vx < 0 ) || ( this.ball.x + this.ball.radius > this.ctx.canvas.width && this.ball.vx > 0 ) ) {
+		// + this.ball.radius
+		if ( ( this.ball.x < 0 && this.ball.vx < 0 ) || ( this.ball.x > this.ctx.canvas.width && this.ball.vx > 0 ) ) {
 
 			this.ball.xo = this.ball.x;
 			this.ball.yo = this.ball.y;
