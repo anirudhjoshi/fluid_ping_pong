@@ -12,14 +12,21 @@ var distanceRotators = [ 0, 201, 401 ];
 
 function multiplayer() {	
 
-	if ( pong.ai.multiplayer )
+	if ( pong.ai.multiplayer ){
 
 		pong.ai.multiplayer = false;
+		pong.ai.push = true;
+		document.getElementById("multiplayer").innerHTML = "Begin Multiplayer"
 
-	else
+	} else {
 
 		pong.ai.multiplayer = true;
-		pong.ai.push = true;
+
+		document.getElementById("multiplayer").innerHTML = "Begin Single Player"
+
+	}		
+
+	restart();
 
 }
 
