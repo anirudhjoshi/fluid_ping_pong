@@ -78,6 +78,8 @@ var counter = 0;
 var suck_counter_1 = 100;
 var fps = 0;
 
+var suck_on = false;
+
 function prepareFrame(field) {
 
 	if ( fps == 60)
@@ -128,7 +130,7 @@ function prepareFrame(field) {
 	}
 
 	field.setDensityRGB( x, Math.floor( pong.ball.yo + pong.ball.radius / 2 ), pong.ball.color );				
-	field.setVelocity( x, Math.floor( pong.ball.yo + pong.ball.radius / 2 ), mult*1000, 0 );		
+	field.setVelocity( x, Math.floor( pong.ball.yo + pong.ball.radius / 2 ), mult*500, 0 );		
 
 		counter++;
 
@@ -139,40 +141,62 @@ function prepareFrame(field) {
 
 		}
 	}
+
+	console.log( suck_on );
 	
 	if ( pong.player.suck ) {
-		
-		var straight_line_dist = pong.distance(pong.player, pong.ball );
 
-		if ( suck_counter_1 > 90 & suck_counter_1 <= 100  ) {
+		if ( suck_counter_1 == 0 && suck_on ){
 
-			// player.explode = true;
-			field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 1000, 0 );				
-			field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );
-			straight_line_dist = 100;
+			field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 5000, 0 );				
+			field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );			
 
-		} else if ( suck_counter_1 == 0 ){
+			suck_on = false;
+			console.log( "BOOM!");
 
-			suck_counter_1 = 100;
+		}				
+
+		if ( !suck_on && suck_counter_1 > 30 ) {
+
+			suck_on = true;
+
 		}
 
-		if ( straight_line_dist < 20 ) {
+		if ( suck_on ) {
 
-			pong.ball.x = pong.player.x + 10 + Math.random();
-			pong.ball.y = pong.player.y + pong.player.height / 2 + Math.random();
-			pong.ball.vx = 0;
-			pong.ball.vy = 0;
-		}		
+			var straight_line_dist = pong.distance(pong.player, pong.ball );
 
-		// console.log( suck_counter_1 )
+			if ( Math.abs( straight_line_dist ) < 20 ) {
+
+				pong.ball.x = pong.player.x + 10 + Math.random();
+				pong.ball.y = pong.player.y + pong.player.height / 2 + Math.random();
+				pong.ball.vx = 0;
+				pong.ball.vy = 0;
+
+			}		
+
 			suck_counter_1--;
-		// paddle_blast.play();
-		
+
+		}
 
 	}			
 
+	if ( suck_on && !pong.player.suck ){
+
+		field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 5000, 0 );				
+		field.setDensityRGB( 0, Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color );			
+
+		suck_on = false;		
+
+		console.log( "BOOM!");
+
+
+	}
+
 	if ( suck_counter_1 < 100 && fps % 10 == 1 )	{
+
 		suck_counter_1 += 2;
+
 	}
 
 	if ( pong.ai.push ) {
@@ -370,7 +394,7 @@ function count_down(){
 				cout_color = pong.ai.color;
 			}
 
-			console.log( coul_incr, coul_incr % 2, cout_color, pong.player.color );
+			// console.log( coul_incr, coul_incr % 2, cout_color, pong.player.color );
 
 			coul = 0;
 			coul_incr++;
