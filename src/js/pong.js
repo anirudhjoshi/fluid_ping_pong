@@ -311,10 +311,18 @@ function Pong(canvas) {
 
 	this.update = function(){
 
-		this.updatePlayer();
-		this.updateAi();
-		this.updateBall();		
+		if ( this.display ){
 
+			this.updatePlayer();
+			this.updateAi();
+			this.updateBall();			
+
+		} else {
+
+			this.player.push = true;
+			this.ai.push = true;
+
+		}
 
 	};
 

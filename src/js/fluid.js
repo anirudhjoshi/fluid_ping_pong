@@ -646,8 +646,12 @@ function Fluid(canvas) {
         // Continously buffer data to reduce computation overhead
         prepareBuffer(field);        
 
-        pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 5;
-        pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 5;          
+        if ( pong.display ){
+        
+            pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 5;
+            pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 5;          
+            
+        }
 
         if (bufferData) {
             

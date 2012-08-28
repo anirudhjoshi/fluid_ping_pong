@@ -25,7 +25,14 @@ function multiplayer() {
 
 function restart() {
 
- begin();
+ 	pong.clear();
+
+ 	field.reset();
+
+	pong.init();
+
+	run_coul = true;
+	pong.display = false;
 
 }
 
@@ -65,24 +72,13 @@ var suck_counter_1 = 100;
 
 function prepareFrame(field) {
 
-	// var field = abs;
-	// console.log(abs)
 
-    // console.log( field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) ) / 7 )
-
-	// console.log( Math.ceil( ball.vx ), Math.ceil(ball.vy));
-	// console.log( ball.vx, ball.vy );
-
-	// field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( -ball.vy ) * 2, Math.ceil( ball.vx ) * 2   );	
-	// // field.setVelocity( Math.floor( ball.x + ball.width / 2 ), Math.floor( ball.y + ball.height / 2 ), Math.ceil( ball.vy ) * 2, Math.ceil( -ball.vx ) * 2  );	
 	var player_ab = rotator( distanceRotators[0] );
 	var ai_ab = rotator( distanceRotators[1] );
 	var ball_ab = rotator( distanceRotators[2] );
 
 	pong.player.color = cielabToRGB( L, player_ab[0], player_ab[1], [0.9642, 1, 0.8249 ] )
-
 	pong.ai.color = cielabToRGB( L, ai_ab[0], ai_ab[1], [0.9642, 1, 0.8249 ] )
-	// player.color = player.stream;
 	pong.ball.color = cielabToRGB( L, ball_ab[0], ball_ab[1], [0.9642, 1, 0.8249 ] )	
 
 	for ( var i = 0; i < 3; i++ ){
@@ -98,26 +94,12 @@ function prepareFrame(field) {
 
 	}
 
-	// ai.stream = player.stream;
-	// ball.stream = player.stream;
-
-	// ai.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
-	// player.color = cielabToRGB( L, distanceRotator, distanceRotator, [0.9642, 1, 0.8249 ] )
-
 	field.setDensityRGB( Math.floor( pong.ball.x + pong.ball.radius / 2  ) , Math.floor( pong.ball.y + pong.ball.radius / 2 ), pong.ball.color );				
-
-    // var RGB2 = cielabToRGB( 0, RGB[0], 0, [0.9642, 1, 0.8249 ] );
-	// var RGB3 = cielabToRGB( 0, 0, RGB[1], [0.9642, 1, 0.8249 ] );
-    // var RGB4 = cielabToRGB( RGB[2], 0, 0, [0.9642, 1, 0.8249 ] );	
-	// field.setDensityG( Math.floor( ball.x  ) , Math.floor( ball.y ), 100);				
-	// field.setDensity( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 100);				
 	
 	if ( pong.player.push ) {
 
 		field.setVelocity( Math.floor( pong.player.x + pong.player.width / 2 ), Math.floor( pong.player.y + pong.player.height / 2 ), 50, 0 );	
 		field.setDensityRGB( Math.floor( pong.player.x + pong.player.width / 2  ) , Math.floor( pong.player.y + pong.player.height / 2 ), pong.player.color);				
-
-		 // jet_shoot.play();
 		
 	}
 
@@ -204,8 +186,6 @@ function prepareFrame(field) {
     pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );	
 
     // console.log( pong.ball.vy, temp )
-    
-
     // console.log( pong.ball.vx );
 
 
@@ -368,8 +348,15 @@ function count_down(){
 
 	  	if ( coul_incr == 4 ){
 
-  			// coul_incr = 0;
+  			coul_incr = 0;
   			run_coul = false;
+
+  			pong.clear();
+
+  			field.reset();
+  			pong.init();
+			pong.display = true;  			
+			
   			return;
 
 		}
@@ -412,11 +399,7 @@ function updateFrame() {
 
 			count_down();
 
-		} else {
-
-			pong.display = true;
-
-		}        
+		}
 
 	}
 	
@@ -432,7 +415,8 @@ function updateRes( r ) {
 		fieldRes = r;
 		field.setResolution(r, r);
         pong.init(); 
-        pong.display = false;
+
+    	pong.display = false;
 
 }
 
