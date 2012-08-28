@@ -460,8 +460,10 @@ function updateFrame() {
 		ctx.fillStyle = "black";
 		ctx.fillRect(0,1,canvas.width/ 2, 4);		
 
+		ctx.fillRect(canvas.width / 2,1,canvas.width/ 2, 4);		
+
 		ctx.fillStyle = arrayToRGBA( pong.ai.color );
-		ctx.fillRect(1,2, canvas.width/ 2 * suck_counter_1 / 100 - 2, 2);		
+		ctx.fillRect(1,2, canvas.width/ 2 * suck_counter_1 / 100 - 2, 2);
 
 
 		if ( run_coul ){
