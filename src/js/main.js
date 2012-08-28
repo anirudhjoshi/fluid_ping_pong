@@ -4,6 +4,7 @@ var fieldRes;
 var clear_id;
 var running = false;
 var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
 
 var L = 75;
 
@@ -207,6 +208,8 @@ function prepareFrame(field) {
 
     // console.log( pong.ball.vx );
 
+
+
 }
 
 function switchAnimation() {
@@ -344,6 +347,53 @@ function run_benchmark() {
 	avg_index++;
 
 }
+var coul = 0;
+var coul_incr = 0;
+
+var symbols = [3,2,1, "GO!"];
+
+var coul_switch = true;
+var run_coul = true;
+
+function count_down(){
+
+		coul++;
+
+		if ( coul == 60 * 1 ){
+
+			coul = 0;
+			coul_incr++;
+
+		}
+
+	  	if ( coul_incr == 4 ){
+
+  			// coul_incr = 0;
+  			run_coul = false;
+  			return;
+
+		}
+
+		var half_width = canvas.width / 2 - 8;
+		var half_height = canvas.width / 2 + 16;
+
+		if ( coul_incr == 3 ){
+
+			half_width -= 16;
+
+		}
+
+
+	  	ctx.font = "bold 34px Arial";
+	  	ctx.fillStyle = "black";
+	  	ctx.fillText(symbols[coul_incr], half_width - 1, half_height + 2);			
+
+	  	ctx.fillStyle = "white";
+	  	ctx.font = "bold 32px Arial";
+	  	ctx.fillText(symbols[coul_incr], half_width, half_height);	
+
+
+}
 
 function updateFrame() {
 	
@@ -355,8 +405,18 @@ function updateFrame() {
 
 		}
 
-		field.update();                    
+		field.update();    
 		pong.loop();
+
+		if ( run_coul ){
+
+			count_down();
+
+		} else {
+
+			pong.display = true;
+
+		}        
 
 	}
 	
@@ -372,6 +432,7 @@ function updateRes( r ) {
 		fieldRes = r;
 		field.setResolution(r, r);
         pong.init(); 
+        pong.display = false;
 
 }
 

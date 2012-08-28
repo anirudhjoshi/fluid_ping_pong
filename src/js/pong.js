@@ -38,6 +38,8 @@ function Pong(canvas) {
 	this.speed_increase = 0.7;
 	this.speed = 1;
 
+	this.display = true;
+
 	var player = function () {
 
 		this.push = true;
@@ -369,9 +371,13 @@ function Pong(canvas) {
 
 	this.render = function() {
 
-		this.drawPlayer( this.player );
-		this.drawPlayer( this.ai );                    
-		this.drawBall( this.ball );
+		if ( this.display ){
+
+			this.drawPlayer( this.player );
+			this.drawPlayer( this.ai );                    
+			this.drawBall( this.ball );
+
+		}
 
 	};
 
