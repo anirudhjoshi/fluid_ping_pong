@@ -76,10 +76,14 @@ function explosion(  ) {
 
 var counter = 0;
 var suck_counter_1 = 100;
+var suck_counter_2 = 100;
 var fps = 0;
 
 var suck_on = false;
 var ball_caught = false;
+
+var suck_on2 = false;
+var ball_caught2 = false;
 
 function prepareFrame(field) {
 
@@ -187,7 +191,7 @@ function prepareFrame(field) {
 
 	}			
 
-	console.log( suck_counter_1 );
+	// console.log( suck_counter_1 );
 
 	if ( suck_on && !pong.player.suck && ball_caught ){
 
@@ -215,11 +219,74 @@ function prepareFrame(field) {
 		
 	}	
 
-	if ( pong.ai.suck ) {
+	// if ( pong.ai.suck ) {
 
-		field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -1000, 0 );	
+	// 	field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -1000, 0 );	
+
+	// }
+
+	if ( pong.ai.suck ) {			
+
+		if ( !suck_on2 && suck_counter_2 > 30 ) {
+
+			suck_on2 = true;
+
+		}
+
+		// make proportional power
+
+		if ( suck_on2 ) {
+
+			var straight_line_dist = pong.distance(pong.ai, pong.ball );
+
+			if ( Math.abs( straight_line_dist ) < 20 ) {
+
+				ball_caught2 = true;
+
+				pong.ball.x = pong.ai.x - 10 + Math.random();
+				pong.ball.y = pong.ai.y + pong.ai.height / 2 + Math.random();
+				pong.ball.vx = 0;
+				pong.ball.vy = 0;
+
+				suck_counter_2--;				
+
+				if ( suck_counter_2 == 0 ){
+
+					field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -5000, 0 );	
+					field.setDensityRGB( Math.floor( pong.ai.x + pong.ai.width / 2  ) , Math.floor( pong.ai.y + pong.ai.height / 2 ), pong.ai.color );				
+
+					suck_on2 = false;
+					ball_caught2 = false;
+					console.log( "BOOM!");
+
+				}					
+
+			}		
+
+		}
+
+	}			
+
+	// console.log( suck_counter_2 );
+
+	if ( suck_on2 && !pong.ai.suck && ball_caught2 ){
+
+		field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -5000, 0 );	
+		field.setDensityRGB( Math.floor( pong.ai.x + pong.ai.width / 2  ) , Math.floor( pong.ai.y + pong.ai.height / 2 ), pong.ai.color );				
+
+		suck_on2 = false;		
+		ball_caught2 = false;
+
+		console.log( "BOOM!");
+
 
 	}
+
+	if ( suck_counter_2 < 100 && fps % 10 == 1 )	{
+
+		suck_counter_2 += 2;
+
+	}	
 
     // pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );
     // pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );	
@@ -458,7 +525,7 @@ function updateFrame() {
 		ctx.fillRect(1,2, ( canvas.width/ 2 - 2 ) * suck_counter_1 / 100, 2);
 
 		ctx.fillStyle = arrayToRGBA( pong.player.color );	
-		ctx.fillRect(canvas.width / 2 + ( canvas.width/ 2 - 2 ) * ( 1 - suck_counter_1 / 100 ),2, ( canvas.width/ 2 - 2 ) * suck_counter_1 / 100, 2);
+		ctx.fillRect(canvas.width / 2 + ( canvas.width/ 2 - 2 ) * ( 1 - suck_counter_2 / 100 ),2, ( canvas.width/ 2 - 2 ) * suck_counter_2 / 100, 2);
 
 		if ( run_coul ){
 
