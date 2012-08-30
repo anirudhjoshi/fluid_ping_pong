@@ -258,10 +258,6 @@ function Pong(canvas) {
 
 		}
 
-
-
-		console.log( this.ball.y, this.ball.vy, this.theta );
-
 		// x
 		// + this.ball.radius
 		if ( ( this.ball.x < 0 && this.ball.vx < 0 ) || ( this.ball.x > this.ctx.canvas.width && this.ball.vx > 0 ) ) {

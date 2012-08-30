@@ -181,7 +181,6 @@ function prepareFrame(field) {
 
 					suck_on = false;
 					ball_caught = false;
-					console.log( "BOOM!");
 
 				}					
 
@@ -200,8 +199,6 @@ function prepareFrame(field) {
 
 		suck_on = false;		
 		ball_caught = false;
-
-		console.log( "BOOM!");
 
 
 	}
@@ -265,7 +262,6 @@ function prepareFrame(field) {
 					suck_on2 = false;
 					pong.ai.suck = false;
 					ball_caught2 = false;
-					console.log( "BOOM!");
 
 				}					
 
@@ -288,9 +284,6 @@ function prepareFrame(field) {
 
 		suck_on2 = false;		
 		ball_caught2 = false;
-
-		console.log( "BOOM!");
-
 
 	}
 
