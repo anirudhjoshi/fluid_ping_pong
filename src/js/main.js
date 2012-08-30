@@ -237,7 +237,17 @@ function prepareFrame(field) {
 
 			var straight_line_dist = pong.distance(pong.ai, pong.ball );
 
-			if ( Math.abs( straight_line_dist ) < 15 ) {
+			var aval = 20;
+
+			if ( !pong.ai.multiplayer ){
+
+				aval = 15;
+
+			}			
+
+
+
+			if ( Math.abs( straight_line_dist ) < aval  ) {
 
 				ball_caught2 = true;
 
@@ -246,9 +256,17 @@ function prepareFrame(field) {
 				pong.ball.vx = 0;
 				pong.ball.vy = 0;
 
-				suck_counter_2--;				
+				suck_counter_2--;		
 
-				if ( suck_counter_2 <= 80 ){
+				var val = 0;		
+
+				if ( !pong.ai.multiplayer ){
+
+					val = 80;
+
+				}
+
+				if ( suck_counter_2 <= val ){
 
 					field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -5000, 0 );	
 					field.setDensityRGB( Math.floor( pong.ai.x + pong.ai.width / 2  ) , Math.floor( pong.ai.y + pong.ai.height / 2 ), pong.ai.color );				
@@ -290,10 +308,10 @@ function drawLives(){
 		ctx.fillStyle = "black";
 		ctx.fillRect(0,canvas.height - 5, canvas.width, 4);		
 
-		ctx.fillStyle = arrayToRGBA( pong.player.color );
+		ctx.fillStyle = arrayToRGBA( pong.ai.color );			
 		ctx.fillRect(canvas.width / 2 + ( canvas.width/ 2 ) * ( 1 - pong.ai.life / 5 ),canvas.height - 4, ( canvas.width/ 2 - 1 ) * pong.ai.life / 5, 2);
 
-		ctx.fillStyle = arrayToRGBA( pong.ai.color );	
+		ctx.fillStyle = arrayToRGBA( pong.player.color );
 		ctx.fillRect(1,canvas.height - 4, ( canvas.width/ 2 - 2 ) * pong.player.life / 5, 2);	
 
 }
