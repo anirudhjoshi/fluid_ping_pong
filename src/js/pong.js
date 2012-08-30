@@ -252,12 +252,15 @@ function Pong(canvas) {
 		}
 
 		// y
-		if ( ( this.ball.y < 0 && this.ball.vy <= 0 ) || ( this.ball.y + this.ball.radius > this.ctx.canvas.height && this.ball.vy >= 0 ) ) {
-		
+		if ( ( this.ball.y + this.ball.vy < 0 && this.ball.vy < 0 ) || ( this.ball.y + this.ball.radius + this.ball.vy > this.ctx.canvas.height && this.ball.vy > 0 ) ) {
+			
 			this.ball.vy = -this.ball.vy;
 
 		}
 
+
+
+		console.log( this.ball.y, this.ball.vy, this.theta );
 
 		// x
 		// + this.ball.radius
