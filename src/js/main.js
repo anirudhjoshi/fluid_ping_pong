@@ -65,18 +65,10 @@ function rotator( a ) {
 var field;
 var pong;
 
-function explosion(  ) {
-
-	
-	// field.setDensityRGB( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), ball.color );				
-	// field.setVelocity( Math.floor( ball.x + ball.width / 2  ) , Math.floor( ball.y + ball.height / 2 ), 1000, 0 );	
-
-
-}
-
 var counter = 0;
 var suck_counter_1 = 100;
 var suck_counter_2 = 100;
+
 var fps = 0;
 
 var suck_on = false;
@@ -87,8 +79,16 @@ var ball_caught2 = false;
 
 function prepareFrame(field) {
 
-	if ( fps == 60)
+	if ( fps == 60){
+
 		fps = 0;
+
+	}		
+
+	if ( pong.player.life == 0 || pong.ai.life == 0 ){
+
+		restart();
+	}
 
 	fps++;
 
@@ -146,8 +146,6 @@ function prepareFrame(field) {
 
 		}
 	}
-
-	// console.log( suck_on );
 	
 	if ( pong.player.suck ) {			
 
@@ -190,8 +188,6 @@ function prepareFrame(field) {
 
 	}			
 
-	// console.log( suck_counter_1 );
-
 	if ( suck_on && !pong.player.suck && ball_caught ){
 
 		field.setVelocity( 0, Math.floor( pong.player.y + pong.player.height / 2 ), 5000, 0 );				
@@ -216,16 +212,14 @@ function prepareFrame(field) {
 		
 	}	
 
-	// if ( pong.ai.suck ) {
+	if ( !pong.ai.multiplayer ){
 
-	// 	field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -1000, 0 );	
-
-	// }
-
-	if ( suck_counter_2 >= 90 ){
+		if ( suck_counter_2 >= 90 ){
 
 
-		pong.ai.suck = true;
+			pong.ai.suck = true;
+
+		}
 
 	}
 
@@ -271,12 +265,6 @@ function prepareFrame(field) {
 
 	}		
 
-	// if ( suck_on2 && Math.random() > 0.5 )	{
-
-	// 	pong.ai.suck = false;
-
-	// }
-
 	if ( suck_on2 && !pong.ai.suck && ball_caught2 ){
 
 		field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -5000, 0 );	
@@ -292,6 +280,21 @@ function prepareFrame(field) {
 		suck_counter_2 += 2;
 
 	}	
+
+	
+
+}
+
+function drawLives(){
+
+		ctx.fillStyle = "black";
+		ctx.fillRect(0,canvas.height - 5, canvas.width, 4);		
+
+		ctx.fillStyle = arrayToRGBA( pong.player.color );
+		ctx.fillRect(canvas.width / 2 + ( canvas.width/ 2 ) * ( 1 - pong.ai.life / 5 ),canvas.height - 4, ( canvas.width/ 2 - 1 ) * pong.ai.life / 5, 2);
+
+		ctx.fillStyle = arrayToRGBA( pong.ai.color );	
+		ctx.fillRect(1,canvas.height - 4, ( canvas.width/ 2 - 2 ) * pong.player.life / 5, 2);	
 
 }
 
@@ -404,8 +407,6 @@ function run_benchmark() {
 
 		}
 
-		// console.log( mini_avg / avg_index, avg_index );  			
-
 		if ( avgs_index > 1 ){
 
 			if ( avgs < 60 ) {
@@ -430,6 +431,7 @@ function run_benchmark() {
 	avg_index++;
 
 }
+
 var coul = 0;
 var coul_incr = 0;
 
@@ -456,8 +458,6 @@ function count_down(){
 			} else {
 				cout_color = pong.ai.color;
 			}
-
-			// console.log( coul_incr, coul_incr % 2, cout_color, pong.player.color );
 
 			coul = 0;
 			coul_incr++;
@@ -499,7 +499,6 @@ function count_down(){
 	  	ctx.font = "bold 32px Arial";
 	  	ctx.fillText(symbols[coul_incr], half_width, half_height);	
 
-
 }
 
 function arrayToRGBA( a ){
@@ -528,6 +527,8 @@ function updateFrame() {
 
 		ctx.fillStyle = arrayToRGBA( pong.player.color );	
 		ctx.fillRect(canvas.width / 2 + ( canvas.width/ 2 ) * ( 1 - suck_counter_2 / 100 ),2, ( canvas.width/ 2 - 1 ) * suck_counter_2 / 100, 2);
+
+		drawLives();
 
 		if ( run_coul ){
 

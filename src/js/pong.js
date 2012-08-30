@@ -42,6 +42,7 @@ function Pong(canvas) {
 
 	var player = function () {
 
+		this.life = 5;
 		this.push = true;
 		this.suck = false;
 		this.stream = [ 0, 0, 0];
@@ -262,6 +263,18 @@ function Pong(canvas) {
 		// + this.ball.radius
 		if ( ( this.ball.x < 0 && this.ball.vx < 0 ) || ( this.ball.x > this.ctx.canvas.width && this.ball.vx > 0 ) ) {
 
+			if ( this.ball.x < 0) {
+
+				this.player.life -= 1;
+
+			}
+
+			if ( this.ball.x > this.ctx.canvas.width){
+
+				this.ai.life -= 1;
+
+			}
+
 			this.ball.xo = this.ball.x;
 			this.ball.yo = this.ball.y;
 
@@ -403,6 +416,9 @@ function Pong(canvas) {
 			screen_width = this.ctx.canvas.width,
 			screen_height= this.ctx.canvas.height;
 		
+		this.player.life = 5;
+		this.ai.life = 5;
+
 		this.ai.width = pong_width;
 		this.ai.height = pong_height;
 		
