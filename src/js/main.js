@@ -225,6 +225,13 @@ function prepareFrame(field) {
 
 	// }
 
+	if ( suck_counter_2 >= 90 ){
+
+
+		pong.ai.suck = true;
+
+	}
+
 	if ( pong.ai.suck ) {			
 
 		if ( !suck_on2 && suck_counter_2 > 30 ) {
@@ -239,7 +246,7 @@ function prepareFrame(field) {
 
 			var straight_line_dist = pong.distance(pong.ai, pong.ball );
 
-			if ( Math.abs( straight_line_dist ) < 20 ) {
+			if ( Math.abs( straight_line_dist ) < 15 ) {
 
 				ball_caught2 = true;
 
@@ -250,12 +257,13 @@ function prepareFrame(field) {
 
 				suck_counter_2--;				
 
-				if ( suck_counter_2 == 0 ){
+				if ( suck_counter_2 <= 80 ){
 
 					field.setVelocity( Math.floor( pong.ai.x + pong.ai.width / 2 ), Math.floor( pong.ai.y + pong.ai.height / 2 ), -5000, 0 );	
 					field.setDensityRGB( Math.floor( pong.ai.x + pong.ai.width / 2  ) , Math.floor( pong.ai.y + pong.ai.height / 2 ), pong.ai.color );				
 
 					suck_on2 = false;
+					pong.ai.suck = false;
 					ball_caught2 = false;
 					console.log( "BOOM!");
 
@@ -265,9 +273,13 @@ function prepareFrame(field) {
 
 		}
 
-	}			
+	}		
 
-	// console.log( suck_counter_2 );
+	// if ( suck_on2 && Math.random() > 0.5 )	{
+
+	// 	pong.ai.suck = false;
+
+	// }
 
 	if ( suck_on2 && !pong.ai.suck && ball_caught2 ){
 
@@ -287,9 +299,6 @@ function prepareFrame(field) {
 		suck_counter_2 += 2;
 
 	}	
-
-    // pong.ball.vy += field.getYVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );
-    // pong.ball.vx += field.getXVelocity(Math.round( pong.ball.x ), Math.round( pong.ball.y ) );	
 
 }
 
