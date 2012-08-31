@@ -1,3 +1,7 @@
+// If you are viewing this code - don't judge me too harshly :D
+// Still needs a good clean up and encapsulation - just aimed to get it working
+// as quickly as I could
+
 var res;
 var displaySize = 512;
 var fieldRes;

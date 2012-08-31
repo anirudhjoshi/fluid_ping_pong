@@ -694,7 +694,7 @@ function Fluid(canvas) {
                     for ( var y = 0; y < height; y++ ) {
 
                         var index = 4 * (y * height +  x);                        
-                        var RGB = field.getDensityRGB(x, y);                        
+                        var RGB = field.getDensityRGB(x, y);     
 
                         data[ index + 0] = Math.round( RGB[0] * 255 / 5 );
                         data[ index + 1] = Math.round( RGB[1] * 255 / 5 );

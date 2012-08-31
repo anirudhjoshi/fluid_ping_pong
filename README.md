@@ -21,6 +21,12 @@ This is possible mainly due to the wonderful work done by both the Chrome and Mo
 
 It has been tested to work with the latest versions of Chrome/Firefox.
 
+#### Beta Disclaimer ####
+
+If you are viewing this code - don't judge me too harshly :D.
+
+Still needs a good clean up and encapsulation - just aimed to get it working as quickly as I could.
+
 #### References ####
 
 * [Oliver's simple fluid dynamics simulator by Oliver Hunt](http://nerget.com/fluidSim/)
