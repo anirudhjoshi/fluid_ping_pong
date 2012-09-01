@@ -39,6 +39,9 @@ function restart() {
 	suck_counter_1 = 100;
 	suck_counter_2 = 100;
 
+	prev_player_life = 5;
+	prev_ai_life = 5;
+
 	coul_incr = 0;
 
  	field.reset();
@@ -86,17 +89,61 @@ var ball_caught = false;
 var suck_on2 = false;
 var ball_caught2 = false;
 
+var prev_player_life = 5;
+var prev_ai_life = 5;
+
+var ai_switch = "AI";
+var player_switch = "HUMAN";
+
+var not = document.getElementById('notifications');
+
 function prepareFrame(field) {
 
 	if ( fps == 60){
 
 		fps = 0;
 
-	}		
+	}
 
-	if ( pong.player.life == 0 || pong.ai.life == 0 ){
+	if ( pong.ai.multiplayer ){
+
+		ai_switch = "PLAYER 2";
+		player_switch = "PLAYER 1";
+
+	} else {
+
+		ai_switch = "AI";
+		player_switch = "HUMAN";
+
+	}
+
+	if ( pong.player.life < prev_player_life ){
+
+		not.innerHTML = ai_switch + " SCORES " + (5 - pong.player.life) + "!";
+		prev_player_life = pong.player.life;
+
+	}
+
+	if ( pong.ai.life < prev_ai_life ){
+
+		not.innerHTML = player_switch + " SCORES " + (5 - pong.ai.life) + "!";
+		prev_ai_life = pong.ai.life;
+		
+	}	
+
+	if ( pong.player.life == 0 ){
+
+		not.innerHTML = ai_switch + " WINS!"
+		restart();
+
+	}
+
+	if ( pong.ai.life == 0 ){
+
+		not.innerHTML = player_switch + " WINS!"
 
 		restart();
+
 	}
 
 	fps++;
