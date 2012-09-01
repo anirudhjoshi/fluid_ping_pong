@@ -120,7 +120,7 @@ canvas {
 
 #fb-like{
 
-    width: 107px;
+    width: 107px !important;
 
 }
 
