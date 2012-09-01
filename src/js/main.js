@@ -36,6 +36,9 @@ function multiplayer() {
 
 function restart() {
 
+	suck_counter_1 = 100;
+	suck_counter_2 = 100;
+
  	field.reset();
 
 	pong.display = false;
