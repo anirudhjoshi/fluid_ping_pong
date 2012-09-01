@@ -39,6 +39,8 @@ function restart() {
 	suck_counter_1 = 100;
 	suck_counter_2 = 100;
 
+	coul_incr = 0;
+
  	field.reset();
 
 	pong.display = false;
