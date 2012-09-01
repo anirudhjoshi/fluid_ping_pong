@@ -508,7 +508,7 @@ function count_down(){
 
 		if ( coul_incr == 3 ){
 
-			half_width -= 16;
+			half_width -= 20;
 
 		}
 
