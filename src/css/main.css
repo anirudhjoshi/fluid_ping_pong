@@ -50,8 +50,8 @@ a:active {color:#e55e5f;}  /* selected link */
 
 	float: left;
     position: relative;
-    padding-left: 1em;
-	width: 28em;
+    padding-left: 4em;
+	width: 25em;
 
 }
 
@@ -259,8 +259,8 @@ div .fb_reset {
     border-bottom-left-radius: 0;
 }
 
-#notification {
+#notifications {
 
-    width: 100%;
+    width: 125% !important;
 
 }
