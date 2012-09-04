@@ -249,7 +249,7 @@ function Pong(canvas) {
 
 			this.theta = ((this.ai.y + this.ai.height/2) - this.ball.y ) / ( this.ai.height  /  2 );
 			this.ball.vx = -this.ball.speed * Math.cos(this.theta);
-			this.ball.vy = this.ball.speed * Math.sin(this.theta);
+			this.ball.vy = -this.ball.speed * Math.sin(this.theta);
 		}
 
 		// y
